@@ -2,11 +2,16 @@ import osUtils from 'os-utils';
 import fs from 'fs';
 import os from 'os';
 const POLLING_INTERVAL = 500;
-export function pollResources() {
+export function pollResources(mainWindow) {
     setInterval(async () => {
         const cpuUsage = await getCpuUSage();
         const ramUsage = getRamUsage();
         const storageData = getStorageData();
+        mainWindow.webContents.send('statistics', {
+            cpuUsage,
+            ramUsage,
+            storageUsage: storageData.usage
+        });
         console.log({
             cpuUsage, ramUsage, storageData: storageData.usage
         });
