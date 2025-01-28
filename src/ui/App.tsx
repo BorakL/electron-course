@@ -7,7 +7,7 @@ function App() {
   const [count, setCount] = useState(0)
 
   useEffect(()=>{
-    // window.electronApp.createFullFolder()
+    window.electronApp.createFullFolder()
   },[])
 
   return (
@@ -31,10 +31,7 @@ function App() {
       </div>
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
-      </p>
-      <p>
-        {process.env.VITE_PREZIME}
-      </p>
+      </p> 
     </div>
   )
 }

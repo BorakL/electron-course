@@ -61,6 +61,7 @@ const refererUrl = "https://prochef.rs/hospital/otpremnice.php";
 const url = "https://prochef.rs/hospital/create_pdf_invoice_otpremnica_v1.php";
 const date = "16-01-2025";
 const kategorija = 1;
+const session = "hbrfabuet9addee1ir1c43e3iua";
 // Funkcija za preuzimanje fajla
 export async function downloadFile(url, filePath, refererUrl, firm, user, date) {
     const writer = fs.createWriteStream(filePath);
@@ -75,14 +76,20 @@ export async function downloadFile(url, filePath, refererUrl, firm, user, date) 
                 "Accept": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36",
                 "Referer": `${refererUrl}?firm=${firm}&user=${user}&date=${date}`,
-                "Cookie": "PHPSESSID=hbrfabuet9addee1ir1c43e3iu", // Stavi svoj PHPSESSID
+                "Cookie": `PHPSESSID=${session}`
             }
         });
-        return new Promise((resolve, reject) => {
-            response.data.pipe(writer);
-            writer.on("finish", () => resolve());
-            writer.on("error", (error) => reject(error));
-        });
+        if (response.status === 401 || response.status === 403 || !response.headers['content-type'].includes('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')) {
+            console.log("❌ Sesija je istekla ili je nevažeća.");
+            throw new Error("Sesija je istekla ili je nevažeća."); // Prekida preuzimanje fajla jer je sesija istekla
+        }
+        else {
+            return new Promise((resolve, reject) => {
+                response.data.pipe(writer);
+                writer.on("finish", () => resolve());
+                writer.on("error", (error) => reject(error));
+            });
+        }
     }
     catch (error) {
         writer.close(); // Close file stream to prevent leaks
