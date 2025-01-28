@@ -81,6 +81,7 @@ export async function downloadFile(url, filePath, refererUrl, firm, user, date) 
         });
         if (response.status === 401 || response.status === 403 || !response.headers['content-type'].includes('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')) {
             console.log("❌ Sesija je istekla ili je nevažeća.");
+            writer.close(); // Zatvori writer odmah
             throw new Error("Sesija je istekla ili je nevažeća."); // Prekida preuzimanje fajla jer je sesija istekla
         }
         else {
@@ -94,6 +95,9 @@ export async function downloadFile(url, filePath, refererUrl, firm, user, date) 
     catch (error) {
         writer.close(); // Close file stream to prevent leaks
         throw error;
+    }
+    finally {
+        writer.close(); // Uvek zatvori writer, čak i ako dođe do greške
     }
 }
 ;
