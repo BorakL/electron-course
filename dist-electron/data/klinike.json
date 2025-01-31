@@ -1,0 +1,51 @@
+[{
+        "naziv": "gak",
+        "ostaliNazivi": ["gak", "ginekologija"],
+        "bolnicaApp": "GINEKOLOGIJA I AKUŠERSTVO",
+        "klinikaApp": "GAK",
+        "bolnica": "UNIVERZITETSKI KLINIČKI CENTAR SRBIJE",
+        "klinika": "KLINIKA ZA GINEKOLOGIJU I AKUŠERSTVO",
+        "firm": 69,
+        "user": 704
+    },
+    {
+        "naziv": "palmotićeva",
+        "ostaliNazivi": ["palmotićeva", "palmoticeva"],
+        "bolnicaApp": "INSTITUT ZA MENTALNO ZDRAVLJE",
+        "klinikaApp": "PALMOTIĆEVA",
+        "bolnica": "INSTITUT ZA MENTALNO ZDRAVLJE",
+        "klinika": "INSTITUT ZA MENTALNO ZDRAVLJE",
+        "firm": 70,
+        "user": 705
+    },
+    {
+        "naziv": "onkologija",
+        "ostaliNazivi": ["onkologija"],
+        "bolnicaApp": "INSTITUT ZA ONKOLOGIJU I RADIOLOGIJU",
+        "klinikaApp": "ONKOLOGIJA",
+        "bolnica": "INSTITUT ZA ONKOLOGIJU I RADIOLOGIJU SRBIJE",
+        "klinika": "INSTITUT ZA ONKOLOGIJU I RADIOLOGIJU SRBIJE",
+        "firm": 71,
+        "user": 706
+    },
+    {
+        "naziv": "s palanka",
+        "ostaliNazivi": ["s palanka", "s. palanka", "smederevska palanka", "stefan visoki"],
+        "bolnicaApp": "OPŠTA BOLNICA:STEFAN VISOKI",
+        "klinikaApp": "STEFAN",
+        "bolnica": "OPŠTA BOLNICA:STEFAN VISOKI SMEDEREVSKA PALANKA",
+        "klinika": "OPŠTA BOLNICA:STEFAN VISOKI",
+        "firm": 72,
+        "user": 707
+    },
+    {
+        "naziv": "blok a interna",
+        "ostaliNazivi": ["blok a interna", "misovic interna", "mišović interna"],
+        "bolnicaApp": "DRAGIŠA MIŠOVIĆ BLOK A",
+        "klinikaApp": "INTERNA KLINIKA",
+        "bolnica": "KBC DR DRAGIŠA MIŠOVIĆ - DEDINJE",
+        "klinika": "INTERNA KLINIKA",
+        "firm": 51,
+        "user": 670
+    }
+]
