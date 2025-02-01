@@ -3,13 +3,13 @@ import path from 'path';
 import {createFullFolder, isDev} from './util.js' 
 // import { pollResources } from './resourceManager.js';
 import { getPreloadPath } from './pathResolver.js'; 
-import dotenv from 'dotenv'; 
+import dotenv from 'dotenv';  
 
 
 // Definiši __dirname za ES module 
 
-dotenv.config({ path: path.join(process.cwd(), '.env.electron') });
-console.log('Secret Key:', process.env.ELECTRON_NAME);
+dotenv.config({ path: path.join(process.cwd(), '.env.electron') }); 
+
 
 app.on("ready", ()=>{
     const mainWindow = new BrowserWindow({
@@ -24,6 +24,8 @@ app.on("ready", ()=>{
     }
 
     // pollResources(mainWindow)
-    ipcMain.handle('createFullFolder',createFullFolder(klinike, url, refererUrl, kategorija, date))
+    ipcMain.handle('createFullFolder', async (event, klinike, url, refererUrl, kategorija, date, session) => {
+        return createFullFolder(klinike, url, refererUrl, kategorija, date, session);
+    });
 
 })

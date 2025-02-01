@@ -7,20 +7,12 @@ import { Klinika } from './types.js';
 // import {wrapper} from 'axios-cookiejar-support';
 
 
-
-
 export function isDev(): boolean {
     return process.env.NODE_ENV === 'development'
 }
 
-
-
-const date: string = "16-01-2025";
-const kategorija: number = 1;
-const session: string = "hbrfabuet9addee1ir1c43e3iua";
-
 // Funkcija za preuzimanje fajla
-export async function downloadFile(url:string, filePath:string, refererUrl: string|undefined, firm:number, user:number, date:string): Promise<void> {
+export async function downloadFile(url:string, filePath:string, refererUrl: string|undefined, firm:number, user:number, date:string, session:string): Promise<void> {
     const writer = fs.createWriteStream(filePath);
     try {
         const response = await axios({
@@ -50,12 +42,10 @@ export async function downloadFile(url:string, filePath:string, refererUrl: stri
     }catch(error){
         writer.close(); // Close file stream to prevent leaks
         throw error;
-    } finally {
-        writer.close(); // Uvek zatvori writer, čak i ako dođe do greške
-    }
+    } 
 };
 
-export function createFullFolder(klinike: Klinika[], url:string|undefined, refererUrl:string|undefined, kategorija: number, date:string): void{
+export function createFullFolder(klinike: Klinika[], url:string|undefined, refererUrl:string|undefined, kategorija: number, date:string, session:string): void{
     const today = date;
     const desktopPath = path.join(os.homedir(), "Desktop");
     const saveFolder = path.join(desktopPath, today); 
@@ -63,17 +53,17 @@ export function createFullFolder(klinike: Klinika[], url:string|undefined, refer
         fs.mkdirSync(saveFolder, { recursive: true });
     }
     // Prolazak kroz niz i preuzimanje fajlova
-    downloadMoreFiles(klinike, url, refererUrl, kategorija, date, saveFolder);
+    downloadMoreFiles(klinike, url, refererUrl, kategorija, date, saveFolder, session);
 }
 
-const downloadMoreFiles = async (klinike: Klinika[], url:string|undefined, refererUrl:string|undefined, kategorija:number, date:string, saveFolder:string) => {
+const downloadMoreFiles = async (klinike: Klinika[], url:string|undefined, refererUrl:string|undefined, kategorija:number, date:string, saveFolder:string, session:string) => {
     for (const klinika of klinike) {
         const fileName = `${klinika.naziv}.xlsx`; // Naziv fajla
         const filePath = path.join(saveFolder, fileName);
         const fileUrl = `${url}?kategorija=${kategorija}&date=${date}&firm=${klinika.firm}&user=${klinika.user}`;         
         try {
             console.log(`Preuzimam: ${fileUrl} -> ${filePath}`);
-            await downloadFile(fileUrl, filePath, refererUrl, klinika.firm, klinika.user, date);
+            await downloadFile(fileUrl, filePath, refererUrl, klinika.firm, klinika.user, date, session);
             console.log(`✅ Preuzet: ${filePath}`);
         } catch (error) {
             console.error(`❌ Greška pri preuzimanju ${fileUrl}:`, (error as Error).message);

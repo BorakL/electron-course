@@ -1,15 +1,18 @@
-import { ipcRenderer } from "electron";
-import { Klinika } from "./types";
+import { ipcRenderer } from "electron"; 
+// @ts-ignore
+import  { Klinika } from "./types";
 // import { dowloadMoreFiles } from "./util";
-import klinike from '../../data/klinike.json' assert { type: 'json' };
-
-const electron = require('electron');
-
+const electron = require('electron'); 
 
 
 electron.contextBridge.exposeInMainWorld("electronApp", { 
     // getStaticData: () => console.log('static'),
     createFullFolder: (
-        
-    ) => ipcRenderer.invoke(`createFullFolder`, klinike, url, refererUrl, kategorija, date)
+        klinike: Klinika[],
+        url: string,
+        refererUrl: string,
+        kategorija: number,
+        date: string,
+        session: string
+    ) => ipcRenderer.invoke(`createFullFolder`, klinike, url, refererUrl, kategorija, date, session)
 })
