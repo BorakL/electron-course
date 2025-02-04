@@ -23,9 +23,7 @@ app.on("ready", ()=>{
         mainWindow.loadFile(path.join(app.getAppPath() + '/dist-react/index.html'));
     }
 
-    // pollResources(mainWindow)
-    ipcMain.handle('createFullFolder', async (event, klinike, url, refererUrl, kategorija, date, session) => {
-        return createFullFolder(klinike, url, refererUrl, kategorija, date, session);
+    ipcMain.handle('createFullFolder', async (event, params) => {
+        return createFullFolder(params);
     });
-
 })

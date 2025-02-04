@@ -7,12 +7,12 @@ export function isDev() {
     return process.env.NODE_ENV === 'development';
 }
 // Funkcija za preuzimanje fajla (koristi `arraybuffer`)
-export async function downloadFile(url, filePath, refererUrl, firm, user, date, session) {
+export async function downloadFile({ fileUrl, filePath, refererUrl, firm, user, date, session }) {
     try {
         const response = await axios({
-            url,
+            url: fileUrl,
             method: "GET",
-            responseType: "arraybuffer", // Učitavamo ceo fajl u memoriju
+            responseType: "arraybuffer",
             httpsAgent: new https.Agent({ rejectUnauthorized: false }),
             headers: {
                 'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -22,11 +22,9 @@ export async function downloadFile(url, filePath, refererUrl, firm, user, date, 
                 "Cookie": `PHPSESSID=${session}`
             }
         });
-        // Provera da li je stigao validan Excel fajl
         if (response.status !== 200 || !response.headers['content-type'].includes('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')) {
             throw new Error("❌ Neispravan odgovor - fajl nije Excel ili sesija nije validna.");
         }
-        // Upisujemo preuzeti fajl na disk
         fs.writeFileSync(filePath, response.data);
         console.log(`✅ Fajl uspešno preuzet: ${filePath}`);
     }
@@ -35,8 +33,9 @@ export async function downloadFile(url, filePath, refererUrl, firm, user, date, 
         throw error;
     }
 }
-// Funkcija za kreiranje foldera i preuzimanje fajlova
-export function createFullFolder(klinike, url, refererUrl, kategorija, date, session) {
+// Funkcija za kreiranje foldera i preuzimanje fajlova sa retry mehanizmom
+// export function createFullFolder(cliniks: Klinika[], url: string | undefined, refererUrl: string | undefined, category: number, date: string, session: string): void {
+export function createFullFolder({ cliniks, url, refererUrl, category, date, session }) {
     const today = date;
     const desktopPath = path.join(os.homedir(), "Desktop");
     const saveFolder = path.join(desktopPath, today);
@@ -44,21 +43,49 @@ export function createFullFolder(klinike, url, refererUrl, kategorija, date, ses
         fs.mkdirSync(saveFolder, { recursive: true });
     }
     let currentIndex = 0;
-    const intervalId = setInterval(() => {
-        if (currentIndex < klinike.length) {
-            const klinika = klinike[currentIndex];
-            const fileName = `${klinika.naziv}.xlsx`; // Naziv fajla
-            const filePath = path.join(saveFolder, fileName);
-            const fileUrl = `${url}?kategorija=${kategorija}&date=${date}&firm=${klinika.firm}&user=${klinika.user}`;
-            console.log(`Preuzimam: ${fileUrl} -> ${filePath}`);
-            downloadFile(fileUrl, filePath, refererUrl, klinika.firm, klinika.user, date, session)
-                .then(() => console.log(`✅ Preuzet: ${filePath}`))
-                .catch((error) => console.error(`❌ Greška pri preuzimanju ${fileUrl}:`, error));
+    const failedDownloads = [];
+    async function downloadNext(attemptsLeft = 3) {
+        if (currentIndex >= cliniks.length) {
+            console.log("✅ Preuzimanje fajlova je završeno.");
+            if (failedDownloads.length > 0) {
+                console.log("⚠️ Sledeći fajlovi nisu preuzeti:");
+                console.log(failedDownloads.join("\n"));
+            }
+            return;
+        }
+        const klinika = cliniks[currentIndex];
+        const fileName = `${klinika.naziv}.xlsx`;
+        const filePath = path.join(saveFolder, fileName);
+        const fileUrl = `${url}?kategorija=${category}&date=${date}&firm=${klinika.firm}&user=${klinika.user}`;
+        console.log(`📥 Preuzimam: ${fileUrl} -> ${filePath} (Pokušaji preostali: ${attemptsLeft})`);
+        try {
+            // await downloadFile(fileUrl, filePath, refererUrl, klinika.firm, klinika.user, date, session);
+            await downloadFile({
+                fileUrl,
+                filePath,
+                refererUrl,
+                firm: klinika.firm,
+                user: klinika.user,
+                date,
+                session
+            });
+            console.log(`✅ Preuzet: ${filePath}`);
             currentIndex++;
+            setTimeout(downloadNext, 1000);
         }
-        else {
-            clearInterval(intervalId); // Zaustavi interval kada su svi fajlovi preuzeti
-            console.log("Svi fajlovi su preuzeti.");
+        catch (error) {
+            console.error(`❌ Greška pri preuzimanju ${fileUrl}:`, error);
+            if (attemptsLeft > 1) {
+                console.log(`🔄 Pokušavam ponovo za ${fileUrl}...`);
+                setTimeout(() => downloadNext(attemptsLeft - 1), 3000);
+            }
+            else {
+                console.error(`🚨 Neuspešno preuzimanje ${fileUrl} posle 3 pokušaja. Preskačem.`);
+                failedDownloads.push(fileUrl);
+                currentIndex++;
+                setTimeout(downloadNext, 1000);
+            }
         }
-    }, 1000); // Interval od 1 sekunde
+    }
+    downloadNext();
 }
