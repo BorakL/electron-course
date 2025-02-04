@@ -40,9 +40,6 @@ export async function downloadFile(url, filePath, refererUrl, firm, user, date, 
         writer.close(); // Close file stream to prevent leaks
         throw error;
     }
-    finally {
-        writer.close(); // Uvek zatvori writer, čak i ako dođe do greške
-    }
 }
 ;
 export function createFullFolder(klinike, url, refererUrl, kategorija, date, session) {
