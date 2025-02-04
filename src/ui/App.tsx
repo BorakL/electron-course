@@ -13,7 +13,7 @@ function App() {
     const url = "https://prochef.rs/hospital/create_pdf_invoice_otpremnica_v1.php"
     const kategorija = 2;
     const date = "12-01-2025";
-    const session = "v573b98fk40mh7pofgib1sdrfl"
+    const session = "107su6vf0qtb03ggkh9rr2rt0a"
     try{
       await window.electronApp.createFullFolder(klinike, url, refererUrl, kategorija, date, session)
     }catch(error){

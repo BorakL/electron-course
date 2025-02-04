@@ -6,14 +6,13 @@ import os from 'os';
 export function isDev() {
     return process.env.NODE_ENV === 'development';
 }
-// Funkcija za preuzimanje fajla
+// Funkcija za preuzimanje fajla (koristi `arraybuffer`)
 export async function downloadFile(url, filePath, refererUrl, firm, user, date, session) {
-    const writer = fs.createWriteStream(filePath);
     try {
         const response = await axios({
             url,
             method: "GET",
-            responseType: "stream",
+            responseType: "arraybuffer", // Učitavamo ceo fajl u memoriju
             httpsAgent: new https.Agent({ rejectUnauthorized: false }),
             headers: {
                 'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -23,25 +22,20 @@ export async function downloadFile(url, filePath, refererUrl, firm, user, date, 
                 "Cookie": `PHPSESSID=${session}`
             }
         });
-        if (response.status === 401 || response.status === 403 || !response.headers['content-type'].includes('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')) {
-            console.log("❌ Sesija je istekla ili je nevažeća.");
-            writer.close(); // Zatvori writer odmah
-            throw new Error("Sesija je istekla ili je nevažeća.");
+        // Provera da li je stigao validan Excel fajl
+        if (response.status !== 200 || !response.headers['content-type'].includes('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')) {
+            throw new Error("❌ Neispravan odgovor - fajl nije Excel ili sesija nije validna.");
         }
-        else {
-            return new Promise((resolve, reject) => {
-                response.data.pipe(writer);
-                writer.on("finish", () => resolve());
-                writer.on("error", (error) => reject(error));
-            });
-        }
+        // Upisujemo preuzeti fajl na disk
+        fs.writeFileSync(filePath, response.data);
+        console.log(`✅ Fajl uspešno preuzet: ${filePath}`);
     }
     catch (error) {
-        writer.close(); // Close file stream to prevent leaks
+        console.error(`⚠️ Greška pri preuzimanju fajla ${filePath}:`, error);
         throw error;
     }
 }
-;
+// Funkcija za kreiranje foldera i preuzimanje fajlova
 export function createFullFolder(klinike, url, refererUrl, kategorija, date, session) {
     const today = date;
     const desktopPath = path.join(os.homedir(), "Desktop");
