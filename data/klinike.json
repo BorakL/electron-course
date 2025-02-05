@@ -1,4 +1,77 @@
 [
+
+    {
+        "naziv": "valjevo",
+        "ostaliNazivi": ["valjevo"],
+        "bolnicaApp": "ZDRAVSTVENI CENTAR VALJEVO",
+        "klinikaApp": "OPŠTA",
+        "bolnica": "ZDRAVSTVENI CENTAR VALJEVO",
+        "klinika": "OPŠTA BOLNICA VALJEVO",
+        "firm": 60,
+        "user": 694
+    },
+    {
+        "naziv": "s palanka",
+        "ostaliNazivi": ["s palanka", "s. palanka", "smederevska palanka", "stefan visoki"],
+        "bolnicaApp": "OPŠTA BOLNICA:'STEFAN VISOKI'",
+        "klinikaApp": "STEFAN",
+        "bolnica": "OPŠTA BOLNICA:'STEFAN VISOKI' SMEDEREVSKA PALANKA",
+        "klinika": "OPŠTA BOLNICA:'STEFAN VISOKI'",
+        "firm": 72,
+        "user": 707
+    },
+    {
+        "naziv": "onkologija",
+        "ostaliNazivi": ["onkologija"],
+        "bolnicaApp": "INSTITUT ZA ONKOLOGIJU I RADIOLOGIJU",
+        "klinikaApp": "ONKOLOGIJA",
+        "bolnica": "INSTITUT ZA ONKOLOGIJU I RADIOLOGIJU SRBIJE",
+        "klinika": "INSTITUT ZA ONKOLOGIJU I RADIOLOGIJU SRBIJE",
+        "firm": 71,
+        "user": 706
+    },
+
+    {
+        "naziv": "urologija",
+        "ostaliNazivi": ["urologija", "urologija ukc"],
+        "bolnicaApp": "KLINIKA ZA UROLOGIJU",
+        "klinikaApp": "UROLOGIJA UKC",
+        "bolnica": "UNIVERZITETSKI KLINIČKI CENTAR SRBIJE",
+        "klinika": "KLINIKA ZA UROLOGIJU",
+        "firm": 66,
+        "user": 701
+    },
+    {
+        "naziv": "reumatologija",
+        "ostaliNazivi": ["reumatologija"],
+        "bolnicaApp": "REUMATOLOGIJA",
+        "klinikaApp": "REUMATOLOGIJA",
+        "bolnica": "INSTITUT ZA REUMATOLOGIJU",
+        "klinika": "INSTITUT ZA REUMATOLOGIJU",
+        "firm": 63,
+        "user": 697
+    },
+    {
+        "naziv": "neonatologija",
+        "ostaliNazivi": ["neonatologija"],
+        "bolnicaApp": "NEONATOLOGIJA",
+        "klinikaApp": "NEONATOLOGIJA",
+        "bolnica": "INSTITUT ZA NEONATOLOGIJU",
+        "klinika": "INSTITUT ZA NEONATOLOGIJU",
+        "firm": 61,
+        "user": 695
+    },
+    {
+        "naziv": "palmotićeva",
+        "ostaliNazivi": ["palmotićeva", "palmoticeva"],
+        "bolnicaApp": "INSTITUT ZA MENTALNO ZDRAVLJE",
+        "klinikaApp": "PALMOTIĆEVA",
+        "bolnica": "INSTITUT ZA MENTALNO ZDRAVLJE",
+        "klinika": "INSTITUT ZA MENTALNO ZDRAVLJE",
+        "firm": 70,
+        "user": 705
+    },
+
     {
         "naziv": "kardiohirurgija",
         "ostaliNazivi": ["kardiohirurgija"],
@@ -30,16 +103,6 @@
         "user": 664
     },
     {
-        "naziv": "banjica",
-        "ostaliNazivi": ["banjica"],
-        "bolnicaApp": "ORTOPEDIJA BANJICA",
-        "klinikaApp": "ORTOPEDIJA BANJICA",
-        "bolnica": "INSTITUT ZA ORTOPEDIJU BANJICA",
-        "klinika": "INSTITUT ZA ORTOPEDIJU BANJICA",
-        "firm": 49,
-        "user": 666
-    },
-    {
         "naziv": "ortopedija ukc",
         "ostaliNazivi": ["ortopedija", "ortopedija A"],
         "bolnicaApp": "ORTOPEDIJA A",
@@ -49,6 +112,7 @@
         "firm": 50,
         "user": 667
     },
+
     {
         "naziv": "endokrinologija",
         "ostaliNazivi": ["endokrina"],
@@ -70,25 +134,37 @@
         "user": 679
     },
     {
-        "naziv": "neurologija",
-        "ostaliNazivi": ["neurologija"],
-        "bolnicaApp": "KLINIKA ZA NEUROLOGIJU",
-        "klinikaApp": "NEUROLOGIJA",
+        "naziv": "gak",
+        "ostaliNazivi": ["gak", "ginekologija"],
+        "bolnicaApp": "GINEKOLOGIJA I AKUŠERSTVO",
+        "klinikaApp": "GAK",
         "bolnica": "UNIVERZITETSKI KLINIČKI CENTAR SRBIJE",
-        "klinika": "KLINIKA ZA NEUROLOGIJU",
-        "firm": 54,
-        "user": 680
+        "klinika": "KLINIKA ZA GINEKOLOGIJU I AKUŠERSTVO",
+        "firm": 69,
+        "user": 704
+    },
+
+    {
+        "naziv": "banjica",
+        "ostaliNazivi": ["banjica"],
+        "bolnicaApp": "ORTOPEDIJA BANJICA",
+        "klinikaApp": "ORTOPEDIJA BANJICA",
+        "bolnica": "INSTITUT ZA ORTOPEDIJU BANJICA",
+        "klinika": "INSTITUT ZA ORTOPEDIJU BANJICA",
+        "firm": 49,
+        "user": 666
     },
     {
-        "naziv": "ORL I MFH",
-        "ostaliNazivi": ["orl i mfh"],
-        "bolnicaApp": "KLINIKA ZA ORL I MFH",
-        "klinikaApp": "ORL I MFH",
-        "bolnica": "UNIVERZITETSKI KLINIČKI CENTAR SRBIJE",
-        "klinika": "KLINIKA ZA ORL I MFH",
-        "firm": 55,
-        "user": 682
+        "naziv": "bežanija",
+        "ostaliNazivi": ["bezanija", "bežanija", "bežanijska kosa", "kosa"],
+        "bolnicaApp": "KBC BEŽANIJSKA KOSA",
+        "klinikaApp": "KBC BEŽANIJSKA KOSA",
+        "bolnica": "KBC BEŽANIJSKA KOSA",
+        "klinika": "KBC BEŽANIJSKA KOSA",
+        "firm": 59,
+        "user": 686
     },
+
     {
         "naziv": "dermatovenerologija",
         "ostaliNazivi": ["kozno", "kožno", "dermatologija"],
@@ -98,16 +174,6 @@
         "klinika": "KLINIKA ZA DERMATOVENEROLOGIJU",
         "firm": 56,
         "user": 683
-    },
-    {
-        "naziv": "očno",
-        "ostaliNazivi": ["očno"],
-        "bolnicaApp": "KLINIKA ZA OČNE BOLESTI",
-        "klinikaApp": "OČNO",
-        "bolnica": "UNIVERZITETSKI KLINIČKI CENTAR SRBIJE",
-        "klinika": "KLINIKA ZA OČNE BOLESTI",
-        "firm": 57,
-        "user": 684
     },
     {
         "naziv": "psihijatrija",
@@ -120,35 +186,26 @@
         "user": 685
     },
     {
-        "naziv": "bežanija",
-        "ostaliNazivi": ["bezanija", "bežanija", "bežanijska kosa", "kosa"],
-        "bolnicaApp": "KBC BEŽANIJSKA KOSA",
-        "klinikaApp": "KBC BEŽANIJSKA KOSA",
-        "bolnica": "KBC BEŽANIJSKA KOSA",
-        "klinika": "KBC BEŽANIJSKA KOSA",
-        "firm": 59,
-        "user": 686
+        "naziv": "očno",
+        "ostaliNazivi": ["očno"],
+        "bolnicaApp": "KLINIKA ZA OČNE BOLESTI",
+        "klinikaApp": "OČNO",
+        "bolnica": "UNIVERZITETSKI KLINIČKI CENTAR SRBIJE",
+        "klinika": "KLINIKA ZA OČNE BOLESTI",
+        "firm": 57,
+        "user": 684
     },
     {
-        "naziv": "valjevo",
-        "ostaliNazivi": ["valjevo"],
-        "bolnicaApp": "ZDRAVSTVENI CENTAR VALJEVO",
-        "klinikaApp": "OPŠTA",
-        "bolnica": "ZDRAVSTVENI CENTAR VALJEVO",
-        "klinika": "OPŠTA BOLNICA VALJEVO",
-        "firm": 60,
-        "user": 694
+        "naziv": "ORL I MFH",
+        "ostaliNazivi": ["orl i mfh"],
+        "bolnicaApp": "KLINIKA ZA ORL I MFH",
+        "klinikaApp": "ORL I MFH",
+        "bolnica": "UNIVERZITETSKI KLINIČKI CENTAR SRBIJE",
+        "klinika": "KLINIKA ZA ORL I MFH",
+        "firm": 55,
+        "user": 682
     },
-    {
-        "naziv": "neonatologija",
-        "ostaliNazivi": ["neonatologija"],
-        "bolnicaApp": "NEONATOLOGIJA",
-        "klinikaApp": "NEONATOLOGIJA",
-        "bolnica": "INSTITUT ZA NEONATOLOGIJU",
-        "klinika": "INSTITUT ZA NEONATOLOGIJU",
-        "firm": 61,
-        "user": 695
-    },
+
     {
         "naziv": "nefrologija",
         "ostaliNazivi": ["nefrologija"],
@@ -158,16 +215,6 @@
         "klinika": "KLINIKA ZA NEFROLOGIJU",
         "firm": 62,
         "user": 696
-    },
-    {
-        "naziv": "reumatologija",
-        "ostaliNazivi": ["reumatologija"],
-        "bolnicaApp": "REUMATOLOGIJA",
-        "klinikaApp": "REUMATOLOGIJA",
-        "bolnica": "INSTITUT ZA REUMATOLOGIJU",
-        "klinika": "INSTITUT ZA REUMATOLOGIJU",
-        "firm": 63,
-        "user": 697
     },
     {
         "naziv": "urologija 2",
@@ -200,16 +247,6 @@
         "user": 700
     },
     {
-        "naziv": "urologija",
-        "ostaliNazivi": ["urologija", "urologija ukc"],
-        "bolnicaApp": "KLINIKA ZA UROLOGIJU",
-        "klinikaApp": "UROLOGIJA UKC",
-        "bolnica": "UNIVERZITETSKI KLINIČKI CENTAR SRBIJE",
-        "klinika": "KLINIKA ZA UROLOGIJU",
-        "firm": 66,
-        "user": 701
-    },
-    {
         "naziv": "plastika",
         "ostaliNazivi": ["plastika", "plastična h", "plastična hirurgija"],
         "bolnicaApp": "KLINIKA ZA OPEKOTINE, PLASTIČNU I REKONSTRUKTIVNU HIRURGIJU",
@@ -229,46 +266,18 @@
         "firm": 68,
         "user": 703
     },
+
     {
-        "naziv": "gak",
-        "ostaliNazivi": ["gak", "ginekologija"],
-        "bolnicaApp": "GINEKOLOGIJA I AKUŠERSTVO",
-        "klinikaApp": "GAK",
+        "naziv": "neurologija",
+        "ostaliNazivi": ["neurologija"],
+        "bolnicaApp": "KLINIKA ZA NEUROLOGIJU",
+        "klinikaApp": "NEUROLOGIJA",
         "bolnica": "UNIVERZITETSKI KLINIČKI CENTAR SRBIJE",
-        "klinika": "KLINIKA ZA GINEKOLOGIJU I AKUŠERSTVO",
-        "firm": 69,
-        "user": 704
+        "klinika": "KLINIKA ZA NEUROLOGIJU",
+        "firm": 54,
+        "user": 680
     },
-    {
-        "naziv": "palmotićeva",
-        "ostaliNazivi": ["palmotićeva", "palmoticeva"],
-        "bolnicaApp": "INSTITUT ZA MENTALNO ZDRAVLJE",
-        "klinikaApp": "PALMOTIĆEVA",
-        "bolnica": "INSTITUT ZA MENTALNO ZDRAVLJE",
-        "klinika": "INSTITUT ZA MENTALNO ZDRAVLJE",
-        "firm": 70,
-        "user": 705
-    },
-    {
-        "naziv": "onkologija",
-        "ostaliNazivi": ["onkologija"],
-        "bolnicaApp": "INSTITUT ZA ONKOLOGIJU I RADIOLOGIJU",
-        "klinikaApp": "ONKOLOGIJA",
-        "bolnica": "INSTITUT ZA ONKOLOGIJU I RADIOLOGIJU SRBIJE",
-        "klinika": "INSTITUT ZA ONKOLOGIJU I RADIOLOGIJU SRBIJE",
-        "firm": 71,
-        "user": 706
-    },
-    {
-        "naziv": "s palanka",
-        "ostaliNazivi": ["s palanka", "s. palanka", "smederevska palanka", "stefan visoki"],
-        "bolnicaApp": "OPŠTA BOLNICA:'STEFAN VISOKI'",
-        "klinikaApp": "STEFAN",
-        "bolnica": "OPŠTA BOLNICA:'STEFAN VISOKI' SMEDEREVSKA PALANKA",
-        "klinika": "OPŠTA BOLNICA:'STEFAN VISOKI'",
-        "firm": 72,
-        "user": 707
-    },
+
     {
         "naziv": "blok a interna",
         "ostaliNazivi": ["blok a interna", "misovic interna", "mišović interna"],
@@ -282,16 +291,6 @@
     {
         "naziv": "blok a hirurgija",
         "ostaliNazivi": ["blok a hirurgija"," misovic hirurgija", "mišović hirurgija"],
-        "bolnicaApp": "DRAGIŠA MIŠOVIĆ BLOK A",
-        "klinikaApp": "HIRURGIJA",
-        "bolnica": "KBC 'DR DRAGIŠA MIŠOVIĆ' - DEDINJE",
-        "klinika": "HIRURGIJA",
-        "firm": 51,
-        "user": 671
-    },
-    {
-        "naziv": "blok a hirurgija",
-        "ostaliNazivi": ["blok a hirurgija", "misovic hirurgija", "mišović hirurgija"],
         "bolnicaApp": "DRAGIŠA MIŠOVIĆ BLOK A",
         "klinikaApp": "HIRURGIJA",
         "bolnica": "KBC 'DR DRAGIŠA MIŠOVIĆ' - DEDINJE",
@@ -319,6 +318,7 @@
         "firm": 51,
         "user": 673
     },
+
     {
         "naziv": "blok b dečija",
         "ostaliNazivi": ["blok b dečija", "misovic dečija", "mišović dečija"],
@@ -328,6 +328,16 @@
         "klinika": "DEČIJA",
         "firm": 52,
         "user": 675
+    },
+    {
+        "naziv": "blok b gerijatrija",
+        "ostaliNazivi": ["blok b gerijatrija", "misovic gerijatrija", "mišović gerijatrija", "blok b", "klinika b"],
+        "bolnicaApp": "DRAGIŠA MIŠOVIĆ BLOK B",
+        "klinikaApp": "KLINIKA B",
+        "bolnica": "KBC 'DR DRAGIŠA MIŠOVIĆ' - DEDINJE",
+        "klinika": "KLINIKA B",
+        "firm": 52,
+        "user": 681
     },
     {
         "naziv": "blok b urologija",
@@ -348,15 +358,6 @@
         "klinika": "GINEKOLOGIJA",
         "firm": 52,
         "user": 677
-    },
-    {
-        "naziv": "blok b gerijatrija",
-        "ostaliNazivi": ["blok b gerijatrija", "misovic gerijatrija", "mišović gerijatrija", "blok b", "klinika b"],
-        "bolnicaApp": "DRAGIŠA MIŠOVIĆ BLOK B",
-        "klinikaApp": "KLINIKA B",
-        "bolnica": "KBC 'DR DRAGIŠA MIŠOVIĆ' - DEDINJE",
-        "klinika": "KLINIKA B",
-        "firm": 52,
-        "user": 681
     }
+
 ]
