@@ -27,3 +27,6 @@ dist-react
 .env
 .env.electron
 .env.ui
+dist
+dist-react
+*.local
