@@ -93,7 +93,7 @@ function App() {
               <p>{errors.session?.message}</p>
           </div>
           <div>
-            <button>Downladuj otrepnice</button>
+            <button>Downloaduj otpremnice</button>
           </div>
         </form>
       </div> 
