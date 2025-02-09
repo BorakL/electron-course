@@ -79,7 +79,7 @@ export async function downloadFile({
         }
 
         const klinika = cliniks[currentIndex];
-        const fileName = `${klinika.naziv}.xlsx`;
+        const fileName = `${klinika.naziv?.toUpperCase()}.xlsx`;
         const filePath = path.join(saveFolder, fileName);
         const fileUrl = `${url}?kategorija=${category}&date=${date}&firm=${klinika.firm}&user=${klinika.user}`;
 
