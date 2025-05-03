@@ -1,7 +1,9 @@
 import { useEffect } from 'react';
 import './App.css';
 import klinike from "./../../data/klinike.json";
-import { useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form'; 
+import { useAppDispatch, useAppSelector } from './redux/hooks';
+import { decrement, increment } from './redux/features/counterSlice';
 
 function App() {
   type FormValues = {
@@ -17,6 +19,10 @@ function App() {
       session: "",
     },
   });
+
+  const count = useAppSelector((state) => state.counter.value);
+  const dispatch = useAppDispatch();
+
 
   const { register, handleSubmit, formState, watch, setValue } = form;
   const { errors } = formState;
@@ -103,7 +109,16 @@ function App() {
         <div>
           <button type="submit">Downloaduj otpremnice</button>
         </div>
+
+        <div>
+
+        </div>
       </form>
+      <div>
+      <h1>Count: {count}</h1>
+      <button onClick={() => dispatch(increment())}>+</button>
+      <button onClick={() => dispatch(decrement())}>-</button>
+    </div>
     </div>
   );
 }
