@@ -1,12 +1,14 @@
 import { ipcRenderer } from "electron"; 
 // @ts-ignore
-import  { Klinika } from "./types"; 
+import  { Klinika } from "./types";   
 // import { dowloadMoreFiles } from "./util";
-const electron = require('electron'); 
+import electron from 'electron'; 
+
+type JsonValue = string | number | boolean | null | JsonObject | JsonValue[];
+type JsonObject = { [key: string]: JsonValue };
 
 
-electron.contextBridge.exposeInMainWorld("electronApp", { 
-    // getStaticData: () => console.log('static'),
+electron.contextBridge.exposeInMainWorld("electronApp", {
     createFullFolder: (
         klinike: Klinika[],
         url: string,
@@ -16,6 +18,40 @@ electron.contextBridge.exposeInMainWorld("electronApp", {
         session: string
     ) => ipcRenderer.invoke(`createFullFolder`, klinike, url, refererUrl, kategorija, date, session),
     
-    processExcel: () => ipcRenderer.invoke('processExcel')
+    // osnovne funkcije nad fajlovima
+    getFilePath: (fileName: string): Promise<string> =>
+        ipcRenderer.invoke("getFilePath", fileName),
 
+    readJsonFile: (fileName: string): Promise<JsonValue> =>
+        ipcRenderer.invoke("readJsonFile", fileName),
+
+    writeJsonFile: (fileName: string, data: JsonValue): Promise<void> =>
+        ipcRenderer.invoke("writeJsonFile", fileName, data),
+
+    updateJsonItemById: (
+        fileName: string,
+        id: number | string,
+        changes: JsonObject
+    ): Promise<void> =>
+        ipcRenderer.invoke("updateJsonItemById", fileName, id, changes),
+
+    deleteJsonItemById: (
+        fileName: string,
+        id: number | string
+    ): Promise<void> =>
+        ipcRenderer.invoke("deleteJsonItemById", fileName, id),
+
+    addKlinikaToTura: (
+        fileName: string,
+        turaId: number,
+        klinikaId: number
+    ): Promise<void> => 
+        ipcRenderer.invoke("addKlinikaToTura", fileName, turaId, klinikaId),
+
+    removeKlinikaFromTura: (
+        fileName: string,
+        turaId: number,
+        klinikaId: number
+    ): Promise<void> =>
+        ipcRenderer.invoke("removeKlinikaFromTura", fileName, turaId, klinikaId)
 })

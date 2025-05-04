@@ -4,6 +4,7 @@ import {createFullFolder, isDev} from './util.js'
 // import { pollResources } from './resourceManager.js';
 import { getPreloadPath } from './pathResolver.js'; 
 import dotenv from 'dotenv';  
+import { addKlinikaToTura, deleteJsonItemById, getFilePath, readJsonFile, removeKlinikaFromTura, updateJsonItemById, writeJsonFile } from './fsHelpers/jsonUtils.js';
 
 
 // Definiši __dirname za ES module 
@@ -25,5 +26,27 @@ app.on("ready", ()=>{
 
     ipcMain.handle('createFullFolder', async (event, params) => {
         return createFullFolder(params);
+    });
+
+    ipcMain.handle('getFilePath', (event, fileName:string): string => {
+        return getFilePath(fileName)
+    })
+    ipcMain.handle('readJsonFile', async (event, fileName:string) => {
+        return readJsonFile(fileName)
+    })
+    ipcMain.handle('writeJsonFile', async (event, fileName:string, data ) => {
+        return writeJsonFile(fileName,data)
+    })
+    ipcMain.handle('updateJsonItemById', async (event, fileName, id, changes) => {
+        return updateJsonItemById(fileName, id, changes);
+    });
+    ipcMain.handle('deleteJsonItemById', async (event, fileName, id) => {
+        return deleteJsonItemById(fileName, id);
+    });
+    ipcMain.handle('addKlinikaToTura', async (event, fileName, turaId, klinikaId) => {
+        return addKlinikaToTura(fileName, turaId, klinikaId);
+    });
+    ipcMain.handle('removeKlinikaFromTura', async (event, fileName, turaId, klinikaId) => {
+        return removeKlinikaFromTura(fileName, turaId, klinikaId);
     });
 })

@@ -43,6 +43,8 @@ function App() {
 
   // Kad se datum promeni, ažuriraj format prikaza u input polju
   useEffect(() => {
+    window.electronApp.readJsonFile("klinike.json").then(res => console.log("ressss",res))
+    
     if (watchDate) {
       const [year, month, day] = watchDate.split("-");
       setValue("date", `${year}-${month}-${day}`, { shouldValidate: true });
