@@ -1,9 +1,17 @@
 import { useEffect } from 'react';
+import { Routes, Route, Link } from 'react-router-dom';
 import './App.css';
 import klinike from "./../../data/klinike.json";
-import { useForm } from 'react-hook-form'; 
-import { useAppDispatch, useAppSelector } from './redux/hooks';
-import { decrement, increment } from './redux/features/counterSlice';
+import { useForm } from 'react-hook-form';
+import HomePage from './pages/HomePage';
+import DownloadPage from './pages/DownloadPage';
+import PrintPage from './pages/PrintPage';
+import KlinikeList from './pages/KlinikeList';
+import KlinikaDetails from './pages/KliinikaDetails';
+import DostavneTure from './pages/DostavneTure';
+import DostavnaTuraDetails from './pages/DostavnaTuraDetails';
+import EditPage from './pages/EditPage';
+// import { useAppDispatch, useAppSelector } from './redux/hooks';
 
 function App() {
   type FormValues = {
@@ -19,9 +27,6 @@ function App() {
       session: "",
     },
   });
-
-  const count = useAppSelector((state) => state.counter.value);
-  const dispatch = useAppDispatch();
 
 
   const { register, handleSubmit, formState, watch, setValue } = form;
@@ -69,6 +74,18 @@ function App() {
 
   return (
     <div className="App">
+
+        <Routes>
+          <Route path="/" element={<HomePage/>} />
+          <Route path="/download" element={<DownloadPage/>} />
+          <Route path="/editPage" element={<EditPage/>} />
+          <Route path="/print" element={<PrintPage/>} />
+          <Route path="/klinike" element={<KlinikeList/>} />
+          <Route path="/klinike/:id" element={<KlinikaDetails/>} />
+          <Route path="/dostavneTure" element={<DostavneTure/>} />
+          <Route path="/dostavneTure:id" element={<DostavnaTuraDetails/>} />
+        </Routes>
+
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <label htmlFor="category">Obrok: </label>
@@ -108,18 +125,19 @@ function App() {
 
         <div>
           <button type="submit">Downloaduj otpremnice</button>
-        </div>
-
-        <div>
-
-        </div>
+        </div> 
       </form>
-      <div>
-      <h1>Count: {count}</h1>
-      <button onClick={() => dispatch(increment())}>+</button>
-      <button onClick={() => dispatch(decrement())}>-</button>
-    </div>
-    </div>
+
+      <div> 
+        <nav>
+          <li><Link to="/download"> Download </Link></li>
+          <li><Link to="/editPage"> Edit </Link></li>
+          <li><Link to="/print">Print Page</Link></li>
+          <li><Link to="/klinike">Klinike</Link></li>
+          <li><Link to="/dostavneTure">Dostavne Ture</Link></li>
+        </nav>
+      </div>
+    </div> 
   );
 }
 
