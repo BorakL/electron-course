@@ -1,6 +1,6 @@
 import { ipcRenderer } from "electron"; 
 // @ts-ignore
-import  { Klinika } from "./types";   
+import  { Klinika } from "./../shared/types.ts";   
 // import { dowloadMoreFiles } from "./util";
 import electron from 'electron'; 
 

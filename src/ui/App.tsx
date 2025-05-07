@@ -4,7 +4,7 @@ import HomePage from './pages/HomePage';
 import DownloadPage from './pages/DownloadPage';
 import PrintPage from './pages/PrintPage';
 import KlinikeList from './pages/KlinikeList';
-import KlinikaDetails from './pages/KliinikaDetails';
+import KlinikaDetails from './pages/KlinikaDetails';
 import DostavneTure from './pages/DostavneTure';
 import DostavnaTuraDetails from './pages/DostavnaTuraDetails';
 import EditPage from './pages/EditPage';
