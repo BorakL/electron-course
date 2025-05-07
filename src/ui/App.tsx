@@ -42,9 +42,7 @@ function App() {
   };
 
   // Kad se datum promeni, ažuriraj format prikaza u input polju
-  useEffect(() => {
-    window.electronApp.readJsonFile("klinike.json").then(res => console.log("ressss",res))
-    
+  useEffect(() => {    
     if (watchDate) {
       const [year, month, day] = watchDate.split("-");
       setValue("date", `${year}-${month}-${day}`, { shouldValidate: true });
@@ -139,6 +137,8 @@ function App() {
           <li><Link to="/dostavneTure">Dostavne Ture</Link></li>
         </nav>
       </div>
+
+      <button onClick={()=>  window.electronApp.readJsonFile("klinike.json").then(res => console.log("ressss",res))  }>Proba</button>
     </div> 
   );
 }

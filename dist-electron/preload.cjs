@@ -12,6 +12,7 @@ electron_2.default.contextBridge.exposeInMainWorld("electronApp", {
     getFilePath: (fileName) => electron_1.ipcRenderer.invoke("getFilePath", fileName),
     readJsonFile: (fileName) => electron_1.ipcRenderer.invoke("readJsonFile", fileName),
     writeJsonFile: (fileName, data) => electron_1.ipcRenderer.invoke("writeJsonFile", fileName, data),
+    appendJsonItem: (fileName, newItem) => electron_1.ipcRenderer.invoke("appendJsonItem", fileName, newItem),
     updateJsonItemById: (fileName, id, changes) => electron_1.ipcRenderer.invoke("updateJsonItemById", fileName, id, changes),
     deleteJsonItemById: (fileName, id) => electron_1.ipcRenderer.invoke("deleteJsonItemById", fileName, id),
     addKlinikaToTura: (fileName, turaId, klinikaId) => electron_1.ipcRenderer.invoke("addKlinikaToTura", fileName, turaId, klinikaId),

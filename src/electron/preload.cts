@@ -28,6 +28,9 @@ electron.contextBridge.exposeInMainWorld("electronApp", {
     writeJsonFile: (fileName: string, data: JsonValue): Promise<void> =>
         ipcRenderer.invoke("writeJsonFile", fileName, data),
 
+    appendJsonItem: (fileName: string, newItem: any) =>
+        ipcRenderer.invoke("appendJsonItem", fileName, newItem),
+
     updateJsonItemById: (
         fileName: string,
         id: number | string,

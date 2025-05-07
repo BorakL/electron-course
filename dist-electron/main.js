@@ -4,7 +4,7 @@ import { createFullFolder, isDev } from './util.js';
 // import { pollResources } from './resourceManager.js';
 import { getPreloadPath } from './pathResolver.js';
 import dotenv from 'dotenv';
-import { addKlinikaToTura, deleteJsonItemById, getFilePath, readJsonFile, removeKlinikaFromTura, updateJsonItemById, writeJsonFile } from './fsHelpers/jsonUtils.js';
+import { addKlinikaToTura, appendJsonItem, deleteJsonItemById, getFilePath, readJsonFile, removeKlinikaFromTura, updateJsonItemById, writeJsonFile } from './fsHelpers/jsonUtils.js';
 // Definiši __dirname za ES module 
 dotenv.config({ path: path.join(process.cwd(), '.env.electron') });
 app.on("ready", () => {
@@ -30,6 +30,9 @@ app.on("ready", () => {
     });
     ipcMain.handle('writeJsonFile', async (event, fileName, data) => {
         return writeJsonFile(fileName, data);
+    });
+    ipcMain.handle("appendJsonItem", (event, fileName, newItem) => {
+        appendJsonItem(fileName, newItem);
     });
     ipcMain.handle('updateJsonItemById', async (event, fileName, id, changes) => {
         return updateJsonItemById(fileName, id, changes);

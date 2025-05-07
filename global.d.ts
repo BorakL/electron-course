@@ -14,10 +14,12 @@ declare global {
         electronApp: { 
             createFullFolder: ( CreateFullFolderParams ) => Promise<void>;
             getFilePath: (fileName:string) => string;
-            readJsonFile: (fileName:string) => Promise<JsonValue>;
+            readJsonFile: (fileName:string) => Promise<JsonValue>; 
+            appendJsonItem: (FileName:string, newItem:JsonObject) => Promise<void>;
             writeJsonFile: (fileName:string, data:JsonValue) => Promise<void>;
             updateJsonItemById: (fileName:string, id:number, updatedFields:JsonObject) => Promise<void>;
             deleteJsonItem: (fileName:string, id:number) => Promise<void>
+            addKlinikaToTura: (fileName:string, turaId:number, klinikaId:number) => Promise<void>
         }
     }
 }

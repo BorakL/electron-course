@@ -16,6 +16,11 @@ export function writeJsonFile(fileName, data) {
     const filePath = getFilePath(fileName);
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2), "utf-8");
 }
+export function appendJsonItem(fileName, newItem) {
+    const items = readJsonFile(fileName);
+    items.push(newItem);
+    writeJsonFile(fileName, items);
+}
 export function updateJsonItemById(fileName, id, updatedFields) {
     const items = readJsonFile(fileName);
     const updated = items.map(item => item.id === id ? { ...item, ...updatedFields } : item);
