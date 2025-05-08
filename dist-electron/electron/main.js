@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, dialog, ipcMain } from 'electron';
 import path from 'path';
 import { createFullFolder, isDev } from './util.js';
 // import { pollResources } from './resourceManager.js';
@@ -45,5 +45,15 @@ app.on("ready", () => {
     });
     ipcMain.handle('removeKlinikaFromTura', async (event, fileName, turaId, klinikaId) => {
         return removeKlinikaFromTura(fileName, turaId, klinikaId);
+    });
+    ipcMain.handle("showConfirm", async () => {
+        const result = await dialog.showMessageBox({
+            type: "question",
+            buttons: ["Da", "Ne"],
+            defaultId: 0,
+            cancelId: 1,
+            message: "Da li ste sigurni da želite da obrišete ovu kliniku?",
+        });
+        return result.response === 1; // true ako je kliknut "Da"
     });
 });

@@ -27,9 +27,12 @@ const KlinikaDetails = () => {
 
 
     const handleDelete = async () => {
+        const confirmed = window.electronApp.showConfirm();
+        if (!confirmed) return; 
         if (!klinika) return;
         try {
           await window.electronApp.deleteJsonItemById("klinike.json", Number(klinika.user), "user");
+          alert("Obrisano.");
           navigate("/klinike");
         } catch (error) {
           console.error("Greška pri brisanju klinike:", error);

@@ -18,8 +18,9 @@ declare global {
             appendJsonItem: (FileName:string, newItem:JsonObject) => Promise<void>;
             writeJsonFile: (fileName:string, data:JsonValue) => Promise<void>;
             updateJsonItemById: (fileName:string, id:number, updatedFields:JsonObject) => Promise<void>;
-            deleteJsonItemById: (fileName:string, id:number, idKey:string) => Promise<void>
-            addKlinikaToTura: (fileName:string, turaId:number, klinikaId:number) => Promise<void>
+            deleteJsonItemById: (fileName:string, id:number, idKey:string) => Promise<void>;
+            addKlinikaToTura: (fileName:string, turaId:number, klinikaId:number) => Promise<void>;
+            showConfirm: () => boolean;
         }
     }
 }

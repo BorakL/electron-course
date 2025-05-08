@@ -57,5 +57,8 @@ electron.contextBridge.exposeInMainWorld("electronApp", {
         turaId: number,
         klinikaId: number
     ): Promise<void> =>
-        ipcRenderer.invoke("removeKlinikaFromTura", fileName, turaId, klinikaId)
+        ipcRenderer.invoke("removeKlinikaFromTura", fileName, turaId, klinikaId),
+
+    showConfirm: () => ipcRenderer.invoke("showConfirm")
+
 })

@@ -41,10 +41,8 @@ export function updateJsonItemById(fileName, id, updatedFields) {
 }
 export function deleteJsonItemById(fileName, id, idKey) {
     try {
-        console.log("sssssssssssaaaaaaaa");
         const items = readJsonFile(fileName);
         const filtered = items.filter(item => item[idKey] !== id);
-        console.log("ffffffffffffffffiltereed", filtered);
         writeJsonFile(fileName, filtered);
     }
     catch (error) {
