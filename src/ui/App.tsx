@@ -9,6 +9,7 @@ import DostavneTure from './pages/DostavneTure';
 import DostavnaTuraDetails from './pages/DostavnaTuraDetails';
 import EditPage from './pages/EditPage';
 import MainLayout from './layout/mainlayout';
+import AddKlinika from './pages/AddKlinika';
 // import { useAppDispatch, useAppSelector } from './redux/hooks';
 
 function App() {
@@ -26,6 +27,8 @@ function App() {
             <Route path="/klinike/:id" element={<KlinikaDetails/>} />
             <Route path="/dostavneTure" element={<DostavneTure/>} />
             <Route path="/dostavneTure:id" element={<DostavnaTuraDetails/>} />
+            <Route path="/addKlinika" element={<AddKlinika/>} />
+
           </Route> 
         </Routes>
     </div> 

@@ -1,6 +1,5 @@
 export type Klinika = {
     naziv:string,
-    ostaliNazivi: string[],
     bolnicaApp: string,
     klinikaApp: string,
     bolnica: string,

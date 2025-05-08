@@ -48,13 +48,14 @@ export function updateJsonItemById<T extends { id: number }>(
   }
 }
 
-export function deleteJsonItemById<T extends { id: number }>(
+export function deleteJsonItemById<T>(
   fileName: string,
-  id: number
+  id: number,
+  idKey: keyof T
 ): void {
   try {
     const items: T[] = readJsonFile<T[]>(fileName);
-    const filtered = items.filter(item => item.id !== id);
+    const filtered = items.filter(item => item[idKey] !== id);
     writeJsonFile(fileName, filtered);
   } catch (error) {
     console.error(`Greška pri brisanju item-a ID ${id} u fajlu ${fileName}:`, error);

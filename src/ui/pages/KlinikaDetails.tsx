@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { Klinika } from "../../shared/types";
 import { useForm } from "react-hook-form";
 
@@ -7,6 +8,7 @@ const KlinikaDetails = () => {
     const { id } = useParams();
     const [klinika, setKlinika] = useState<Klinika | null>(null);
     const [isEditing, setIsEditing] = useState<boolean>(false);
+    const navigate = useNavigate();
 
     const { register, handleSubmit, reset } = useForm<Klinika>();
 
@@ -22,6 +24,19 @@ const KlinikaDetails = () => {
             console.log("Greška pri učitavanju fajla", error);
         }
     };
+
+
+    const handleDelete = async () => {
+        if (!klinika) return;
+        try {
+          await window.electronApp.deleteJsonItemById("klinike.json", Number(klinika.user), "user");
+          navigate("/klinike");
+        } catch (error) {
+          console.error("Greška pri brisanju klinike:", error);
+          alert("Greška pri brisanju klinike.");
+        }
+      };
+
 
     useEffect(() => {
         fetchKlinika(id);
@@ -87,6 +102,7 @@ const KlinikaDetails = () => {
                     <p><strong>Firm:</strong> {klinika.firm}</p>
                     <p><strong>User:</strong> {klinika.user}</p>
                     <button onClick={() => setIsEditing(true)}>Edit</button>
+                    <button onClick={handleDelete} style={{ marginLeft: '1rem', backgroundColor: 'red', color: 'white' }}>Obriši</button>
                 </div>
             )}
         </div>

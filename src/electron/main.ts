@@ -43,8 +43,8 @@ app.on("ready", ()=>{
     ipcMain.handle('updateJsonItemById', async (event, fileName, id, changes) => {
         return updateJsonItemById(fileName, id, changes);
     });
-    ipcMain.handle('deleteJsonItemById', async (event, fileName, id) => {
-        return deleteJsonItemById(fileName, id);
+    ipcMain.handle('deleteJsonItemById', async (event, fileName, id, idKey:string) => {
+        return deleteJsonItemById(fileName, id, idKey);
     });
     ipcMain.handle('addKlinikaToTura', async (event, fileName, turaId, klinikaId) => {
         return addKlinikaToTura(fileName, turaId, klinikaId);

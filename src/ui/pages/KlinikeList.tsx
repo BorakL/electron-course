@@ -30,6 +30,7 @@ const KlinikeList = ()=>{
                     </li>
                 )}
             </ul>
+            <Link to={`/addKlinika`}>Dodaj novu kliniku</Link>
         </div>
     )
 }

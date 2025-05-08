@@ -40,9 +40,10 @@ electron.contextBridge.exposeInMainWorld("electronApp", {
 
     deleteJsonItemById: (
         fileName: string,
-        id: number | string
+        id: number | string,
+        idKey: string
     ): Promise<void> =>
-        ipcRenderer.invoke("deleteJsonItemById", fileName, id),
+        ipcRenderer.invoke("deleteJsonItemById", fileName, id, idKey),
 
     addKlinikaToTura: (
         fileName: string,
