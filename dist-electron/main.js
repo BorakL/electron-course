@@ -4,7 +4,7 @@ import { createFullFolder, isDev } from './util.js';
 // import { pollResources } from './resourceManager.js';
 import { getPreloadPath } from './pathResolver.js';
 import dotenv from 'dotenv';
-import { addKlinikaToTura, appendJsonItem, deleteJsonItemById, getFilePath, readJsonFile, removeKlinikaFromTura, updateJsonItemById, writeJsonFile } from './fsHelpers/jsonUtils.js';
+import { appendJsonItem, deleteJsonItemById, dodajKlinikuUNerasporedjene, dodajKlinikuUTuru, dodajNovuTuru, getFilePath, obrisiTuru, ocistiNevazecuKlinikuIzTura, readJsonFile, ukloniKlinikuIzNerasporedjenih, ukloniKlinikuIzTure, updateJsonItemById, writeJsonFile } from './fsHelpers/jsonUtils.js';
 // Definiši __dirname za ES module 
 dotenv.config({ path: path.join(process.cwd(), '.env.electron') });
 app.on("ready", () => {
@@ -37,13 +37,28 @@ app.on("ready", () => {
     ipcMain.handle('updateJsonItemById', async (event, fileName, id, changes) => {
         return updateJsonItemById(fileName, id, changes);
     });
-    ipcMain.handle('deleteJsonItemById', async (event, fileName, id) => {
-        return deleteJsonItemById(fileName, id);
+    ipcMain.handle('deleteJsonItemById', async (event, fileName, id, idKey) => {
+        return deleteJsonItemById(fileName, id, idKey);
     });
-    ipcMain.handle('addKlinikaToTura', async (event, fileName, turaId, klinikaId) => {
-        return addKlinikaToTura(fileName, turaId, klinikaId);
+    ipcMain.handle('dodajKlinikuUNerasporedjene', (event, klinikaId) => {
+        dodajKlinikuUNerasporedjene(klinikaId);
     });
-    ipcMain.handle('removeKlinikaFromTura', async (event, fileName, turaId, klinikaId) => {
-        return removeKlinikaFromTura(fileName, turaId, klinikaId);
+    ipcMain.handle('ukloniKlinikuIzNerasporedjenih', (event, klinikaId) => {
+        ukloniKlinikuIzNerasporedjenih(klinikaId);
+    });
+    ipcMain.handle('dodajKlinikuUTuru', (event, turaId, klinikaId) => {
+        dodajKlinikuUTuru(turaId, klinikaId);
+    });
+    ipcMain.handle('ukloniKlinikuIzTure', (event, turaId, klinikaId) => {
+        ukloniKlinikuIzTure(turaId, klinikaId);
+    });
+    ipcMain.handle('obrisiTuru', (event, turaId) => {
+        obrisiTuru(turaId);
+    });
+    ipcMain.handle('dodajNovuTuru', () => {
+        return dodajNovuTuru(); // vraća ID nove ture
+    });
+    ipcMain.handle('ocistiNevazecuKlinikuIzTura', (event, klinikaId) => {
+        ocistiNevazecuKlinikuIzTura(klinikaId);
     });
 });

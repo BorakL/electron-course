@@ -14,7 +14,14 @@ electron_2.default.contextBridge.exposeInMainWorld("electronApp", {
     writeJsonFile: (fileName, data) => electron_1.ipcRenderer.invoke("writeJsonFile", fileName, data),
     appendJsonItem: (fileName, newItem) => electron_1.ipcRenderer.invoke("appendJsonItem", fileName, newItem),
     updateJsonItemById: (fileName, id, changes) => electron_1.ipcRenderer.invoke("updateJsonItemById", fileName, id, changes),
-    deleteJsonItemById: (fileName, id) => electron_1.ipcRenderer.invoke("deleteJsonItemById", fileName, id),
+    deleteJsonItemById: (fileName, id, idKey) => electron_1.ipcRenderer.invoke("deleteJsonItemById", fileName, id, idKey),
     addKlinikaToTura: (fileName, turaId, klinikaId) => electron_1.ipcRenderer.invoke("addKlinikaToTura", fileName, turaId, klinikaId),
-    removeKlinikaFromTura: (fileName, turaId, klinikaId) => electron_1.ipcRenderer.invoke("removeKlinikaFromTura", fileName, turaId, klinikaId)
+    removeKlinikaFromTura: (fileName, turaId, klinikaId) => electron_1.ipcRenderer.invoke("removeKlinikaFromTura", fileName, turaId, klinikaId),
+    dodajKlinikuUNerasporedjene: (klinikaId) => electron_1.ipcRenderer.invoke('dodajKlinikuUNerasporedjene', klinikaId),
+    ukloniKlinikuIzNerasporedjenih: (klinikaId) => electron_1.ipcRenderer.invoke('ukloniKlinikuIzNerasporedjenih', klinikaId),
+    dodajKlinikuUTuru: (turaId, klinikaId) => electron_1.ipcRenderer.invoke('dodajKlinikuUTuru', turaId, klinikaId),
+    ukloniKlinikuIzTure: (turaId, klinikaId) => electron_1.ipcRenderer.invoke('ukloniKlinikuIzTure', turaId, klinikaId),
+    obrisiTuru: (turaId) => electron_1.ipcRenderer.invoke('obrisiTuru', turaId),
+    dodajNovuTuru: () => electron_1.ipcRenderer.invoke('dodajNovuTuru'),
+    ocistiNeispravnuKlinikuIzTura: (clinickId) => electron_1.ipcRenderer.invoke('ocistiNeispravnuKlinikuIzTura', clinickId)
 });

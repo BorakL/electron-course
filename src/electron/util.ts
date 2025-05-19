@@ -3,7 +3,7 @@ import axios from 'axios';
 import https from 'https';
 import path from 'path';
 import os from 'os';
-import { CreateFullFolderParams, DownloadFileParams } from './../shared/types.js';
+import { CreateFullFolderParams, DownloadFileParams } from './../electron/types.js';
 
 export function isDev(): boolean {
     return process.env.NODE_ENV === 'development';

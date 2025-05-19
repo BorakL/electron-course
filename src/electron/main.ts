@@ -1,10 +1,10 @@
-import {app, BrowserWindow, dialog, ipcMain} from 'electron';
+import {app, BrowserWindow, ipcMain} from 'electron';
 import path from 'path';
 import {createFullFolder, isDev} from './util.js' 
 // import { pollResources } from './resourceManager.js';
 import { getPreloadPath } from './pathResolver.js'; 
 import dotenv from 'dotenv';  
-import { addKlinikaToTura, appendJsonItem, deleteJsonItemById, getFilePath, readJsonFile, removeKlinikaFromTura, updateJsonItemById, writeJsonFile } from './fsHelpers/jsonUtils.js';
+import { appendJsonItem, deleteJsonItemById, dodajKlinikuUNerasporedjene, dodajKlinikuUTuru, dodajNovuTuru, getFilePath, obrisiTuru, ocistiNevazecuKlinikuIzTura, readJsonFile, ukloniKlinikuIzNerasporedjenih, ukloniKlinikuIzTure, updateJsonItemById, writeJsonFile } from './fsHelpers/jsonUtils.js';
 
 
 // Definiši __dirname za ES module 
@@ -23,11 +23,9 @@ app.on("ready", ()=>{
     }else{
         mainWindow.loadFile(path.join(app.getAppPath() + '/dist-react/index.html'));
     }
-
     ipcMain.handle('createFullFolder', async (event, params) => {
         return createFullFolder(params);
     });
-
     ipcMain.handle('getFilePath', (event, fileName:string): string => {
         return getFilePath(fileName)
     })
@@ -46,20 +44,25 @@ app.on("ready", ()=>{
     ipcMain.handle('deleteJsonItemById', async (event, fileName, id, idKey:string) => {
         return deleteJsonItemById(fileName, id, idKey);
     });
-    ipcMain.handle('addKlinikaToTura', async (event, fileName, turaId, klinikaId) => {
-        return addKlinikaToTura(fileName, turaId, klinikaId);
+    ipcMain.handle('dodajKlinikuUNerasporedjene', (event, klinikaId: number) => {
+        dodajKlinikuUNerasporedjene(klinikaId);
     });
-    ipcMain.handle('removeKlinikaFromTura', async (event, fileName, turaId, klinikaId) => {
-        return removeKlinikaFromTura(fileName, turaId, klinikaId);
+    ipcMain.handle('ukloniKlinikuIzNerasporedjenih', (event, klinikaId: number) => {
+        ukloniKlinikuIzNerasporedjenih(klinikaId);
     });
-    ipcMain.handle("showConfirm", async () => {
-        const result = await dialog.showMessageBox({
-            type: "question",
-            buttons: ["Da", "Ne"],
-            defaultId: 0,
-            cancelId: 1,
-            message: "Da li ste sigurni da želite da obrišete ovu kliniku?",
-          });
-        return result.response === 1; // true ako je kliknut "Da"
-      });
+    ipcMain.handle('dodajKlinikuUTuru', (event, turaId: number, klinikaId: number) => {
+        dodajKlinikuUTuru(turaId, klinikaId);
+    });
+    ipcMain.handle('ukloniKlinikuIzTure', (event, turaId: number, klinikaId: number) => {
+        ukloniKlinikuIzTure(turaId, klinikaId);
+    });
+    ipcMain.handle('obrisiTuru', (event, turaId: number) => {
+        obrisiTuru(turaId);
+    });
+    ipcMain.handle('dodajNovuTuru', () => {
+        return dodajNovuTuru(); // vraća ID nove ture
+    });
+    ipcMain.handle('ocistiNevazecuKlinikuIzTura', (event, klinikaId:number) => {
+        ocistiNevazecuKlinikuIzTura(klinikaId)
+    })
 })

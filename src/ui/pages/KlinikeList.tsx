@@ -1,6 +1,16 @@
 import { useEffect, useState } from "react";
-import { Klinika } from "../../shared/types";
 import { Link } from 'react-router-dom';
+
+export type Klinika = {
+    naziv:string,
+    bolnicaApp: string,
+    klinikaApp: string,
+    bolnica: string,
+    klinika: string,
+    firm: number,
+    user: number
+}
+
 
 const KlinikeList = ()=>{
     const [klinike,setKlinike] = useState<Klinika[]>([]);

@@ -28,3 +28,8 @@ export type CreateFullFolderParams = {
     date: string,
     session: string
 }
+
+export interface DostavnaTura {
+  id: number;
+  klinike: number[]; // sadrži ID-eve klinika
+}

@@ -1,8 +1,17 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { useNavigate } from "react-router-dom";
-import { Klinika } from "../../shared/types";
 import { useForm } from "react-hook-form";
+
+export type Klinika = {
+    naziv:string,
+    bolnicaApp: string,
+    klinikaApp: string,
+    bolnica: string,
+    klinika: string,
+    firm: number,
+    user: number
+}
 
 const KlinikaDetails = () => {
     const { id } = useParams();
@@ -27,18 +36,16 @@ const KlinikaDetails = () => {
 
 
     const handleDelete = async () => {
-        const confirmed = window.electronApp.showConfirm();
-        if (!confirmed) return; 
         if (!klinika) return;
         try {
-          await window.electronApp.deleteJsonItemById("klinike.json", Number(klinika.user), "user");
-          alert("Obrisano.");
-          navigate("/klinike");
+            await window.electronApp.deleteJsonItemById("klinike.json", Number(klinika.user), "user");
+            // await window.electronApp.ocistiNevazecuKlinikuIzTura(Number(klinika.user));
+            navigate("/klinike");
         } catch (error) {
-          console.error("Greška pri brisanju klinike:", error);
-          alert("Greška pri brisanju klinike.");
+            console.error("Greška pri brisanju klinike:", error);
+            alert("Greška pri brisanju klinike.");
         }
-      };
+    };
 
 
     useEffect(() => {

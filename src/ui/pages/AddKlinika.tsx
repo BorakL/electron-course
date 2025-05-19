@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { Klinika } from "../../shared/types";
+import { Klinika } from "../../ui/types.ts";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
@@ -34,6 +34,7 @@ const AddKlinika = () => {
 
     try {
       await window.electronApp.writeJsonFile("klinike.json", updated);
+      await window.electronApp.dodajKlinikuUNerasporedjene(newKlinika.user)
       navigate(`/klinike`);
     } catch (err) {
       console.error("Greška pri čuvanju nove klinike:", err);

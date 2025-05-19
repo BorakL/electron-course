@@ -1,6 +1,6 @@
 import { ipcRenderer } from "electron"; 
 // @ts-ignore
-import  { Klinika } from "./../shared/types.ts";   
+import  { Klinika } from "./types.ts";   
 // import { dowloadMoreFiles } from "./util";
 import electron from 'electron'; 
 
@@ -59,6 +59,39 @@ electron.contextBridge.exposeInMainWorld("electronApp", {
     ): Promise<void> =>
         ipcRenderer.invoke("removeKlinikaFromTura", fileName, turaId, klinikaId),
 
-    showConfirm: () => ipcRenderer.invoke("showConfirm")
+    dodajKlinikuUNerasporedjene: (
+        klinikaId: number
+    ): Promise<void> =>
+        ipcRenderer.invoke('dodajKlinikuUNerasporedjene', klinikaId),
+
+    ukloniKlinikuIzNerasporedjenih: (
+        klinikaId: number
+    ): Promise<void> =>
+        ipcRenderer.invoke('ukloniKlinikuIzNerasporedjenih', klinikaId),
+
+    dodajKlinikuUTuru: (
+        turaId: number, 
+        klinikaId: number
+    ): Promise<void> =>
+        ipcRenderer.invoke('dodajKlinikuUTuru', turaId, klinikaId),
+
+    ukloniKlinikuIzTure: (
+        turaId: number, 
+        klinikaId: number
+    ): Promise<void> =>
+        ipcRenderer.invoke('ukloniKlinikuIzTure', turaId, klinikaId),
+
+    obrisiTuru: (
+        turaId: number
+    ): Promise<void> =>
+        ipcRenderer.invoke('obrisiTuru', turaId),
+
+    dodajNovuTuru: (): Promise<number> =>
+        ipcRenderer.invoke('dodajNovuTuru'),
+    
+    ocistiNeispravnuKlinikuIzTura: (
+        clinickId: number
+    ): Promise<void> =>
+        ipcRenderer.invoke('ocistiNeispravnuKlinikuIzTura', clinickId)
 
 })
