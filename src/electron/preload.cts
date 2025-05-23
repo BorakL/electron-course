@@ -89,9 +89,9 @@ electron.contextBridge.exposeInMainWorld("electronApp", {
     dodajNovuTuru: (): Promise<number> =>
         ipcRenderer.invoke('dodajNovuTuru'),
     
-    ocistiNeispravnuKlinikuIzTura: (
+    ocistiNevazecuKlinikuIzTura: (
         clinickId: number
     ): Promise<void> =>
-        ipcRenderer.invoke('ocistiNeispravnuKlinikuIzTura', clinickId)
+        ipcRenderer.invoke('ocistiNevazecuKlinikuIzTura', clinickId)
 
 })

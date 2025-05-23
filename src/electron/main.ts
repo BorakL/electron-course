@@ -62,7 +62,7 @@ app.on("ready", ()=>{
     ipcMain.handle('dodajNovuTuru', () => {
         return dodajNovuTuru(); // vraća ID nove ture
     });
-    ipcMain.handle('ocistiNevazecuKlinikuIzTura', (event, klinikaId:number) => {
-        ocistiNevazecuKlinikuIzTura(klinikaId)
+    ipcMain.handle('ocistiNevazecuKlinikuIzTura', (event, clinickId:number) => {
+        return ocistiNevazecuKlinikuIzTura(clinickId)
     })
 })

@@ -1,0 +1,16 @@
+[
+  {
+    "grupa": "Dnevna bolnica",
+    "filteri": [
+      "DB",
+      "DNEVNA"
+    ]
+  },
+  {
+    "grupa": "Specijalna dijeta",
+    "filteri": [
+      "Č-D",
+      "BS"
+    ]
+  }
+]

@@ -23,5 +23,5 @@ electron_2.default.contextBridge.exposeInMainWorld("electronApp", {
     ukloniKlinikuIzTure: (turaId, klinikaId) => electron_1.ipcRenderer.invoke('ukloniKlinikuIzTure', turaId, klinikaId),
     obrisiTuru: (turaId) => electron_1.ipcRenderer.invoke('obrisiTuru', turaId),
     dodajNovuTuru: () => electron_1.ipcRenderer.invoke('dodajNovuTuru'),
-    ocistiNeispravnuKlinikuIzTura: (clinickId) => electron_1.ipcRenderer.invoke('ocistiNeispravnuKlinikuIzTura', clinickId)
+    ocistiNevazecuKlinikuIzTura: (clinickId) => electron_1.ipcRenderer.invoke('ocistiNevazecuKlinikuIzTura', clinickId)
 });

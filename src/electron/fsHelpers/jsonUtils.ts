@@ -173,6 +173,7 @@ function getNextId(ture: DostavnaTura[]): number {
 
 
 export async function ocistiNevazecuKlinikuIzTura(clinickId:number): Promise<void> {
+  console.log("sxsxsxsxsx")
   const data: DostavneTureJson = readJsonFile(FILE_NAME);
 
   // Očisti tura.klinike

@@ -39,11 +39,10 @@ const KlinikaDetails = () => {
         if (!klinika) return;
         try {
             await window.electronApp.deleteJsonItemById("klinike.json", Number(klinika.user), "user");
-            // await window.electronApp.ocistiNevazecuKlinikuIzTura(Number(klinika.user));
+            await window.electronApp.ocistiNevazecuKlinikuIzTura(Number(klinika.user));
             navigate("/klinike");
         } catch (error) {
             console.error("Greška pri brisanju klinike:", error);
-            alert("Greška pri brisanju klinike.");
         }
     };
 

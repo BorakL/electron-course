@@ -25,7 +25,7 @@ declare global {
             ukloniKlinikuIzTure: (turaId: number, klinikaId: number) => Promise<void>;
             obrisiTuru: (turaId: number) => Promise<void>;
             dodajNovuTuru: () => Promise<number>;
-            ocistiNevazecuKlinikuIzTura: (clinickId: number) => Promise<void>
+            ocistiNevazecuKlinikuIzTura: (clinickId: number) => Promise<void>;
         }
     }
 }

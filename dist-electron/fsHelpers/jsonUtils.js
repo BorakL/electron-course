@@ -133,6 +133,7 @@ function getNextId(ture) {
     return ids.length > 0 ? Math.max(...ids) + 1 : 1;
 }
 export async function ocistiNevazecuKlinikuIzTura(clinickId) {
+    console.log("sxsxsxsxsx");
     const data = readJsonFile(FILE_NAME);
     // Očisti tura.klinike
     data.ture = data.ture.map(tura => ({

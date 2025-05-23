@@ -11,6 +11,7 @@ export default function MainLayout() {
           <li><Link to="/print">Print Page</Link></li>
           <li><Link to="/klinike">Klinike</Link></li>
           <li><Link to="/dostavneTure">Dostavne Ture</Link></li>
+          <li><Link to="/filteri">Filteri Za Otpremnice</Link></li>
         </ul>
       </nav>
       

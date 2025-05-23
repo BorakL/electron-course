@@ -10,6 +10,7 @@ import DostavnaTuraDetails from './pages/DostavnaTuraDetails';
 import EditPage from './pages/EditPage';
 import MainLayout from './layout/mainlayout';
 import AddKlinika from './pages/AddKlinika';
+import IzdvajanjeDijeta from './pages/IzdvajanjeDijeta';
 // import { useAppDispatch, useAppSelector } from './redux/hooks';
 
 function App() {
@@ -28,7 +29,7 @@ function App() {
             <Route path="/dostavneTure" element={<DostavneTure/>} />
             <Route path="/dostavneTure:id" element={<DostavnaTuraDetails/>} />
             <Route path="/addKlinika" element={<AddKlinika/>} />
-
+            <Route path="/filteri" element={<IzdvajanjeDijeta/>}/>
           </Route> 
         </Routes>
     </div> 
