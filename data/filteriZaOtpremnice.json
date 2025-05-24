@@ -1,16 +1,9 @@
 [
   {
-    "grupa": "Dnevna bolnica",
-    "filteri": [
+    "title": "Dnevna bolnica",
+    "keywords": [
       "DB",
       "DNEVNA"
-    ]
-  },
-  {
-    "grupa": "Specijalna dijeta",
-    "filteri": [
-      "Č-D",
-      "BS"
     ]
   }
 ]
