@@ -21,7 +21,7 @@ const processDietFiles = async (
   tableParams: TableParams,
   folderPath: string
 ): Promise<void> => {
-  const files = await fsp.readdir(folderPath);
+  const files = await fsp.readdir(folderPath);  
 
   for (const fileName of files) {
     const filePath = path.join(folderPath, fileName);
@@ -38,7 +38,7 @@ const processDietFiles = async (
       while (true) {
         const dietCell = sheet.cell(`${tableParams.dietColumn}${currentRow}`);
         const dietName = dietCell.value();
-
+        console.log("dietName",dietName)
         if (
           !dietName ||
           typeof dietName !== 'string' ||

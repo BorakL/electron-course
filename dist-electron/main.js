@@ -5,6 +5,7 @@ import { createFullFolder, isDev } from './util.js';
 import { getPreloadPath } from './pathResolver.js';
 import dotenv from 'dotenv';
 import { appendJsonItem, deleteJsonItemById, dodajKlinikuUNerasporedjene, dodajKlinikuUTuru, dodajNovuTuru, getFilePath, obrisiTuru, ocistiNevazecuKlinikuIzTura, readJsonFile, ukloniKlinikuIzNerasporedjenih, ukloniKlinikuIzTure, updateJsonItemById, writeJsonFile } from './fsHelpers/jsonUtils.js';
+import processDietFiles from './xlsx/processDietFiles.js';
 // Definiši __dirname za ES module 
 dotenv.config({ path: path.join(process.cwd(), '.env.electron') });
 app.on("ready", () => {
@@ -60,5 +61,8 @@ app.on("ready", () => {
     });
     ipcMain.handle('ocistiNevazecuKlinikuIzTura', (event, clinickId) => {
         return ocistiNevazecuKlinikuIzTura(clinickId);
+    });
+    ipcMain.handle('processDietFiles', (event, dietFilters, tableParams, folderPath) => {
+        return processDietFiles(dietFilters, tableParams, folderPath);
     });
 });

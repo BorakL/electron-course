@@ -3,6 +3,18 @@ import { ipcRenderer } from "electron";
 import  { Klinika } from "./types/types.js";   
 // import { dowloadMoreFiles } from "./util";
 import electron from 'electron'; 
+// import { DietFilter, TableParams } from "./xlsx/processDietFiles.js";
+export interface DietFilter {
+  title: string;
+  keywords: string[];
+}
+
+export interface TableParams {
+  dietColumn: string;
+  quantityColumn: string;
+  firstRow: number;
+  lastRowTitle: string;
+}
 
 type JsonValue = string | number | boolean | null | JsonObject | JsonValue[];
 type JsonObject = { [key: string]: JsonValue };
@@ -92,6 +104,12 @@ electron.contextBridge.exposeInMainWorld("electronApp", {
     ocistiNevazecuKlinikuIzTura: (
         clinickId: number
     ): Promise<void> =>
-        ipcRenderer.invoke('ocistiNevazecuKlinikuIzTura', clinickId)
+        ipcRenderer.invoke('ocistiNevazecuKlinikuIzTura', clinickId),
 
+    processDietFiles: (
+        dietFilters: DietFilter[], 
+        tableParams: TableParams, 
+        folderPath: string
+    ): Promise<void> => 
+        ipcRenderer.invoke('processDietFiles', dietFilters, tableParams, folderPath)
 })

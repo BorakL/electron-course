@@ -17,6 +17,7 @@ const processDietFiles = async (dietFilters, tableParams, folderPath) => {
             while (true) {
                 const dietCell = sheet.cell(`${tableParams.dietColumn}${currentRow}`);
                 const dietName = dietCell.value();
+                console.log("dietName", dietName);
                 if (!dietName ||
                     typeof dietName !== 'string' ||
                     dietName.toLowerCase().includes(tableParams.lastRowTitle.toLowerCase())) {

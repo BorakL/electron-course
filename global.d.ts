@@ -8,6 +8,16 @@ type CreateFullFolderParams = {
     date: string,
     session: string
 }
+interface DietFilter {
+  title: string;
+  keywords: string[];
+}
+interface TableParams {
+  dietColumn: string;
+  quantityColumn: string;
+  firstRow: number;
+  lastRowTitle: string;
+}
 
 declare global {
     interface Window {
@@ -26,6 +36,7 @@ declare global {
             obrisiTuru: (turaId: number) => Promise<void>;
             dodajNovuTuru: () => Promise<number>;
             ocistiNevazecuKlinikuIzTura: (clinickId: number) => Promise<void>;
+            processDietFiles: (dietFilters: DietFilter[], tableParams: TableParams, folterPath:string) => Promise<void>;
         }
     }
 }

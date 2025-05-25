@@ -5,6 +5,7 @@ import {createFullFolder, isDev} from './util.js'
 import { getPreloadPath } from './pathResolver.js'; 
 import dotenv from 'dotenv';  
 import { appendJsonItem, deleteJsonItemById, dodajKlinikuUNerasporedjene, dodajKlinikuUTuru, dodajNovuTuru, getFilePath, obrisiTuru, ocistiNevazecuKlinikuIzTura, readJsonFile, ukloniKlinikuIzNerasporedjenih, ukloniKlinikuIzTure, updateJsonItemById, writeJsonFile } from './fsHelpers/jsonUtils.js';
+import processDietFiles, { DietFilter, TableParams } from './xlsx/processDietFiles.js';
 
 
 // Definiši __dirname za ES module 
@@ -64,5 +65,8 @@ app.on("ready", ()=>{
     });
     ipcMain.handle('ocistiNevazecuKlinikuIzTura', (event, clinickId:number) => {
         return ocistiNevazecuKlinikuIzTura(clinickId)
+    })
+    ipcMain.handle('processDietFiles', (event, dietFilters:DietFilter[], tableParams:TableParams, folderPath:string) => {
+        return processDietFiles(dietFilters,tableParams,folderPath)
     })
 })
