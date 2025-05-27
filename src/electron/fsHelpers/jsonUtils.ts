@@ -87,14 +87,16 @@ type DostavneTureJson = {
 
 
 // Dodavanje nove ture sa unikatnim ID-jem i praznom listom klinika
-export function dodajNovuTuru(): void {
+export function dodajNovuTuru(): number {
   const data: DostavneTureJson = readJsonFile(FILE_NAME);
+  const id = getNextId(data.ture);
   const novaTura: DostavnaTura = {
-    id: getNextId(data.ture),
+    id,
     klinike: [],
   };
   data.ture.push(novaTura);
   writeJsonFile(FILE_NAME, data);
+  return id;
 }
 
 // Brisanje ture i vraćanje njenih klinika u neraspoređene

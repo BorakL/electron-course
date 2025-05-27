@@ -62,52 +62,77 @@ const DownloadPage = ()=>{
       };
 
     return(
-        <div>
-            <h1>Download</h1>
-            <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          <label htmlFor="category">Obrok: </label>
+        <div className="container mt-4">
+      <h1 className="mb-4">Download</h1>
+      <form onSubmit={handleSubmit(onSubmit)} noValidate>
+        {/* Obrok */}
+        <div className="mb-3">
+          <label htmlFor="category" className="form-label">
+            Obrok:
+          </label>
           <select
-            {...register("category", {
-              required: { value: true, message: "Izaberi obrok" },
+            id="category"
+            className={`form-select ${errors.category ? 'is-invalid' : ''}`}
+            {...register('category', {
+              required: 'Izaberi obrok',
               valueAsNumber: true,
-              validate: (value) => [1, 2, 3].includes(value) || "Izaberi validan obrok",
+              validate: (value) =>
+                [1, 2, 3].includes(value) || 'Izaberi validan obrok',
             })}
           >
+            <option value="">-- Izaberi obrok --</option>
             <option value={1}>Doručak</option>
             <option value={2}>Ručak</option>
             <option value={3}>Večera</option>
           </select>
-          <p>{errors.category?.message}</p>
+          {errors.category && (
+            <div className="invalid-feedback">{errors.category.message}</div>
+          )}
         </div>
 
-        <div>
-          <label htmlFor="date">Datum: </label>
+        {/* Datum */}
+        <div className="mb-3">
+          <label htmlFor="date" className="form-label">
+            Datum:
+          </label>
           <input
             type="date"
             id="date"
-            {...register("date", { required: { value: true, message: "Selektuj datum" } })}
+            className={`form-control ${errors.date ? 'is-invalid' : ''}`}
+            {...register('date', {
+              required: 'Selektuj datum',
+            })}
           />
-          <p>{errors.date?.message}</p>
+          {errors.date && (
+            <div className="invalid-feedback">{errors.date.message}</div>
+          )}
         </div>
 
-        <div>
-          <label htmlFor="session">PHPSESSID: </label>
+        {/* PHPSESSID */}
+        <div className="mb-3">
+          <label htmlFor="session" className="form-label">
+            PHPSESSID:
+          </label>
           <input
             type="text"
             id="session"
-            {...register("session", { required: { value: true, message: "Unesi PHPSESSID" } })}
+            className={`form-control ${errors.session ? 'is-invalid' : ''}`}
+            {...register('session', {
+              required: 'Unesi PHPSESSID',
+            })}
           />
-          <p>{errors.session?.message}</p>
+          {errors.session && (
+            <div className="invalid-feedback">{errors.session.message}</div>
+          )}
         </div>
 
-        <div>
-          <button type="submit">Downloaduj otpremnice</button>
-        </div> 
+        {/* Dugme za submit */}
+        <button type="submit" className="btn btn-primary">
+          Downloaduj otpremnice
+        </button>
       </form>
-
-      <button onClick={()=>  window.electronApp.readJsonFile("klinike.json").then(res => console.log("ressss",res))  }>Proba</button>
-        </div>
+      
+    </div>
     )
 }
 

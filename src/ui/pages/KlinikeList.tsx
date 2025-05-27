@@ -29,19 +29,23 @@ const KlinikeList = ()=>{
     }, [])
 
     return(
-        <div>
-            <h1>Klinke</h1>
-            <ul>
-                {klinike.map(klinika => 
-                    <li key={klinika.user}>
-                        <Link to={`/klinike/${klinika.user}`}>
-                            {klinika.naziv}
-                        </Link>
-                    </li>
-                )}
-            </ul>
-            <Link to={`/addKlinika`}>Dodaj novu kliniku</Link>
-        </div>
+    <div className="container py-4">
+      <h1 className="mb-4">Klinike</h1>
+
+      <ul className="list-group mb-4">
+        {klinike.map((klinika) => (
+          <li key={klinika.user} className="list-group-item mb-2">
+            <Link to={`/klinike/${klinika.user}`} className="text-decoration-none">
+              {klinika.naziv.toUpperCase()}
+            </Link>
+          </li>
+        ))}
+      </ul>
+
+      <Link to="/addKlinika" className="btn btn-primary">
+        Dodaj novu kliniku
+      </Link>
+    </div>
     )
 }
 

@@ -33,12 +33,28 @@ const EditPage = ()=>{
     }
 
     return(
-        <div>
-            <h1>Edit Page</h1>
-            <button onClick={handleSelectFolder}>Izaberi folder</button>
-            { folderPath && <p>Izabrani folder: {folderPath} </p>}
-            <button onClick={odvojiDijeteHanlder} disabled={!folderPath}>Odvoji dijete</button>
-        </div>
+        <div className="container mt-4 text-start">
+      <h1 className="mb-4">Edit Page</h1>
+
+      <div className="mb-3">
+        <button className="btn btn-primary me-2" onClick={handleSelectFolder}>
+          Izaberi folder
+        </button>
+        {folderPath && (
+          <p className="mt-2">
+            <strong>Izabrani folder:</strong> {folderPath}
+          </p>
+        )}
+      </div>
+
+      <button
+        className="btn btn-success"
+        onClick={odvojiDijeteHanlder}
+        disabled={!folderPath}
+      >
+        Odvoji dijete
+      </button>
+    </div>
     )
 }
 

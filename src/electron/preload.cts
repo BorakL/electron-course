@@ -1,6 +1,6 @@
 import { ipcRenderer } from "electron"; 
 // @ts-ignore
-import  { Klinika } from "./types/types.js";   
+import  { DostavnaTura, Klinika } from "./types/types.js";   
 // import { dowloadMoreFiles } from "./util";
 import electron from 'electron'; 
 // import { DietFilter, TableParams } from "./xlsx/processDietFiles.js";

@@ -66,12 +66,14 @@ export function appendJsonItem(fileName, newItem) {
 // Dodavanje nove ture sa unikatnim ID-jem i praznom listom klinika
 export function dodajNovuTuru() {
     const data = readJsonFile(FILE_NAME);
+    const id = getNextId(data.ture);
     const novaTura = {
-        id: getNextId(data.ture),
+        id,
         klinike: [],
     };
     data.ture.push(novaTura);
     writeJsonFile(FILE_NAME, data);
+    return id;
 }
 // Brisanje ture i vraćanje njenih klinika u neraspoređene
 export function obrisiTuru(id) {

@@ -3,36 +3,26 @@
     {
       "id": 1,
       "klinike": [
-        660,
-        707
+        664,
+        704,
+        678
       ]
     },
     {
       "id": 2,
       "klinike": [
-        706
+        701,
+        661,
+        695,
+        694
       ]
     },
     {
-      "id": 3,
+      "id": 7,
       "klinike": [
-        697
-      ]
-    },
-    {
-      "id": 4,
-      "klinike": [
-        667,
-        664
+        660
       ]
     }
   ],
-  "nerasporedjeneKlinike": [
-    695,
-    661,
-    694,
-    701,
-    704,
-    678
-  ]
+  "nerasporedjeneKlinike": []
 }

@@ -100,56 +100,108 @@ export default function ListaDostavnihTura() {
   }
 };
 
+const removeTuraHandler = async (id:number) => {
+  try{
+    await window.electronApp.obrisiTuru(id)
+    setTureData(prev => {
+      if (prev === null) return null;
+      const tura = prev.ture.find(t=>t.id===id)
+      return  {
+        ...prev,
+        ture: prev.ture.filter(t => t.id!==id),
+        nerasporedjeneKlinike: [...prev.nerasporedjeneKlinike, ...(tura?.klinike || []) ]
+      }
+    })
+  }catch(error){
+    console.log("Greška pri brisanju dostavne ture: ", error)
+  }
+}
+
+const addTuraHandler = async () => {
+  try{
+    const id = await window.electronApp.dodajNovuTuru();
+    setTureData(prev => {
+      if(prev===null) return null;
+      return { ture: [...prev.ture,{id,klinike:[]}], nerasporedjeneKlinike: prev.nerasporedjeneKlinike }
+    })
+  }catch(error){
+    console.log("Greška pri dodavanju ture: ", error)
+  }
+}
+
 
   if (loading || !tureData) return <p>Učitavanje...</p>;
 
   return (
-    <div className="p-4">
-      <h2 className="text-2xl font-bold mb-6">Dostavne Ture</h2>
+    <div className="container py-4">
+      <h2 className="mb-4">Dostavne Ture</h2>
 
-      {tureData.ture.map(tura => (
-        <div key={tura.id} className="mb-5 border rounded-lg shadow p-4">
-          <h3 className="text-xl font-semibold mb-2">Tura #{tura.id}</h3>
-          <ul className="list-disc pl-6">
-            {tura.klinike.length > 0 ? (
-              tura.klinike.map(id => (
-                <li key={id}>{getNazivKlinike(id)} <button onClick={()=>removeClinickHandler(tura.id,id)}>Obriši</button></li>
-              ))
-            ) : (
-              <li className="italic text-gray-500">Tura je prazna</li>
-            )}
-          </ul>
-          <select
-            className="mt-2 border rounded px-2 py-1"
-            onChange={e => {
-              const selectedId = Number(e.target.value);
-              if (selectedId) {
-                handleAddClinicToTour(tura.id, selectedId);
-                e.target.value = "";
-              }
-            }}
-          >
-            <option value="">Dodaj kliniku u ovu turu...</option>
-            {tureData.nerasporedjeneKlinike.map(id => (
-              <option key={id} value={id}>
-                {getNazivKlinike(id)}
-              </option>
-            ))}
-          </select>
+      <div className="row">
+        {tureData.ture.map((tura) => (
+          <div key={tura.id} className="col-md-6 mb-4">
+            <div className="card shadow-sm">
+              <div className="card-header d-flex justify-content-between align-items-center">
+                <h5 className="mb-0">Tura #{tura.id}</h5>
+                <div><button onClick={()=>removeTuraHandler(tura.id)}>Obriši turu</button></div>
+              </div>
+              <div className="card-body">
+                {tura.klinike.length > 0 ? (
+                  <ul className="list-group mb-3">
+                    {tura.klinike.map((id) => (
+                      <li key={id} className="list-group-item d-flex justify-content-between align-items-center">
+                        {getNazivKlinike(id)}
+                        <button
+                          className="btn btn-sm btn-outline-danger"
+                          onClick={() => removeClinickHandler(tura.id, id)}
+                        >
+                          Obriši
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-muted fst-italic">Tura je prazna</p>
+                )}
+
+                <select
+                  className="form-select"
+                  onChange={(e) => {
+                    const selectedId = Number(e.target.value);
+                    if (selectedId) {
+                      handleAddClinicToTour(tura.id, selectedId);
+                      e.target.value = '';
+                    }
+                  }}
+                >
+                  <option value="">Dodaj kliniku u ovu turu...</option>
+                  {tureData.nerasporedjeneKlinike.map((id) => (
+                    <option key={id} value={id}>
+                      {getNazivKlinike(id)}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-5">
+        <div>
+          <button onClick={addTuraHandler}>Dodaj novu dostavnu turu</button>
         </div>
-      ))}
-
-      <div className="mt-8 border-t pt-4">
-        <h3 className="text-xl font-semibold mb-2 text-red-600">Neraspoređene klinike</h3>
-        <ul className="list-disc pl-6">
-          {tureData.nerasporedjeneKlinike.length > 0 ? (
-            tureData.nerasporedjeneKlinike.map(id => (
-              <li key={id}>{getNazivKlinike(id)}</li>
-            ))
-          ) : (
-            <li className="italic text-gray-500">Nema neraspoređenih klinika</li>
-          )}
-        </ul>
+        <h4 className="text-danger">Neraspoređene klinike</h4>
+        {tureData.nerasporedjeneKlinike.length > 0 ? (
+          <ul className="list-group mt-2">
+            {tureData.nerasporedjeneKlinike.map((id) => (
+              <li key={id} className="list-group-item">
+                {getNazivKlinike(id)}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="text-muted fst-italic mt-2">Nema neraspoređenih klinika</p>
+        )}
       </div>
     </div>
   );
