@@ -38,7 +38,6 @@ const processDietFiles = async (
       while (true) {
         const dietCell = sheet.cell(`${tableParams.dietColumn}${currentRow}`);
         const dietName = dietCell.value();
-        console.log("dietName",dietName)
         if (
           !dietName ||
           typeof dietName !== 'string' ||

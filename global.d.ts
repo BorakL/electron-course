@@ -37,6 +37,7 @@ declare global {
             dodajNovuTuru: () => Promise<number>;
             ocistiNevazecuKlinikuIzTura: (clinickId: number) => Promise<void>;
             processDietFiles: (dietFilters: DietFilter[], tableParams: TableParams, folterPath:string) => Promise<void>;
+            selectFolder: () => Promise<null | string>;
         }
     }
 }

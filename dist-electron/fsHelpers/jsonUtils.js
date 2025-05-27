@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { dialog } from "electron";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const dataFolder = path.join(__dirname, "..", "..", "data");
@@ -133,7 +134,6 @@ function getNextId(ture) {
     return ids.length > 0 ? Math.max(...ids) + 1 : 1;
 }
 export async function ocistiNevazecuKlinikuIzTura(clinickId) {
-    console.log("sxsxsxsxsx");
     const data = readJsonFile(FILE_NAME);
     // Očisti tura.klinike
     data.ture = data.ture.map(tura => ({
@@ -143,4 +143,16 @@ export async function ocistiNevazecuKlinikuIzTura(clinickId) {
     // Očisti nerasporedjene klinike
     data.nerasporedjeneKlinike = data.nerasporedjeneKlinike.filter(id => id !== clinickId);
     writeJsonFile(FILE_NAME, data);
+}
+export async function selectFolder() {
+    try {
+        const result = await dialog.showOpenDialog({
+            properties: ['openDirectory']
+        });
+        return result.canceled ? null : result.filePaths[0];
+    }
+    catch (error) {
+        console.log("Greška pri selektovanju foldera", error);
+        return null;
+    }
 }

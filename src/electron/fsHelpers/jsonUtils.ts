@@ -2,6 +2,7 @@ import fs from "fs";
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { DostavnaTura } from "../types/types.js";
+import { dialog } from "electron";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -173,7 +174,6 @@ function getNextId(ture: DostavnaTura[]): number {
 
 
 export async function ocistiNevazecuKlinikuIzTura(clinickId:number): Promise<void> {
-  console.log("sxsxsxsxsx")
   const data: DostavneTureJson = readJsonFile(FILE_NAME);
 
   // Očisti tura.klinike
@@ -186,4 +186,16 @@ export async function ocistiNevazecuKlinikuIzTura(clinickId:number): Promise<voi
   data.nerasporedjeneKlinike = data.nerasporedjeneKlinike.filter(id => id!==clinickId);
 
   writeJsonFile(FILE_NAME, data);
+}
+
+export async function selectFolder(): Promise<null | string> {
+  try{
+    const result = await dialog.showOpenDialog({
+      properties: ['openDirectory']
+    })
+    return result.canceled ? null : result.filePaths[0];
+  }catch(error){
+    console.log("Greška pri selektovanju foldera", error);
+    return null;
+  }
 }

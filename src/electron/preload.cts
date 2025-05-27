@@ -111,5 +111,7 @@ electron.contextBridge.exposeInMainWorld("electronApp", {
         tableParams: TableParams, 
         folderPath: string
     ): Promise<void> => 
-        ipcRenderer.invoke('processDietFiles', dietFilters, tableParams, folderPath)
+        ipcRenderer.invoke('processDietFiles', dietFilters, tableParams, folderPath),
+
+    selectFolder: (): Promise<null | string> => ipcRenderer.invoke('selectFolder')
 })

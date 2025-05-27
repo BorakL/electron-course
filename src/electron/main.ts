@@ -4,7 +4,7 @@ import {createFullFolder, isDev} from './util.js'
 // import { pollResources } from './resourceManager.js';
 import { getPreloadPath } from './pathResolver.js'; 
 import dotenv from 'dotenv';  
-import { appendJsonItem, deleteJsonItemById, dodajKlinikuUNerasporedjene, dodajKlinikuUTuru, dodajNovuTuru, getFilePath, obrisiTuru, ocistiNevazecuKlinikuIzTura, readJsonFile, ukloniKlinikuIzNerasporedjenih, ukloniKlinikuIzTure, updateJsonItemById, writeJsonFile } from './fsHelpers/jsonUtils.js';
+import { appendJsonItem, deleteJsonItemById, dodajKlinikuUNerasporedjene, dodajKlinikuUTuru, dodajNovuTuru, getFilePath, obrisiTuru, ocistiNevazecuKlinikuIzTura, readJsonFile, selectFolder, ukloniKlinikuIzNerasporedjenih, ukloniKlinikuIzTure, updateJsonItemById, writeJsonFile } from './fsHelpers/jsonUtils.js';
 import processDietFiles, { DietFilter, TableParams } from './xlsx/processDietFiles.js';
 
 
@@ -68,5 +68,8 @@ app.on("ready", ()=>{
     })
     ipcMain.handle('processDietFiles', (event, dietFilters:DietFilter[], tableParams:TableParams, folderPath:string) => {
         return processDietFiles(dietFilters,tableParams,folderPath)
+    })
+    ipcMain.handle('selectFolder', () => {
+        return selectFolder();
     })
 })

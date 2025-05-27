@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import FilterForm from "../components/filterForm";
 
 type FilteriZaOtpremnice = {
   title: string;
@@ -9,13 +10,6 @@ type FilteriZaOtpremnice = {
 const IzdvajanjeDijeta = () => {
   const [grupeFiltera, setGrupeFiltera] = useState<FilteriZaOtpremnice[]>([]);
   const FILE = "filteriZaOtpremnice.json";
-
-  // useForm instance for adding new filter to existing group
-  const {
-    register: registerFilter,
-    handleSubmit: handleSubmitFilter,
-    reset: resetFilterForm,
-  } = useForm<{ [key: string]: string }>();
 
   // useForm instance for adding new group
   const {
@@ -53,35 +47,14 @@ const removeFilterHandler = async (group: string, filter: string) => {
 };
 
 
-  const removeGroupHandler = async (groupName: string) => {
-    try {
-      const data = (await window.electronApp.readJsonFile(FILE)) as FilteriZaOtpremnice[];
-      const updatedData = data.filter((grupa) => grupa.title !== groupName);
-      await window.electronApp.writeJsonFile(FILE, updatedData);
-      setGrupeFiltera(updatedData);
-    } catch (error) {
-      console.log("Greška pri brisanju grupe filtera: ", error);
-    }
-  };
-
-
-const onSubmitFilter = async (data: { [key: string]: string }) => {
-  const groupName = Object.keys(data)[0];
-  const filterName = data[groupName].trim();
-  if (!filterName) return;
-
+const removeGroupHandler = async (groupName: string) => {
   try {
-    const existingData = (await window.electronApp.readJsonFile(FILE)) as FilteriZaOtpremnice[];
-    const updatedData = existingData.map((grupa) =>
-      grupa.title === groupName
-        ? { ...grupa, keywords: [...grupa.keywords, filterName] }
-        : grupa
-    );
+    const data = (await window.electronApp.readJsonFile(FILE)) as FilteriZaOtpremnice[];
+    const updatedData = data.filter((grupa) => grupa.title !== groupName);
     await window.electronApp.writeJsonFile(FILE, updatedData);
     setGrupeFiltera(updatedData);
-    resetFilterForm();
   } catch (error) {
-    console.log("Greška pri dodavanju filtera: ", error);
+    console.log("Greška pri brisanju grupe filtera: ", error);
   }
 };
 
@@ -107,36 +80,68 @@ const onSubmitGroup = async (data: { novaGrupa: string }) => {
 
 
   return (
-  <div>
-    <h2>Izdvajanje Dijeta</h2>
+  <div className="container mt-4">
+  <h2>Izdvajanje Dijeta</h2>
+  <div className="row">
     {grupeFiltera.map((grupaFiltera) => (
-      <div key={grupaFiltera.title}>
-        <div>
-          {grupaFiltera.title}
-          <button onClick={() => removeGroupHandler(grupaFiltera.title)}>Obriši grupu</button>
+      <div className="col-md-6 mb-4" key={grupaFiltera.title}>
+        <div className="card h-100">
+          <div className="card-header d-flex justify-content-between align-items-center">
+            <h5 className="mb-0">{grupaFiltera.title}</h5>
+            <button
+              className="btn btn-sm btn-outline-danger"
+              onClick={() => removeGroupHandler(grupaFiltera.title)}
+            >
+              Obriši grupu
+            </button>
+          </div>
+          <ul className="list-group list-group-flush">
+            {grupaFiltera.keywords.map((f) => (
+              <li className="list-group-item d-flex justify-content-between align-items-center" key={f}>
+                {f}
+                <button
+                  className="btn btn-sm btn-danger"
+                  onClick={() => removeFilterHandler(grupaFiltera.title, f)}
+                >
+                  &times;
+                </button>
+              </li>
+            ))}
+          </ul>
+          <div className="card-body">
+            <FilterForm
+              groupName={grupaFiltera.title}
+              onAddFilter={(groupName, filterName) => {
+                const updatedData = grupeFiltera.map((grupa) =>
+                  grupa.title === groupName
+                    ? { ...grupa, keywords: [...grupa.keywords, filterName] }
+                    : grupa
+                );
+                setGrupeFiltera(updatedData);
+                window.electronApp.writeJsonFile(FILE, updatedData);
+              }}
+            />
+          </div>
         </div>
-        <ul>
-          {grupaFiltera.keywords.map((f) => (
-            <li key={f}>
-              {f} <button onClick={() => removeFilterHandler(grupaFiltera.title, f)}>X</button>
-            </li>
-          ))}
-        </ul>
-        <form onSubmit={handleSubmitFilter(onSubmitFilter)}>
-          <input
-            {...registerFilter(grupaFiltera.title)}
-            placeholder={`Dodaj filter u grupu ${grupaFiltera.title}`}
-          />
-          <button type="submit">Dodaj filter</button>
-        </form>
       </div>
     ))}
-    <hr />
-    <form onSubmit={handleSubmitGroup(onSubmitGroup)}>
-      <input {...registerGroup("novaGrupa")} placeholder="Nova grupa filtera" />
-      <button type="submit">Dodaj grupu</button>
-    </form>
   </div>
+  <hr />
+  <form onSubmit={handleSubmitGroup(onSubmitGroup)} className="mt-4">
+    <div className="input-group">
+      <input
+        {...registerGroup("novaGrupa")}
+        className="form-control"
+        placeholder="Nova grupa filtera"
+      />
+      <button type="submit" className="btn btn-primary">
+        Dodaj grupu
+      </button>
+    </div>
+  </form>
+</div>
+
+
 );
 
 };

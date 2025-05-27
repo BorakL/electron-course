@@ -24,5 +24,6 @@ electron_2.default.contextBridge.exposeInMainWorld("electronApp", {
     obrisiTuru: (turaId) => electron_1.ipcRenderer.invoke('obrisiTuru', turaId),
     dodajNovuTuru: () => electron_1.ipcRenderer.invoke('dodajNovuTuru'),
     ocistiNevazecuKlinikuIzTura: (clinickId) => electron_1.ipcRenderer.invoke('ocistiNevazecuKlinikuIzTura', clinickId),
-    processDietFiles: (dietFilters, tableParams, folderPath) => electron_1.ipcRenderer.invoke('processDietFiles', dietFilters, tableParams, folderPath)
+    processDietFiles: (dietFilters, tableParams, folderPath) => electron_1.ipcRenderer.invoke('processDietFiles', dietFilters, tableParams, folderPath),
+    selectFolder: () => electron_1.ipcRenderer.invoke('selectFolder')
 });

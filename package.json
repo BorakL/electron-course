@@ -18,6 +18,7 @@
     "@reduxjs/toolkit": "^2.7.0",
     "axios": "^1.7.9",
     "axios-cookiejar-support": "^5.0.5",
+    "bootstrap": "^5.3.6",
     "concurrently": "^9.1.2",
     "dotenv": "^16.4.7",
     "exceljs": "^4.4.0",
