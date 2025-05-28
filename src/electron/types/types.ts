@@ -33,3 +33,9 @@ export interface DostavnaTura {
   id: number;
   klinike: number[]; // sadrži ID-eve klinika
 }
+
+export type Logs = {
+    status:string, 
+    downloads:string[],
+    failedDownloads:string[]
+}

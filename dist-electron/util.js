@@ -6,6 +6,9 @@ import os from 'os';
 export function isDev() {
     return process.env.NODE_ENV === 'development';
 }
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 // Funkcija za preuzimanje fajla (koristi `arraybuffer`)
 export async function downloadFile({ fileUrl, filePath, refererUrl, firm, user, date, session }) {
     try {
@@ -22,8 +25,15 @@ export async function downloadFile({ fileUrl, filePath, refererUrl, firm, user, 
                 "Cookie": `PHPSESSID=${session}`
             }
         });
-        if (response.status !== 200 || !response.headers['content-type'].includes('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')) {
-            throw new Error("❌ Neispravan odgovor - fajl nije Excel ili sesija nije validna.");
+        const serverResponse = response.data?.toString();
+        if (response.status !== 200) {
+            throw new Error("❌ Server errro");
+        }
+        else if (!response.headers['content-type'].includes('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') && serverResponse.includes("Prijavi se") || serverResponse.includes("Prijavite se")) {
+            throw new Error("INVALID_SESSION");
+        }
+        else if (!response.headers['content-type'].includes('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')) {
+            throw new Error("Neispravan odgovor - fajl nije Excel");
         }
         fs.writeFileSync(filePath, response.data);
         console.log(`✅ Fajl uspešno preuzet: ${filePath}`);
@@ -35,7 +45,7 @@ export async function downloadFile({ fileUrl, filePath, refererUrl, firm, user, 
 }
 // Funkcija za kreiranje foldera i preuzimanje fajlova sa retry mehanizmom
 // export function createFullFolder(cliniks: Klinika[], url: string | undefined, refererUrl: string | undefined, category: number, date: string, session: string): void {
-export function createFullFolder({ cliniks, url, refererUrl, category, date, session }) {
+export async function createFullFolder({ cliniks, url, refererUrl, category, date, session }) {
     const today = date;
     const desktopPath = path.join(os.homedir(), "Desktop");
     const saveFolder = path.join(desktopPath, today);
@@ -44,14 +54,21 @@ export function createFullFolder({ cliniks, url, refererUrl, category, date, ses
     }
     let currentIndex = 0;
     const failedDownloads = [];
+    const logs = {
+        status: "",
+        downloads: [],
+        failedDownloads: []
+    };
     async function downloadNext(attemptsLeft = 3) {
         if (currentIndex >= cliniks.length) {
             console.log("✅ Preuzimanje fajlova je završeno.");
+            logs.status = "✅ Preuzimanje fajlova je završeno.";
             if (failedDownloads.length > 0) {
                 console.log("⚠️ Sledeći fajlovi nisu preuzeti:");
                 console.log(failedDownloads.join("\n"));
+                logs.failedDownloads = failedDownloads;
             }
-            return;
+            return logs;
         }
         const klinika = cliniks[currentIndex];
         const fileName = `${klinika.naziv?.toUpperCase()}.xlsx`;
@@ -70,22 +87,30 @@ export function createFullFolder({ cliniks, url, refererUrl, category, date, ses
                 session
             });
             console.log(`✅ Preuzet: ${filePath}`);
+            logs.downloads.push(filePath);
             currentIndex++;
-            setTimeout(downloadNext, 1000);
+            await sleep(1000);
+            return await downloadNext();
         }
         catch (error) {
-            console.error(`❌ Greška pri preuzimanju ${fileUrl}:`, error);
+            if (error instanceof Error) {
+                console.log("Greška:", error.message); // ✅ radi
+                logs.status = error.message;
+                return logs;
+            }
             if (attemptsLeft > 1) {
                 console.log(`🔄 Pokušavam ponovo za ${fileUrl}...`);
-                setTimeout(() => downloadNext(attemptsLeft - 1), 3000);
+                await sleep(3000);
+                return await downloadNext(attemptsLeft - 1);
             }
             else {
                 console.error(`🚨 Neuspešno preuzimanje ${fileUrl} posle 3 pokušaja. Preskačem.`);
                 failedDownloads.push(fileUrl);
                 currentIndex++;
-                setTimeout(downloadNext, 1000);
+                await sleep(1000);
+                return await downloadNext();
             }
         }
     }
-    downloadNext();
+    return await downloadNext();
 }

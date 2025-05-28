@@ -21,7 +21,8 @@ app.on("ready", () => {
         mainWindow.loadFile(path.join(app.getAppPath() + '/dist-react/index.html'));
     }
     ipcMain.handle('createFullFolder', async (event, params) => {
-        return createFullFolder(params);
+        const result = await createFullFolder(params);
+        return result;
     });
     ipcMain.handle('getFilePath', (event, fileName) => {
         return getFilePath(fileName);

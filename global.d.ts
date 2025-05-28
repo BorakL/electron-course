@@ -22,7 +22,7 @@ interface TableParams {
 declare global {
     interface Window {
         electronApp: { 
-            createFullFolder: ( CreateFullFolderParams ) => Promise<void>;
+            createFullFolder: ( CreateFullFolderParams ) => Promise<Logs | undefined>;
             getFilePath: (fileName:string) => string;
             readJsonFile: (fileName:string) => Promise<JsonValue>; 
             appendJsonItem: (FileName:string, newItem:JsonObject) => Promise<void>;

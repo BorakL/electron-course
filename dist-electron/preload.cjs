@@ -7,7 +7,7 @@ const electron_1 = require("electron");
 // import { dowloadMoreFiles } from "./util";
 const electron_2 = __importDefault(require("electron"));
 electron_2.default.contextBridge.exposeInMainWorld("electronApp", {
-    createFullFolder: (klinike, url, refererUrl, kategorija, date, session) => electron_1.ipcRenderer.invoke(`createFullFolder`, klinike, url, refererUrl, kategorija, date, session),
+    createFullFolder: async (klinike, url, refererUrl, kategorija, date, session) => await electron_1.ipcRenderer.invoke(`createFullFolder`, klinike, url, refererUrl, kategorija, date, session),
     // osnovne funkcije nad fajlovima
     getFilePath: (fileName) => electron_1.ipcRenderer.invoke("getFilePath", fileName),
     readJsonFile: (fileName) => electron_1.ipcRenderer.invoke("readJsonFile", fileName),

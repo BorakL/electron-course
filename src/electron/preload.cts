@@ -21,14 +21,14 @@ type JsonObject = { [key: string]: JsonValue };
 
 
 electron.contextBridge.exposeInMainWorld("electronApp", {
-    createFullFolder: (
+    createFullFolder: async (
         klinike: Klinika[],
         url: string,
         refererUrl: string,
         kategorija: number,
         date: string,
         session: string
-    ) => ipcRenderer.invoke(`createFullFolder`, klinike, url, refererUrl, kategorija, date, session),
+    ) => await ipcRenderer.invoke(`createFullFolder`, klinike, url, refererUrl, kategorija, date, session),
     
     // osnovne funkcije nad fajlovima
     getFilePath: (fileName: string): Promise<string> =>

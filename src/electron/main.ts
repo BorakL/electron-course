@@ -6,6 +6,7 @@ import { getPreloadPath } from './pathResolver.js';
 import dotenv from 'dotenv';  
 import { appendJsonItem, deleteJsonItemById, dodajKlinikuUNerasporedjene, dodajKlinikuUTuru, dodajNovuTuru, getFilePath, obrisiTuru, ocistiNevazecuKlinikuIzTura, readJsonFile, selectFolder, ukloniKlinikuIzNerasporedjenih, ukloniKlinikuIzTure, updateJsonItemById, writeJsonFile } from './fsHelpers/jsonUtils.js';
 import processDietFiles, { DietFilter, TableParams } from './xlsx/processDietFiles.js';
+import { Logs } from './types/types.js';
 
 
 // Definiši __dirname za ES module 
@@ -24,8 +25,9 @@ app.on("ready", ()=>{
     }else{
         mainWindow.loadFile(path.join(app.getAppPath() + '/dist-react/index.html'));
     }
-    ipcMain.handle('createFullFolder', async (event, params) => {
-        return createFullFolder(params);
+    ipcMain.handle('createFullFolder', async (event, params): Promise<Logs | undefined> => {
+        const result = await createFullFolder(params);
+        return result; 
     });
     ipcMain.handle('getFilePath', (event, fileName:string): string => {
         return getFilePath(fileName)
