@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import FilterForm from "../components/filterForm";
+import { useConfirm } from "../context/confirmContext";
 
 type FilteriZaOtpremnice = {
   title: string;
@@ -18,6 +19,8 @@ const IzdvajanjeDijeta = () => {
     reset: resetGroupForm,
   } = useForm<{ novaGrupa: string }>();
 
+  const {confirm} = useConfirm();
+
   const fetchData = async () => {
     try {
       const filteri = (await window.electronApp.readJsonFile(FILE)) as FilteriZaOtpremnice[];
@@ -31,32 +34,39 @@ const IzdvajanjeDijeta = () => {
     fetchData();
   }, []);
 
-const removeFilterHandler = async (group: string, filter: string) => {
-  try {
-    const data = (await window.electronApp.readJsonFile(FILE)) as FilteriZaOtpremnice[];
-    const updatedData = data.map((grupa) =>
-      grupa.title === group
-        ? { ...grupa, keywords: grupa.keywords.filter((f) => f !== filter) }
-        : grupa
-    );
-    await window.electronApp.writeJsonFile(FILE, updatedData);
-    setGrupeFiltera(updatedData);
-  } catch (error) {
-    console.log("Greška pri brisanju filtera iz grupe: ", error);
-  }
-};
+const removeFilterHandler = async (message:string, group: string, filter: string ) => 
+  confirm({
+    message: message,
+    onConfirm: async() => { 
+        try {
+          const data = (await window.electronApp.readJsonFile(FILE)) as FilteriZaOtpremnice[];
+          const updatedData = data.map((grupa) =>
+            grupa.title === group
+              ? { ...grupa, keywords: grupa.keywords.filter((f) => f !== filter) }
+              : grupa
+          );
+          await window.electronApp.writeJsonFile(FILE, updatedData);
+          setGrupeFiltera(updatedData);
+        } catch (error) {
+          console.log("Greška pri brisanju filtera iz grupe: ", error);
+        }
+    },
+  });
 
-
-const removeGroupHandler = async (groupName: string) => {
-  try {
-    const data = (await window.electronApp.readJsonFile(FILE)) as FilteriZaOtpremnice[];
-    const updatedData = data.filter((grupa) => grupa.title !== groupName);
-    await window.electronApp.writeJsonFile(FILE, updatedData);
-    setGrupeFiltera(updatedData);
-  } catch (error) {
-    console.log("Greška pri brisanju grupe filtera: ", error);
-  }
-};
+const removeGroupHandler = async (message: string, groupName: string ) => 
+  confirm({
+    message: message,
+    onConfirm: async () => {
+      try {
+        const data = (await window.electronApp.readJsonFile(FILE)) as FilteriZaOtpremnice[];
+        const updatedData = data.filter((grupa) => grupa.title !== groupName);
+        await window.electronApp.writeJsonFile(FILE, updatedData);
+        setGrupeFiltera(updatedData);
+      } catch (error) {
+        console.log("Greška pri brisanju grupe filtera: ", error);
+      }
+    },
+  });
 
 const onSubmitGroup = async (data: { novaGrupa: string }) => {
   const groupName = data.novaGrupa.trim();
@@ -90,7 +100,7 @@ const onSubmitGroup = async (data: { novaGrupa: string }) => {
             <h5 className="mb-0">{grupaFiltera.title}</h5>
             <button
               className="btn btn-sm btn-outline-danger"
-              onClick={() => removeGroupHandler(grupaFiltera.title)}
+              onClick={() => removeGroupHandler("Da li ste sigurni da želite da obrišete ovu grupu filtera?", grupaFiltera.title)}
             >
               Obriši grupu
             </button>
@@ -101,7 +111,7 @@ const onSubmitGroup = async (data: { novaGrupa: string }) => {
                 {f}
                 <button
                   className="btn btn-sm btn-danger"
-                  onClick={() => removeFilterHandler(grupaFiltera.title, f)}
+                  onClick={() => removeFilterHandler("Da li ste sigurni da želie da obrišete ovaj filter?", grupaFiltera.title, f )}
                 >
                   &times;
                 </button>

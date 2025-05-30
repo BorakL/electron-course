@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { useConfirm } from "../context/confirmContext";
 
 export type Klinika = {
     naziv:string,
@@ -18,6 +19,8 @@ const KlinikaDetails = () => {
     const [klinika, setKlinika] = useState<Klinika | null>(null);
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const navigate = useNavigate();
+    const {confirm} = useConfirm();  
+
 
     const { register, handleSubmit, reset, formState: {errors} } = useForm<Klinika>();
 
@@ -35,15 +38,21 @@ const KlinikaDetails = () => {
     };
 
 
-    const handleDelete = async () => {
-        if (!klinika) return;
-        try {
-            await window.electronApp.deleteJsonItemById("klinike.json", Number(klinika.user), "user");
-            await window.electronApp.ocistiNevazecuKlinikuIzTura(Number(klinika.user));
-            navigate("/klinike");
-        } catch (error) {
-            console.error("Greška pri brisanju klinike:", error);
+    const handleDelete = async (message:string, klinika:Klinika, klinikaId:number) => {
+      confirm({
+        message: message,
+        onConfirm: async()=>{
+          if (!klinika) return;
+          try {
+              await window.electronApp.deleteJsonItemById("klinike.json", Number(klinikaId), "user");
+              await window.electronApp.ocistiNevazecuKlinikuIzTura(Number(klinikaId));
+              navigate("/klinike");
+          } catch (error) {
+              console.error("Greška pri brisanju klinike:", error);
+          }
         }
+      })
+
     };
 
 
@@ -177,29 +186,28 @@ const KlinikaDetails = () => {
         </form>
       ) : (
     <div className="container mt-4">
-    <div className="card p-4">
-        <h4 className="mb-3">Detalji o klinici</h4>
-        <p><strong>Bolnica:</strong> {klinika.bolnica}</p>
-        <p><strong>Klinika:</strong> {klinika.klinika}</p>
-        <p><strong>Bolnica App:</strong> {klinika.bolnicaApp}</p>
-        <p><strong>Klinika App:</strong> {klinika.klinikaApp}</p>
-        <p><strong>Firm:</strong> {klinika.firm}</p>
-        <p><strong>User:</strong> {klinika.user}</p>
-        <div className="mt-3">
-        <button
-            className="btn btn-primary me-2"
-            onClick={() => setIsEditing(true)}
-        >
-            Izmeni
-        </button>
-        <button className="btn btn-danger" onClick={handleDelete}>
-            Obriši
-        </button>
-        </div>
+      <div className="card p-4">
+          <h4 className="mb-3">Detalji o klinici</h4>
+          <p><strong>Bolnica:</strong> {klinika.bolnica}</p>
+          <p><strong>Klinika:</strong> {klinika.klinika}</p>
+          <p><strong>Bolnica App:</strong> {klinika.bolnicaApp}</p>
+          <p><strong>Klinika App:</strong> {klinika.klinikaApp}</p>
+          <p><strong>Firm:</strong> {klinika.firm}</p>
+          <p><strong>User:</strong> {klinika.user}</p>
+          <div className="mt-3">
+          <button
+              className="btn btn-primary me-2"
+              onClick={() => setIsEditing(true)}
+          >
+              Izmeni
+          </button>
+          <button className="btn btn-danger" onClick={()=>handleDelete("Da li ste sigurni da želite da obrišete ovu kliniku?",klinika,klinika.user)}>
+              Obriši
+          </button>
+          </div>
+      </div>
     </div>
-    </div>
-
-      )}
+    )}
     </div>
     );
 };

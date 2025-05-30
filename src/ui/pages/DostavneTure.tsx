@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useConfirm } from "../context/confirmContext";
 
 type Klinika = {
   user: number;
@@ -17,6 +18,7 @@ export default function ListaDostavnihTura() {
   const [tureData, setTureData] = useState<TureData | null>(null);
   const [klinike, setKlinike] = useState<Klinika[]>([]);
   const [loading, setLoading] = useState(true);
+  const {confirm} = useConfirm();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,33 +43,38 @@ export default function ListaDostavnihTura() {
   const getNazivKlinike = (id: number): string =>
     klinike.find(k => k.user === id)?.naziv || `Nepoznata klinika (${id})`;
 
-  const removeClinickHandler = async (tourId:number,clinickId:number) => {
-   try {
-        await window.electronApp.ukloniKlinikuIzTure(tourId, clinickId);
+  const removeClinickHandler = async (message: string, tourId:number, clinickId:number) => {
+    confirm({
+      message: message,
+      onConfirm: async()=>{
+        try {
+              await window.electronApp.ukloniKlinikuIzTure(tourId, clinickId);
 
-    // Ažuriraj lokalni state bez direktne modifikacije
-    setTureData(prev => {
-      if (!prev) return prev;
+          // Ažuriraj lokalni state bez direktne modifikacije
+          setTureData(prev => {
+            if (!prev) return prev;
 
-      const updatedTure = prev.ture.map(t => {
-          if (t.id === tourId) {
-            return {
-              ...t,
-              klinike: t.klinike.filter(k => k !== clinickId),
-            };
+            const updatedTure = prev.ture.map(t => {
+                if (t.id === tourId) {
+                  return {
+                    ...t,
+                    klinike: t.klinike.filter(k => k !== clinickId),
+                  };
+                }
+                return t;
+              });
+
+              return {
+                ...prev,
+                ture: updatedTure,
+                nerasporedjeneKlinike: [...prev.nerasporedjeneKlinike, clinickId],
+              };
+            });
+          } catch (error) {
+            console.error("Greška pri uklanjanju klinike:", error);
           }
-          return t;
-        });
-
-        return {
-          ...prev,
-          ture: updatedTure,
-          nerasporedjeneKlinike: [...prev.nerasporedjeneKlinike, clinickId],
-        };
-      });
-    } catch (error) {
-      console.error("Greška pri uklanjanju klinike:", error);
-    }
+      }
+    })
   }
 
   const handleAddClinicToTour = async (tourId: number, klinikaId: number) => {
@@ -100,22 +107,26 @@ export default function ListaDostavnihTura() {
   }
 };
 
-const removeTuraHandler = async (id:number) => {
-  try{
-    await window.electronApp.obrisiTuru(id)
-    setTureData(prev => {
-      if (prev === null) return null;
-      const tura = prev.ture.find(t=>t.id===id)
-      return  {
-        ...prev,
-        ture: prev.ture.filter(t => t.id!==id),
-        nerasporedjeneKlinike: [...prev.nerasporedjeneKlinike, ...(tura?.klinike || []) ]
+const removeTuraHandler = async (message:string, id:number) => 
+  confirm({
+    message: message,
+    onConfirm: async() => {
+      try{
+        await window.electronApp.obrisiTuru(id)
+        setTureData(prev => {
+          if (prev === null) return null;
+          const tura = prev.ture.find(t=>t.id===id)
+          return  {
+            ...prev,
+            ture: prev.ture.filter(t => t.id!==id),
+            nerasporedjeneKlinike: [...prev.nerasporedjeneKlinike, ...(tura?.klinike || []) ]
+          }
+        })
+      }catch(error){
+        console.log("Greška pri brisanju dostavne ture: ", error)
       }
-    })
-  }catch(error){
-    console.log("Greška pri brisanju dostavne ture: ", error)
-  }
-}
+    }  
+  })
 
 const addTuraHandler = async () => {
   try{
@@ -142,7 +153,7 @@ const addTuraHandler = async () => {
             <div className="card shadow-sm">
               <div className="card-header d-flex justify-content-between align-items-center">
                 <h5 className="mb-0">Tura #{tura.id}</h5>
-                <div><button onClick={()=>removeTuraHandler(tura.id)}>Obriši turu</button></div>
+                <div><button onClick={()=>removeTuraHandler("Da li ste sigurni da želite da obrišete ovu dostavnu turu?", tura.id)}>Obriši turu</button></div>
               </div>
               <div className="card-body">
                 {tura.klinike.length > 0 ? (
@@ -152,7 +163,7 @@ const addTuraHandler = async () => {
                         {getNazivKlinike(id)}
                         <button
                           className="btn btn-sm btn-outline-danger"
-                          onClick={() => removeClinickHandler(tura.id, id)}
+                          onClick={() => removeClinickHandler("Da li ste sigurni da želite da izbacite ovu kliniku iz dostavne ture?", tura.id, id)}
                         >
                           Obriši
                         </button>
