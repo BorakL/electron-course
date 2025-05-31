@@ -1,3 +1,5 @@
+import { DostavnaTura, Klinika } from "./src/ui/types";
+
 export {};
 
 type CreateFullFolderParams = {
@@ -38,6 +40,7 @@ declare global {
             ocistiNevazecuKlinikuIzTura: (clinickId: number) => Promise<void>;
             processDietFiles: (dietFilters: DietFilter[], tableParams: TableParams, folterPath:string) => Promise<void>;
             selectFolder: () => Promise<null | string>;
+            printDostavnaTura: (folderPath:string, dostavneTure:DostavnaTura[], klinike:Klinika[], turaId:nuber) => Promise<void>
         }
     }
 }

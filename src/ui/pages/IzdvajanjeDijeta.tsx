@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import FilterForm from "../components/filterForm";
 import { useConfirm } from "../context/confirmContext";
+import { FaRegTrashAlt } from "react-icons/fa";
+import { MdFilterListAlt } from "react-icons/md";
+
 
 type FilteriZaOtpremnice = {
   title: string;
@@ -97,23 +100,25 @@ const onSubmitGroup = async (data: { novaGrupa: string }) => {
       <div className="col-md-6 mb-4" key={grupaFiltera.title}>
         <div className="card h-100">
           <div className="card-header d-flex justify-content-between align-items-center">
-            <h5 className="mb-0">{grupaFiltera.title}</h5>
+            <h5 className="mb-0"><MdFilterListAlt/> {grupaFiltera.title}</h5>
             <button
-              className="btn btn-sm btn-outline-danger"
+              className="btn btn-sm btn-danger"
+              title="Obriši grupu"
               onClick={() => removeGroupHandler("Da li ste sigurni da želite da obrišete ovu grupu filtera?", grupaFiltera.title)}
             >
-              Obriši grupu
+              <FaRegTrashAlt/> 
             </button>
           </div>
           <ul className="list-group list-group-flush">
             {grupaFiltera.keywords.map((f) => (
               <li className="list-group-item d-flex justify-content-between align-items-center" key={f}>
-                {f}
-                <button
-                  className="btn btn-sm btn-danger"
+                {f} 
+                <button 
+                  title="Obriši filter"
+                  className="btn btn-sm btn-outline-danger"
                   onClick={() => removeFilterHandler("Da li ste sigurni da želie da obrišete ovaj filter?", grupaFiltera.title, f )}
                 >
-                  &times;
+                  <FaRegTrashAlt/> 
                 </button>
               </li>
             ))}

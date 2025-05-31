@@ -3,6 +3,7 @@ import { ipcRenderer } from "electron";
 import  { DostavnaTura, Klinika } from "./types/types.js";   
 // import { dowloadMoreFiles } from "./util";
 import electron from 'electron'; 
+import { printDostavnaTura } from "./util.js";
 // import { DietFilter, TableParams } from "./xlsx/processDietFiles.js";
 export interface DietFilter {
   title: string;
@@ -113,5 +114,13 @@ electron.contextBridge.exposeInMainWorld("electronApp", {
     ): Promise<void> => 
         ipcRenderer.invoke('processDietFiles', dietFilters, tableParams, folderPath),
 
-    selectFolder: (): Promise<null | string> => ipcRenderer.invoke('selectFolder')
+    selectFolder: (): Promise<null | string> => ipcRenderer.invoke('selectFolder'),
+
+    printDostavnaTura: (
+        folderPath: string,
+        dostavneTure: DostavnaTura[],
+        klinika: Klinika[],
+        turaId: number
+    ): Promise<void> =>
+        ipcRenderer.invoke('printDostavnaTura', folderPath, dostavneTure, klinika, turaId)
 })

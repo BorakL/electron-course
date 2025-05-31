@@ -5,7 +5,7 @@ const Layout = () => {
     <div>
       <nav className = "navbar fixed-top navbar-expand navbar-light bg-light">
         <div className="container-fluid">
-          <Link className="navbar-brand" to="/">Moja Aplikacija</Link>
+          <Link className="navbar-brand" to="/">ProAdmin</Link>
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigacije">
             <span className="navbar-toggler-icon"></span>

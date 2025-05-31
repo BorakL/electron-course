@@ -42,61 +42,111 @@ const AddKlinika = () => {
   };
 
   return (
-    <div>
-      <h2>Dodaj novu kliniku</h2>
+    <div className="container mt-5">
+  <h2 className="mb-4">Dodaj novu kliniku</h2>
 
-      {errorMessage && (
-        <div style={{ color: "red", marginBottom: "10px" }}>
-          {errorMessage}
-        </div>
-      )}
-
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          <label>Naziv</label>
-          <input {...register("naziv", { required: true })} />
-          {errors.naziv && <span>Ovo polje je obavezno.</span>}
-        </div>
-
-        <div>
-          <label>Bolnica App</label>
-          <input {...register("bolnicaApp", { required: true })} />
-          {errors.bolnicaApp && <span>Ovo polje je obavezno.</span>}
-        </div>
-
-        <div>
-          <label>Klinika App</label>
-          <input {...register("klinikaApp", { required: true })} />
-          {errors.klinikaApp && <span>Ovo polje je obavezno.</span>}
-        </div>
-
-        <div>
-          <label>Bolnica</label>
-          <input {...register("bolnica", { required: true })} />
-          {errors.bolnica && <span>Ovo polje je obavezno.</span>}
-        </div>
-
-        <div>
-          <label>Klinika</label>
-          <input {...register("klinika", { required: true })} />
-          {errors.klinika && <span>Ovo polje je obavezno.</span>}
-        </div>
-
-        <div>
-          <label>Firm</label>
-          <input type="number" {...register("firm", { required: true, valueAsNumber: true })} />
-          {errors.firm && <span>Ovo polje je obavezno.</span>}
-        </div>
-
-        <div>
-          <label>User ID</label>
-          <input type="number" {...register("user", { required: true, valueAsNumber: true })} />
-          {errors.user && <span>Ovo polje je obavezno.</span>}
-        </div>
-
-        <button type="submit">Sačuvaj</button>
-      </form>
+  {errorMessage && (
+    <div className="alert alert-danger" role="alert">
+      {errorMessage}
     </div>
+  )}
+
+  <form onSubmit={handleSubmit(onSubmit)}>
+    {/* Polje: Naziv */}
+    <div className="row mb-2 align-items-center">
+      <label className="col-sm-2 col-form-label">Naziv</label>
+      <div className="col-sm-10">
+        <input
+          className="form-control"
+          {...register("naziv", { required: true })}
+        />
+        {errors.naziv && <div className="text-danger">Ovo polje je obavezno.</div>}
+      </div>
+    </div>
+
+    {/* Polje: Bolnica App */}
+    <div className="row mb-2 align-items-center">
+      <label className="col-sm-2 col-form-label">Bolnica App</label>
+      <div className="col-sm-10">
+        <input
+          className="form-control"
+          {...register("bolnicaApp", { required: true })}
+        />
+        {errors.bolnicaApp && <div className="text-danger">Ovo polje je obavezno.</div>}
+      </div>
+    </div>
+
+    {/* Polje: Klinika App */}
+    <div className="row mb-2 align-items-center">
+      <label className="col-sm-2 col-form-label">Klinika App</label>
+      <div className="col-sm-10">
+        <input
+          className="form-control"
+          {...register("klinikaApp", { required: true })}
+        />
+        {errors.klinikaApp && <div className="text-danger">Ovo polje je obavezno.</div>}
+      </div>
+    </div>
+
+    {/* Polje: Bolnica */}
+    <div className="row mb-2 align-items-center">
+      <label className="col-sm-2 col-form-label">Bolnica</label>
+      <div className="col-sm-10">
+        <input
+          className="form-control"
+          {...register("bolnica", { required: true })}
+        />
+        {errors.bolnica && <div className="text-danger">Ovo polje je obavezno.</div>}
+      </div>
+    </div>
+
+    {/* Polje: Klinika */}
+    <div className="row mb-2 align-items-center">
+      <label className="col-sm-2 col-form-label">Klinika</label>
+      <div className="col-sm-10">
+        <input
+          className="form-control"
+          {...register("klinika", { required: true })}
+        />
+        {errors.klinika && <div className="text-danger">Ovo polje je obavezno.</div>}
+      </div>
+    </div>
+
+    {/* Polje: Firm */}
+    <div className="row mb-2 align-items-center">
+      <label className="col-sm-2 col-form-label">Firm</label>
+      <div className="col-sm-10">
+        <input
+          type="number"
+          className="form-control"
+          {...register("firm", { required: true, valueAsNumber: true })}
+        />
+        {errors.firm && <div className="text-danger">Ovo polje je obavezno.</div>}
+      </div>
+    </div>
+
+    {/* Polje: User */}
+    <div className="row mb-2 align-items-center">
+      <label className="col-sm-2 col-form-label">User ID</label>
+      <div className="col-sm-10">
+        <input
+          type="number"
+          className="form-control"
+          {...register("user", { required: true, valueAsNumber: true })}
+        />
+        {errors.user && <div className="text-danger">Ovo polje je obavezno.</div>}
+      </div>
+    </div>
+
+    <div className="text-end">
+      <button type="submit" className="btn btn-primary">
+        Sačuvaj
+      </button>
+    </div>
+  </form>
+</div>
+
+
   );
 };
 

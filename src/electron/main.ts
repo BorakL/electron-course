@@ -1,12 +1,12 @@
 import {app, BrowserWindow, ipcMain} from 'electron';
 import path from 'path';
-import {createFullFolder, isDev} from './util.js' 
+import {createFullFolder, isDev, printDostavnaTura} from './util.js' 
 // import { pollResources } from './resourceManager.js';
 import { getPreloadPath } from './pathResolver.js'; 
 import dotenv from 'dotenv';  
 import { appendJsonItem, deleteJsonItemById, dodajKlinikuUNerasporedjene, dodajKlinikuUTuru, dodajNovuTuru, getFilePath, obrisiTuru, ocistiNevazecuKlinikuIzTura, readJsonFile, selectFolder, ukloniKlinikuIzNerasporedjenih, ukloniKlinikuIzTure, updateJsonItemById, writeJsonFile } from './fsHelpers/jsonUtils.js';
 import processDietFiles, { DietFilter, TableParams } from './xlsx/processDietFiles.js';
-import { Logs } from './types/types.js';
+import { DostavnaTura, Klinika, Logs } from './types/types.js';
 
 
 // Definiši __dirname za ES module 
@@ -16,6 +16,7 @@ dotenv.config({ path: path.join(process.cwd(), '.env.electron') });
 
 app.on("ready", ()=>{
     const mainWindow = new BrowserWindow({
+        icon: path.join(path.join(app.getAppPath() + '/src/electron'), 'assets', 'icon.png'),
         webPreferences: {
             preload: getPreloadPath()
         }
@@ -73,5 +74,8 @@ app.on("ready", ()=>{
     })
     ipcMain.handle('selectFolder', () => {
         return selectFolder();
+    })
+    ipcMain.handle('printDostavnaTura', (event, folderPath:string, dostavneTure:DostavnaTura[], klinika:Klinika[], turaId:number) => {
+        return printDostavnaTura(folderPath,dostavneTure,klinika,turaId)
     })
 })

@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
 import { useConfirm } from "../context/confirmContext";
+import { FaRegTrashAlt } from "react-icons/fa";
+import { IoIosLogOut } from "react-icons/io";
+import { FaTruck } from "react-icons/fa";
+
 
 type Klinika = {
   user: number;
@@ -152,8 +156,15 @@ const addTuraHandler = async () => {
           <div key={tura.id} className="col-md-6 mb-4">
             <div className="card shadow-sm">
               <div className="card-header d-flex justify-content-between align-items-center">
-                <h5 className="mb-0">Tura #{tura.id}</h5>
-                <div><button onClick={()=>removeTuraHandler("Da li ste sigurni da želite da obrišete ovu dostavnu turu?", tura.id)}>Obriši turu</button></div>
+                <h5 className="mb-0"><FaTruck/></h5>
+                <div>
+                  <button 
+                    className="btn btn-sm btn-danger"
+                    title="Obriši dostavnu turu"
+                    onClick={()=>removeTuraHandler("Da li ste sigurni da želite da obrišete ovu dostavnu turu?", tura.id)}>
+                      <FaRegTrashAlt/>
+                  </button>
+                </div>
               </div>
               <div className="card-body">
                 {tura.klinike.length > 0 ? (
@@ -163,9 +174,10 @@ const addTuraHandler = async () => {
                         {getNazivKlinike(id)}
                         <button
                           className="btn btn-sm btn-outline-danger"
+                          title="Izbaci kliniku"
                           onClick={() => removeClinickHandler("Da li ste sigurni da želite da izbacite ovu kliniku iz dostavne ture?", tura.id, id)}
                         >
-                          Obriši
+                          <IoIosLogOut/>
                         </button>
                       </li>
                     ))}
