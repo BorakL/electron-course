@@ -76,7 +76,7 @@ const KlinikaDetails = () => {
 
     return (
     <div className="container-fluid mt-4">
-      <h2 className="mb-4">Klinika: {klinika.naziv}</h2>
+      <h2 className="mb-4">{klinika.naziv?.toUpperCase()}</h2>
 
       {isEditing ? (
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -187,7 +187,6 @@ const KlinikaDetails = () => {
       ) : (
     <div className="container mt-4">
       <div className="card p-4">
-          <h4 className="mb-3">Detalji o klinici</h4>
           <p><strong>Bolnica:</strong> {klinika.bolnica}</p>
           <p><strong>Klinika:</strong> {klinika.klinika}</p>
           <p><strong>Bolnica App:</strong> {klinika.bolnicaApp}</p>

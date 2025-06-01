@@ -94,7 +94,7 @@ const onSubmitGroup = async (data: { novaGrupa: string }) => {
 
   return (
   <div className="container mt-4">
-  <h2 className="m-5">Filteri za izdvajanje Dijeta</h2>
+  <h2 className="m-5">Filteri za izdvajanje dijeta</h2>
   <div className="row">
     {grupeFiltera.map((grupaFiltera) => (
       <div className="col-md-6 mb-4" key={grupaFiltera.title}>

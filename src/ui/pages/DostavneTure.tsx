@@ -127,7 +127,7 @@ const removeTuraHandler = async (message:string, id:number) =>
           }
         })
       }catch(error){
-        console.log("Greška pri brisanju dostavne ture: ", error)
+        console.log("Greška pri brisanju linije za razvoz: ", error)
       }
     }  
   })
@@ -149,7 +149,7 @@ const addTuraHandler = async () => {
 
   return (
     <div className="container py-4">
-      <h2 className="mb-4">Dostavne Ture</h2>
+      <h2 className="mb-4">Linije za razvoz</h2>
 
       <div className="row">
         {tureData.ture.map((tura) => (
@@ -160,8 +160,8 @@ const addTuraHandler = async () => {
                 <div>
                   <button 
                     className="btn btn-sm btn-danger"
-                    title="Obriši dostavnu turu"
-                    onClick={()=>removeTuraHandler("Da li ste sigurni da želite da obrišete ovu dostavnu turu?", tura.id)}>
+                    title="Obriši liniju za razvoz"
+                    onClick={()=>removeTuraHandler("Da li ste sigurni da želite da obrišete ovu liniju za razvoz?", tura.id)}>
                       <FaRegTrashAlt/>
                   </button>
                 </div>
@@ -175,7 +175,7 @@ const addTuraHandler = async () => {
                         <button
                           className="btn btn-sm btn-outline-danger"
                           title="Izbaci kliniku"
-                          onClick={() => removeClinickHandler("Da li ste sigurni da želite da izbacite ovu kliniku iz dostavne ture?", tura.id, id)}
+                          onClick={() => removeClinickHandler("Da li ste sigurni da želite da izbacite ovu kliniku iz navedene linije za razvoz?", tura.id, id)}
                         >
                           <IoIosLogOut/>
                         </button>
@@ -211,7 +211,7 @@ const addTuraHandler = async () => {
 
       <div className="mt-5">
         <div>
-          <button onClick={addTuraHandler}>Dodaj novu dostavnu turu</button>
+          <button className="btn btn-primary m-3" onClick={addTuraHandler}>Dodaj novu liniju za razvoz</button>
         </div>
         <h4 className="text-danger">Neraspoređene klinike</h4>
         {tureData.nerasporedjeneKlinike.length > 0 ? (

@@ -85,25 +85,25 @@ export default function PrintPage() {
     <div className="container py-4">
       <h2 className="mb-4">Štampanje otpremnica</h2>
         <div className="mb-3">
-            <button className="btn btn-primary me-2" onClick={handleSelectFolder}>
+            <button className="btn btn-primary me-2 m-4" onClick={handleSelectFolder}>
                 Izaberi folder
             </button>
             {
               folderPath ? <p className="mt-2"> <strong>Izabrani folder: </strong> {folderPath} </p> :
-              showMessage ? <p className="mt-2"> <strong className="text-danger">Prvo odaberi folder!</strong> </p> : ""
+              showMessage ? <p className="mt-2"> <strong className="text-danger">Prvo selektuj folder!</strong> </p> : ""
             }
         </div>
 
       <div className="row">
         {tureData.ture.map((tura) => (
-          <div key={tura.id} className="col-md-6 mb-4">
+          <div key={tura.id} className="col-md-4 mb-4">
               <div>
                 <button onClick={()=>handlePrint(tura.id)} >
                   <div className="mb-2 font">{!printedTours.includes(tura.id) ? <LuPrinter/> : <LuPrinterCheck/>} </div>
                   <ul className="list-group mb-3">
                     {tura.klinike.map((id) => (
                       <li key={id} className="list-group-item d-flex justify-content-between align-items-center">
-                        {getNazivKlinike(id)}
+                        {getNazivKlinike(id)?.toUpperCase()}
                       </li>
                     ))}
                   </ul>
