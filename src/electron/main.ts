@@ -16,7 +16,7 @@ dotenv.config({ path: path.join(process.cwd(), '.env.electron') });
 
 app.on("ready", ()=>{
     const mainWindow = new BrowserWindow({
-        icon: path.join(path.join(app.getAppPath() + '/src/electron'), 'assets', 'icon.png'),
+        icon: path.join(path.join(app.getAppPath() + '/src/electron'), 'assets', 'icon.ico'),
         webPreferences: {
             preload: getPreloadPath()
         }
