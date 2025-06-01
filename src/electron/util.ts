@@ -6,10 +6,10 @@ import os from 'os';
 import { CreateFullFolderParams, DostavnaTura, DownloadFileParams, ExcelApplication, Klinika } from './types/types.js';
 import { promises as fsp } from 'fs';
 import winax from "winax";
-type ActiveXConstructor<T> = new (progId: string) => T;
+// type ActiveXConstructor<T> = new (progId: string) => T;
 
 // Napravi konstruktor za Excel.Application
-const ExcelApp = winax as unknown as ActiveXConstructor<ExcelApplication>;
+// const ExcelApp = winax as unknown as ActiveXConstructor<ExcelApplication>;
 
 export function isDev(): boolean {
     return process.env.NODE_ENV === 'development';
@@ -165,7 +165,7 @@ export async function printDostavnaTura(
   }
 
   let allFiles: string[];
-  try {
+  try { 
     const files = await fsp.readdir(folderPath);
     allFiles = files.filter(f =>
       f.toLowerCase().endsWith('.xlsx') || f.toLowerCase().endsWith('.xls')
@@ -177,7 +177,8 @@ export async function printDostavnaTura(
 
   const klinikeZaStampu = klinike.filter(k => tura.klinike.includes(k.user));
 
-const excel = new ExcelApp('Excel.Application');
+const excel = new winax.Object('Excel.Application') as ExcelApplication;
+
 
   excel.Visible = false;
 
@@ -197,8 +198,7 @@ const excel = new ExcelApp('Excel.Application');
         const sheet = workbook.Sheets.Item(1);
 
         // Podešavanja štampe
-        sheet.PageSetup.CenterHorizontally = true;
-        sheet.PageSetup.CenterVertically = true; 
+        sheet.PageSetup.CenterHorizontally = true; 
         sheet.PageSetup.FitToPagesWide = 1;
         sheet.PageSetup.FitToPagesTall = 1;
 

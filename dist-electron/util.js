@@ -3,6 +3,11 @@ import axios from 'axios';
 import https from 'https';
 import path from 'path';
 import os from 'os';
+import { promises as fsp } from 'fs';
+import winax from "winax";
+// type ActiveXConstructor<T> = new (progId: string) => T;
+// Napravi konstruktor za Excel.Application
+// const ExcelApp = winax as unknown as ActiveXConstructor<ExcelApplication>;
 export function isDev() {
     return process.env.NODE_ENV === 'development';
 }
@@ -113,4 +118,55 @@ export async function createFullFolder({ cliniks, url, refererUrl, category, dat
         }
     }
     return await downloadNext();
+}
+export async function printDostavnaTura(folderPath, dostavneTure, klinike, turaId) {
+    const tura = dostavneTure.find(t => t.id === turaId);
+    if (!tura) {
+        console.error("Tura nije pronađena.");
+        return;
+    }
+    let allFiles;
+    try {
+        const files = await fsp.readdir(folderPath);
+        allFiles = files.filter(f => f.toLowerCase().endsWith('.xlsx') || f.toLowerCase().endsWith('.xls'));
+    }
+    catch (err) {
+        console.error("Greška pri čitanju fajlova iz foldera:", err);
+        return;
+    }
+    const klinikeZaStampu = klinike.filter(k => tura.klinike.includes(k.user));
+    const excel = new winax.Object('Excel.Application');
+    excel.Visible = false;
+    for (const klinika of klinikeZaStampu) {
+        const naziv = klinika.naziv.trim().toLowerCase();
+        const matchingFiles = allFiles.filter(file => file.toLowerCase().includes(naziv));
+        for (const fileName of matchingFiles) {
+            const fullPath = path.join(folderPath, fileName);
+            console.log(`Štampam za kliniku "${klinika.naziv}": ${fileName}`);
+            try {
+                const workbook = excel.Workbooks.Open(fullPath);
+                const sheet = workbook.Sheets.Item(1);
+                // Podešavanja štampe
+                sheet.PageSetup.CenterHorizontally = true;
+                sheet.PageSetup.FitToPagesWide = 1;
+                sheet.PageSetup.FitToPagesTall = 1;
+                // Štampanje
+                await new Promise((resolve, reject) => {
+                    try {
+                        sheet.PrintOut();
+                        resolve();
+                    }
+                    catch (err) {
+                        reject(err);
+                    }
+                });
+                workbook.Close(false);
+            }
+            catch (err) {
+                console.error(`Greška pri štampi fajla ${fileName}:`, err);
+            }
+        }
+    }
+    excel.Quit();
+    console.log("Završena štampa za turu:", turaId);
 }

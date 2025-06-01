@@ -31,6 +31,5 @@ export type CreateFullFolderParams = {
 
 export interface DostavnaTura {
   id: number;
-  naziv: string;
   klinike: number[]; // sadrži ID-eve klinika
 }

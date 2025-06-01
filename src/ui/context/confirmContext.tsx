@@ -3,7 +3,8 @@ import { createContext, useContext, useState, ReactNode } from "react";
 
 type ConfirmOptions = {
   message: string;
-  onConfirm: () => void;
+  onConfirm?: () => void;
+  inform?: boolean;
 };
 
 type ConfirmContextType = {
@@ -28,13 +29,20 @@ export const ConfirmProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const handleConfirm = () => {
-    options?.onConfirm();
+    if(options?.onConfirm){
+      options.onConfirm();
+    }
     setVisible(false);
   };
 
   const handleCancel = () => {
     setVisible(false);
   };
+
+  const showText = (tekst:string) => {
+    return tekst.split('\n').map((line, i) => (
+      <p key={i}>{line}</p>))
+  }
 
   return (
     <ConfirmContext.Provider value={{ confirm }}>
@@ -49,8 +57,9 @@ export const ConfirmProvider = ({ children }: { children: ReactNode }) => {
                 <h5 className="modal-title">Potvrda</h5>
               </div>
               <div className="modal-body">
-                <p>{options.message}</p>
+                <p>{showText(options.message)}</p>
               </div>
+              {!options.inform ? 
               <div className="modal-footer">
                 <button className="btn btn-secondary" onClick={handleCancel}>
                   Otkaži
@@ -58,7 +67,14 @@ export const ConfirmProvider = ({ children }: { children: ReactNode }) => {
                 <button className="btn btn-danger" onClick={handleConfirm}>
                   Obriši
                 </button>
+              </div> :
+              <div className="modal-footer">
+                <button className="btn btn-secondary" onClick={handleCancel}>
+                  Ok
+                </button> 
               </div>
+              }
+              
             </div>
           </div>
         </div>

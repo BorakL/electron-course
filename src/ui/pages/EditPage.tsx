@@ -34,11 +34,11 @@ const EditPage = ()=>{
 
     return(
         <div className="container mt-4 text-start">
-      <h1 className="mb-4">Edit Page</h1>
+      <h2 className="m-5">Izdvoj dijete</h2>
 
       <div className="mb-3">
         <button className="btn btn-primary me-2" onClick={handleSelectFolder}>
-          Izaberi folder
+          Selektuj folder sa otpremnicama
         </button>
         {folderPath && (
           <p className="mt-2">
@@ -52,7 +52,7 @@ const EditPage = ()=>{
         onClick={odvojiDijeteHanlder}
         disabled={!folderPath}
       >
-        Odvoji dijete
+        Izdvoj dijete
       </button>
     </div>
     )

@@ -45,6 +45,7 @@ export interface ExcelApplication {
   Workbooks: {
     Open(path: string): Workbook;
     Add(): Workbook;
+    Close(): void;
   };
   Quit(): void;
 }
@@ -72,6 +73,7 @@ export interface Workbook {
   };
   SaveAs(path: string): void;
   Close(saveChanges?: boolean): void;
+  PrintOut(): void;
 }
 
 export interface PageSetup {
@@ -97,6 +99,9 @@ export interface Worksheet {
     ActivePrinter?: string,
     PrintToFile?: boolean,
     Collate?: boolean,
-    PrToFileName?: string
+    PrToFileName?: string,
+    CenterHorizontally?: boolean,
+    Orientation?: number,
   ): void;
+  PrintOut(): void;
 }

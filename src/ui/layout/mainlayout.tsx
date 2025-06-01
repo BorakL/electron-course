@@ -16,10 +16,10 @@ const Layout = () => {
                 <Link className="nav-link" to="/download">Download</Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/editPage">Edit</Link>
+                <Link className="nav-link" to="/editPage">Izdvajanje dijeta</Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/print">Print Page</Link>
+                <Link className="nav-link" to="/print">Štampanje</Link>
               </li>
               <li className="nav-item">
                 <Link className="nav-link" to="/klinike">Klinike</Link>

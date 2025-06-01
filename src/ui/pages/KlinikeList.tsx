@@ -30,7 +30,7 @@ const KlinikeList = ()=>{
 
     return(
     <div className="container py-4">
-      <h1 className="mb-4">Klinike</h1>
+      <h2 className="mb-4">Klinike</h2>
 
       <ul className="list-group mb-4">
         {klinike.map((klinika) => (

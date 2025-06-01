@@ -3,12 +3,13 @@ import { useEffect } from "react";
 type ConfirmModalProps = {
   show: boolean;
   onClose: () => void;
-  onConfirm: () => void;
+  onConfirm?: () => void;
+  inform?: boolean;
   title?: string;
   message?: string;
 };
 
-const ConfirmModal = ({ show, onClose, onConfirm, title = "Potvrda", message = "Da li ste sigurni?" }: ConfirmModalProps) => {
+const ConfirmModal = ({ show, onClose, onConfirm, inform, title = "Potvrda", message = "Da li ste sigurni?" }: ConfirmModalProps) => {
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -31,14 +32,24 @@ const ConfirmModal = ({ show, onClose, onConfirm, title = "Potvrda", message = "
             <div className="modal-body">
               <p>{message}</p>
             </div>
-            <div className="modal-footer">
-              <button className="btn btn-secondary" onClick={onClose}>
-                Otkaži
-              </button>
-              <button className="btn btn-danger" onClick={onConfirm}>
-                Obriši
-              </button>
-            </div>
+            {
+              inform ?
+              <div className="modal-footer">
+                <button className="btn btn-secondary" onClick={onClose}>
+                  Otkaži
+                </button>
+                <button className="btn btn-danger" onClick={onConfirm}>
+                  Obriši
+                </button>
+              </div>
+              :
+              <div className="modal-footer">
+                <button className="btn btn-secondary" onClick={onClose}>
+                  Otkaži
+                </button>
+              </div>
+            }
+            
           </div>
         </div>
       </div>
