@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'; 
 import { useForm } from 'react-hook-form';
-import klinike from "./../../../data/klinike.json";
 
 const DownloadPage = ()=>{
     type FormValues = {
@@ -24,6 +23,7 @@ const DownloadPage = ()=>{
     
       const[logs,setLogs] = useState<Logs | null>(null);
       const[loading,setLoading] = useState(false);
+      const[klinike,setKlinike] = useState([]);
       const { register, handleSubmit, formState, watch, setValue } = form;
       const { errors } = formState;
     
@@ -43,6 +43,18 @@ const DownloadPage = ()=>{
           setValue("date", `${year}-${month}-${day}`, { shouldValidate: true });
         }
       }, [watchDate, setValue]);
+
+      useEffect(()=> {
+        const fetchData = async()=>{
+          try{
+            const klinikeData = await window.electronApp.readJsonFile("klinike.json")
+            setKlinike(klinikeData)
+          }catch(error){
+            console.log("Greška pri učitavanju klinika",error)
+          }
+        }
+        fetchData();
+      },[])
     
       const onSubmit = () => {
         downloadShippingDocs();
