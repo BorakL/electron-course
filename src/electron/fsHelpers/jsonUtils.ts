@@ -1,13 +1,22 @@
 import fs from "fs";
 import path from 'path';
-import { fileURLToPath } from 'url';
+// import { fileURLToPath } from 'url';
 import { DostavnaTura } from "../types/types.js";
 import { dialog } from "electron";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const dataFolder = path.join(__dirname, "..","data");
+//Development
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
+// const dataFolder = path.join(__dirname, "..","data");
+
 const FILE_NAME = 'dostavneTure.json';
+
+//Production
+const appFolder = process.cwd(); // ili path.dirname(process.execPath);
+const dataFolder = path.join(appFolder, 'data');
+if (!fs.existsSync(dataFolder)) {
+  fs.mkdirSync(dataFolder);
+}
 
 
 export const getFilePath = (fileName: string) => {
