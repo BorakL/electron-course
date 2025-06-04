@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 import { dialog } from "electron";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const dataFolder = path.join(__dirname, "..", "..", "data");
+const dataFolder = path.join(__dirname, "..", "data");
 const FILE_NAME = 'dostavneTure.json';
 export const getFilePath = (fileName) => {
     return path.join(dataFolder, fileName);
