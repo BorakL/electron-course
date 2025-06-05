@@ -20,7 +20,7 @@ function App() {
     <div className="App">
         <Routes>
           <Route element={<MainLayout />}>
-            <Route path="/" element={<HomePage/>} />
+            <Route path="/" element={<HomePage/>} />            
             <Route path="/download" element={<DownloadPage/>} />
             <Route path="/editPage" element={<EditPage/>} />
             <Route path="/print" element={<PrintPage/>} />

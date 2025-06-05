@@ -85,7 +85,7 @@ const DownloadPage = ()=>{
 
     return(
       <div className=" container-fluid mt-4">
-        <h1 className="mb-4">Download</h1>
+        <h2 className="mb-4">Download otpremnica</h2>
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
           {/* Obrok */}
           <div className="mb-3">
@@ -143,11 +143,19 @@ const DownloadPage = ()=>{
           </div>
 
           {/* Dugme za submit */}
-          <button type="submit" className="btn btn-primary">
+          <button type="submit" className="btn btn-primary" disabled={loading}>
             Downloaduj otpremnice
           </button>
         </form>
         <div>
+          {loading && (
+            <div className="mt-4">
+              <p>⏳ Preuzimanje u toku...</p>
+              <div className="spinner-border" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+            </div>
+          )}
           {logs && (
           <div className="mt-4">
             <h5>📋 Rezultat preuzimanja:</h5>
@@ -175,11 +183,6 @@ const DownloadPage = ()=>{
                 </div>
             }
           </div>
-          )}
-          {loading && (
-            <div className="mt-4">
-              <p>⏳ Preuzimanje u toku...</p>
-            </div>
           )}
         </div>
       </div>

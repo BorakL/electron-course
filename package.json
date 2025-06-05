@@ -56,5 +56,12 @@
     "typescript": "~5.6.2",
     "typescript-eslint": "^8.18.2",
     "vite": "^6.0.5"
+  },
+    "build": {
+      "appId": "ProAdmin",
+      "productName": "ProAdmin",
+      "win": {
+        "icon": "/public/icon.ico"
+      }
   }
 }

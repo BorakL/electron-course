@@ -1,41 +1,59 @@
-import { Link, Outlet } from 'react-router-dom';
+import { NavLink, Outlet } from 'react-router-dom';
+import { useState } from 'react';
 
 const Layout = () => {
+  const [expanded, setExpanded] = useState(false);
+
+  const toggleNavbar = () => setExpanded(!expanded);
+  const closeNavbar = () => setExpanded(false);
+
   return (
     <div>
-      <nav className = "navbar fixed-top navbar-expand navbar-light bg-light">
+      <nav className="navbar fixed-top navbar-expand-lg navbar-light bg-light">
         <div className="container-fluid">
-          <Link className="navbar-brand" to="/">ProAdmin</Link>
-          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigacije">
+          <NavLink className="navbar-brand" to="/" onClick={closeNavbar}>
+            ProAdmin
+          </NavLink>
+
+          <button
+            className="navbar-toggler"
+            type="button"
+            onClick={toggleNavbar}
+            aria-controls="navbarNav"
+            aria-expanded={expanded}
+            aria-label="Toggle navigation"
+          >
             <span className="navbar-toggler-icon"></span>
           </button>
-          <div className="collapse navbar-collapse" id="navbarNav">
+
+          <div className={`collapse navbar-collapse ${expanded ? 'show' : ''}`} id="navbarNav">
             <ul className="navbar-nav">
-              <li className="nav-item">
-                <Link className="nav-link" to="/download">Download</Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/editPage">Izdvajanje dijeta</Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/print">Štampanje</Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/klinike">Klinike</Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/dostavneTure">Dostavne Ture</Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/filteri">Filteri Za Otpremnice</Link>
-              </li>
+              {[
+                { to: '/download', label: 'Download' },
+                { to: '/editPage', label: 'Izdvajanje dijeta' },
+                { to: '/print', label: 'Štampanje' },
+                { to: '/klinike', label: 'Klinike' },
+                { to: '/dostavneTure', label: 'Linije za razvoz' },
+                { to: '/filteri', label: 'Filteri za otpremnice' }
+              ].map((item) => (
+                <li className="nav-item" key={item.to}>
+                  <NavLink
+                    to={item.to}
+                    onClick={closeNavbar}
+                    className={({ isActive }) =>
+                      'nav-link' + (isActive ? ' active fw-bold text-primary' : '')
+                    }
+                  >
+                    {item.label}
+                  </NavLink>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
       </nav>
 
-      <main className="container mt-4">
+      <main className="container mt-5 pt-4">
         <Outlet />
       </main>
     </div>

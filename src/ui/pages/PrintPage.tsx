@@ -86,11 +86,11 @@ export default function PrintPage() {
       <h2 className="mb-4">Štampanje otpremnica</h2>
         <div className="mb-3">
             <button className="btn btn-primary me-2 m-4" onClick={handleSelectFolder}>
-                Izaberi folder
+                Selektuj folder
             </button>
             {
               folderPath ? <p className="mt-2"> <strong>Izabrani folder: </strong> {folderPath} </p> :
-              showMessage ? <p className="mt-2"> <strong className="text-danger">Prvo selektuj folder!</strong> </p> : ""
+              showMessage ? <p className="mt-2"> <strong className="text-danger">Prvo selektuj folder sa otpremnicama za štampanje!</strong> </p> : ""
             }
         </div>
 

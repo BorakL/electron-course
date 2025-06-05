@@ -171,7 +171,7 @@ const addTuraHandler = async () => {
                   <ul className="list-group mb-3">
                     {tura.klinike.map((id) => (
                       <li key={id} className="list-group-item d-flex justify-content-between align-items-center">
-                        {getNazivKlinike(id)}
+                        {getNazivKlinike(id)?.toUpperCase()}
                         <button
                           className="btn btn-sm btn-outline-danger"
                           title="Izbaci kliniku"
@@ -196,7 +196,7 @@ const addTuraHandler = async () => {
                     }
                   }}
                 >
-                  <option value="">Dodaj kliniku u ovu turu...</option>
+                  <option value="">Dodaj kliniku</option>
                   {tureData.nerasporedjeneKlinike.map((id) => (
                     <option key={id} value={id}>
                       {getNazivKlinike(id)}

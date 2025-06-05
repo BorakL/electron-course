@@ -1,5 +1,5 @@
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: Tahoma, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -28,6 +28,7 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  font-family: 'Arial', !important;
 }
 
 h1 {
@@ -54,6 +55,27 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+.main-menu{
+  display: flex;
+  flex-direction: row;
+  align-items:center;
+  justify-content:space-around;
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+.main-menu>a{
+  padding:1em;
+  border:1px solid grey;
+  text-decoration: none;
+  color:#242424
+}
+.main-menu>a:hover{
+  border: 1px solid #535bf2
+}
+.nav-link.active {
+  border-bottom: 2px solid #0d6efd;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
@@ -64,5 +86,15 @@ button:focus-visible {
   }
   button {
     background-color: #f9f9f9;
+  }
+}
+
+@media only screen and (max-width: 800px){
+  .main-menu{
+    flex-direction: column;
+  }
+  .main-menu>a{
+    margin: 5px;
+    width:100%
   }
 }

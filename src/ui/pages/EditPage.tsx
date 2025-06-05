@@ -2,6 +2,8 @@ import { useState } from "react";
 
 const EditPage = ()=>{
     const[folderPath, setFolderPath] = useState<string | null>(null)
+    const[ifDietsSepareted, setIfDietsSepareted] = useState<boolean>(false)
+    const[waiting,setWaiting] = useState<boolean>(false)
 
     const tableParams = {
         dietColumn: 'A',
@@ -14,8 +16,8 @@ const EditPage = ()=>{
     const handleSelectFolder = async () => {
     const selectedPath = await window.electronApp.selectFolder();
     if (selectedPath) {
-        console.log('Odabrani folder:', folderPath);
         setFolderPath(selectedPath)
+        setIfDietsSepareted(false)
     } else {
         console.log('Izbor foldera je otkazan.');
     }
@@ -26,15 +28,18 @@ const EditPage = ()=>{
         try{
             const filteri = await window.electronApp.readJsonFile("filteriZaOtpremnice.json");
             if(typeof folderPath !== "string") return;
-            await window.electronApp.processDietFiles(filteri, tableParams, folderPath)
+            setWaiting(true);
+            await window.electronApp.processDietFiles(filteri, tableParams, folderPath);
+            setWaiting(false);
+            setIfDietsSepareted(true);
         }catch(error){
             console.log("Greška prilikom odvajanja dijeta", error)
         }
     }
 
     return(
-        <div className="container mt-4 text-start">
-      <h2 className="m-5">Izdvoj dijete</h2>
+    <div className="container mt-4 text-start">
+      <h2 className="m-5">Izdvajanje posebnih dijeta</h2>
 
       <div className="mb-3">
         <button className="btn btn-primary me-2" onClick={handleSelectFolder}>
@@ -50,10 +55,16 @@ const EditPage = ()=>{
       <button
         className="btn btn-success"
         onClick={odvojiDijeteHanlder}
-        disabled={!folderPath}
+        disabled={!folderPath || folderPath!=="" && ifDietsSepareted }
       >
         Izdvoj dijete
       </button>
+      {
+        waiting ? <div>Izdvajam...</div> : null 
+      }
+      {
+        !waiting && folderPath && ifDietsSepareted && <div>{`Uspešno su izdvojene specijalne dijete iz otpremnica unutar foldera:`} <br/> {`${folderPath}`}</div> 
+      }
     </div>
     )
 }
