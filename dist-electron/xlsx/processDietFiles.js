@@ -3,6 +3,7 @@ import path from 'path';
 import XlsxPopulate from 'xlsx-populate';
 import hideRow from './hideRow.js';
 import { removeDiets } from './removeDiets.js';
+import { hasKeyword } from '../util.js';
 const processDietFiles = async (dietFilters, tableParams, folderPath) => {
     const files = await fsp.readdir(folderPath);
     for (const fileName of files) {
@@ -27,8 +28,8 @@ const processDietFiles = async (dietFilters, tableParams, folderPath) => {
                 for (const filter of dietFilters) {
                     if (!filter?.title || !Array.isArray(filter.keywords))
                         continue;
-                    const hasKeyword = filter.keywords.some(keyword => dietName.toUpperCase().includes(keyword.toUpperCase()));
-                    if (hasKeyword) {
+                    const hasKeywordData = hasKeyword(filter, dietName);
+                    if (hasKeywordData) {
                         hasMatch = true;
                         if (!kopiraneGrupe.has(filter.title)) {
                             const ext = path.extname(filePath);

@@ -1,5 +1,6 @@
 import XlsxPopulate from 'xlsx-populate';
 import hideRow from './hideRow.js';
+import { hasKeyword } from '../util.js';
 export async function removeDiets(copyFilePath, filterGroup, tableParams) {
     const { dietColumn, quantityColumn, firstRow, lastRowTitle } = tableParams;
     const workbook = await XlsxPopulate.fromFileAsync(copyFilePath);
@@ -9,7 +10,7 @@ export async function removeDiets(copyFilePath, filterGroup, tableParams) {
     let totalSum = 0;
     while (true) {
         const dietCell = sheet.cell(`${dietColumn}${currentRow}`);
-        const dietName = dietCell.value();
+        const dietName = dietCell.value()?.toString();
         if (!dietName)
             break;
         if (typeof dietName === 'string' &&
@@ -17,9 +18,8 @@ export async function removeDiets(copyFilePath, filterGroup, tableParams) {
             totalSumRow = currentRow;
             break;
         }
-        const hasKeyword = filterGroup.keywords.some(keyword => typeof dietName === 'string' &&
-            dietName.toUpperCase().includes(keyword.toUpperCase()));
-        if (!hasKeyword) {
+        const hasKeywordData = hasKeyword(filterGroup, dietName);
+        if (!hasKeywordData) {
             hideRow(sheet, currentRow);
         }
         else {
@@ -39,6 +39,6 @@ export async function removeDiets(copyFilePath, filterGroup, tableParams) {
         await workbook.toFileAsync(copyFilePath);
     }
     catch (err) {
-        console.error("Greška prilikom pisanja fajla:", err);
+        console.error('Greška prilikom pisanja fajla:', err);
     }
 }

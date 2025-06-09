@@ -1,5 +1,6 @@
 import XlsxPopulate, { Workbook, Worksheet } from 'xlsx-populate';
 import hideRow from './hideRow.js';
+import { hasKeyword } from '../util.js';
 
 interface FilterGroup {
   title: string;
@@ -29,7 +30,7 @@ export async function removeDiets(
 
   while (true) {
     const dietCell = sheet.cell(`${dietColumn}${currentRow}`);
-    const dietName = dietCell.value();
+    const dietName = dietCell.value()?.toString();
 
     if (!dietName) break;
 
@@ -41,12 +42,9 @@ export async function removeDiets(
       break;
     }
 
-    const hasKeyword = filterGroup.keywords.some(keyword =>
-      typeof dietName === 'string' &&
-      dietName.toUpperCase().includes(keyword.toUpperCase())
-    );
+  const hasKeywordData = hasKeyword(filterGroup,dietName)
 
-    if (!hasKeyword) {
+    if (!hasKeywordData) {
       hideRow(sheet, currentRow);
     } else {
       const amountCell = sheet.cell(`${quantityColumn}${currentRow}`);
@@ -67,6 +65,6 @@ export async function removeDiets(
   try {
     await workbook.toFileAsync(copyFilePath);
   } catch (err) {
-    console.error("Greška prilikom pisanja fajla:", err);
+    console.error('Greška prilikom pisanja fajla:', err);
   }
 }

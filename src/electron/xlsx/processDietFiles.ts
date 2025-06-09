@@ -3,6 +3,7 @@ import path from 'path';
 import XlsxPopulate from 'xlsx-populate';
 import hideRow from './hideRow.js';
 import { removeDiets } from './removeDiets.js';
+import { hasKeyword } from '../util.js';
 
 export interface DietFilter {
   title: string;
@@ -52,11 +53,9 @@ const processDietFiles = async (
         for (const filter of dietFilters) {
           if (!filter?.title || !Array.isArray(filter.keywords)) continue;
 
-          const hasKeyword = filter.keywords.some(keyword =>
-            dietName.toUpperCase().includes(keyword.toUpperCase())
-          );
+          const hasKeywordData = hasKeyword(filter,dietName)
 
-          if (hasKeyword) {
+          if (hasKeywordData) {
             hasMatch = true;
             if (!kopiraneGrupe.has(filter.title)) {
               const ext = path.extname(filePath);

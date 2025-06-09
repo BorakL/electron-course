@@ -114,7 +114,6 @@ const DownloadPage = ()=>{
             <input
               type="date"
               id="date"
-              className={`form-control ${errors.date ? 'is-invalid' : ''}`}
               {...register('date', {
                 required: 'Selektuj datum',
               })}

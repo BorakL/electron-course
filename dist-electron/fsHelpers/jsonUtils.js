@@ -1,18 +1,15 @@
 import fs from "fs";
 import path from 'path';
 import { dialog } from "electron";
+const appFolder = process.cwd(); // ili path.dirname(process.execPath)
 //Development
-import { fileURLToPath } from 'url';
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const dataFolder = path.join(__dirname, "..", "data");
-const FILE_NAME = 'dostavneTure.json';
+const dataFolder = path.join(appFolder, "src/electron", "data");
 //Production
-// const appFolder = process.cwd(); // ili path.dirname(process.execPath);
 // const dataFolder = path.join(appFolder, 'data');
-// if (!fs.existsSync(dataFolder)) {
-//   fs.mkdirSync(dataFolder);
-// }
+const FILE_NAME = 'dostavneTure.json';
+if (!fs.existsSync(dataFolder)) {
+    fs.mkdirSync(dataFolder);
+}
 export const getFilePath = (fileName) => {
     return path.join(dataFolder, fileName);
 };
@@ -30,6 +27,7 @@ export function readJsonFile(fileName) {
 export function writeJsonFile(fileName, data) {
     try {
         const filePath = getFilePath(fileName);
+        console.log("filePath", filePath);
         fs.writeFileSync(filePath, JSON.stringify(data, null, 2), "utf-8");
     }
     catch (error) {

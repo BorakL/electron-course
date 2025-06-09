@@ -170,3 +170,23 @@ export async function printDostavnaTura(folderPath, dostavneTure, klinike, turaI
     excel.Quit();
     console.log("Završena štampa za turu:", turaId);
 }
+const forbiddenChars = ['[', '\\', '/', '$', '(', ')', ']'];
+export const isRegexKeyword = (keyword) => forbiddenChars.some(char => keyword.includes(char));
+export const hasKeyword = (filterGroup, dietName) => {
+    return filterGroup.keywords?.some(keyword => {
+        if (typeof dietName !== 'string')
+            return false;
+        if (isRegexKeyword(keyword)) {
+            try {
+                const regex = new RegExp(keyword, 'i'); // i = case-insensitive
+                return regex.test(dietName);
+            }
+            catch {
+                return false; // ako regex nije validan, preskoči ga  
+            }
+        }
+        else {
+            return dietName.toUpperCase().includes(keyword.toUpperCase());
+        }
+    });
+};
