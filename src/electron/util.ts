@@ -200,16 +200,16 @@ const excel = new winax.Object('Excel.Application') as ExcelApplication;
       try {
         const workbook = excel.Workbooks.Open(fullPath);
         const sheet = workbook.Sheets.Item(1);
-
+        
         // Podešavanja štampe
-        sheet.PageSetup.CenterHorizontally = true; 
+        (sheet.PageSetup.Zoom as unknown as boolean | number) = false;
         sheet.PageSetup.FitToPagesWide = 1;
         sheet.PageSetup.FitToPagesTall = 1;
 
         // Štampanje
         await new Promise<void>((resolve, reject) => {
           try {
-            sheet.PrintOut();
+            sheet.PrintOut(1,1,2);
             resolve();
           } catch (err) {
             reject(err);

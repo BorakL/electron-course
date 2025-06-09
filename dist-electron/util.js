@@ -147,13 +147,13 @@ export async function printDostavnaTura(folderPath, dostavneTure, klinike, turaI
                 const workbook = excel.Workbooks.Open(fullPath);
                 const sheet = workbook.Sheets.Item(1);
                 // Podešavanja štampe
-                sheet.PageSetup.CenterHorizontally = true;
+                sheet.PageSetup.Zoom = false;
                 sheet.PageSetup.FitToPagesWide = 1;
                 sheet.PageSetup.FitToPagesTall = 1;
                 // Štampanje
                 await new Promise((resolve, reject) => {
                     try {
-                        sheet.PrintOut();
+                        sheet.PrintOut(1, 1, 2);
                         resolve();
                     }
                     catch (err) {

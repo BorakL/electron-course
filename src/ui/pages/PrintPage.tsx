@@ -18,6 +18,7 @@ export default function PrintPage() {
   const[folderPath, setFolderPath] = useState<string>("");
   const[showMessage,setShowMessage] = useState<boolean>(false);
   const[printedTours, setPrintedTours] = useState<number[]>([]);
+  const[isPrinting, setIsPrinting] = useState<boolean>(false);
   const {confirm} = useConfirm()
 
   useEffect(() => {
@@ -64,19 +65,27 @@ export default function PrintPage() {
         }
     };
 
-    const handlePrint = async (turaId:number) => {
-      try{
-        if(folderPath===""){
-          setShowMessage(true)
-        }else if(tureData?.ture && klinike){
-          setShowMessage(false)
-          setPrintedTours(prev => ([...prev,turaId]))
-          await window.electronApp.printDostavnaTura(folderPath, tureData.ture, klinike, turaId)
-        }
-      }catch(error){
-        console.log("Greška prilikom pokretanja štame: ",error)
-      }
+const handlePrint = async (turaId: number) => {
+  try {
+    if (folderPath === "") {
+      setShowMessage(true);
+    } else if (tureData?.ture && klinike) {
+      setShowMessage(false);
+      setIsPrinting(true); // 🔒 Zaključaj sve štampe
+      setPrintedTours(prev => [...prev, turaId]);
+
+      await window.electronApp.printDostavnaTura(folderPath, tureData.ture, klinike, turaId);
+
+      // ⏱ Pauza dok se ne dozvoli novo štampanje
+      setIsPrinting(false); // 🔓 Otključaj sve
+
     }
+  } catch (error) {
+    console.log("Greška prilikom pokretanja štampe:", error);
+    setIsPrinting(false); // U slučaju greške - otključaj
+  }
+};
+
 
 
   if (loading || !tureData) return <p>Učitavanje...</p>;
@@ -97,18 +106,22 @@ export default function PrintPage() {
       <div className="row">
         {tureData.ture.map((tura) => (
           <div key={tura.id} className="col-md-4 mb-4">
-              <div>
-                <button onClick={()=>handlePrint(tura.id)} >
-                  <div className="mb-2 font">{!printedTours.includes(tura.id) ? <LuPrinter/> : <LuPrinterCheck/>} </div>
-                  <ul className="list-group mb-3">
-                    {tura.klinike.map((id) => (
-                      <li key={id} className="list-group-item d-flex justify-content-between align-items-center">
-                        {getNazivKlinike(id)?.toUpperCase()}
-                      </li>
-                    ))}
-                  </ul>
-                </button>
-              </div>             
+            <button 
+              disabled={isPrinting}
+              onClick={()=>handlePrint(tura.id)} 
+              className={`btn btn-light ${printedTours.includes(tura.id) ? "border border-2" : null}`}
+            >
+              <div className="mb-2 font">
+                {!printedTours.includes(tura.id) ? <LuPrinter/> : <LuPrinterCheck color="red"/>}
+              </div>
+              <ul className="list-group mb-3">
+                {tura.klinike.map((id) => (
+                  <li key={id} className="list-group-item d-flex justify-content-between align-items-center">
+                    {getNazivKlinike(id)?.toUpperCase()}
+                  </li>
+                ))}
+              </ul>
+            </button>
           </div>
         ))}
       </div>
