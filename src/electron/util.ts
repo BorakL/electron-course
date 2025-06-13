@@ -79,7 +79,13 @@ export async function downloadFile({
         date,
         session
     }: CreateFullFolderParams): Promise<Logs | undefined> {
-    const today = date;
+    const mealMap: Record<number, string>  = {
+      1: "D",
+      2: "R",
+      3: "V"
+    }
+    const mealCategory = mealMap[category] || "";
+    const today = `${date}-${mealCategory}`;
     const desktopPath = path.join(os.homedir(), "Desktop");
     const saveFolder = path.join(desktopPath, today);
 
@@ -246,9 +252,6 @@ if (!excel || typeof excel.Workbooks?.Open !== 'function') {
   } else {
     console.warn("excel.Quit nije funkcija – Excel se možda nije ispravno inicijalizovao.");
   }
-
-
-  excel.Quit();
   console.log("Završena štampa za turu:", turaId);
 }
 

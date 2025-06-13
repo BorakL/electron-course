@@ -51,7 +51,13 @@ export async function downloadFile({ fileUrl, filePath, refererUrl, firm, user, 
 // Funkcija za kreiranje foldera i preuzimanje fajlova sa retry mehanizmom
 // export function createFullFolder(cliniks: Klinika[], url: string | undefined, refererUrl: string | undefined, category: number, date: string, session: string): void {
 export async function createFullFolder({ cliniks, url, refererUrl, category, date, session }) {
-    const today = date;
+    const mealMap = {
+        1: "D",
+        2: "R",
+        3: "V"
+    };
+    const mealCategory = mealMap[category] || "";
+    const today = `${date}-${mealCategory}`;
     const desktopPath = path.join(os.homedir(), "Desktop");
     const saveFolder = path.join(desktopPath, today);
     if (!fs.existsSync(saveFolder)) {
@@ -192,7 +198,6 @@ export async function printDostavnaTura(folderPath, dostavneTure, klinike, turaI
     else {
         console.warn("excel.Quit nije funkcija – Excel se možda nije ispravno inicijalizovao.");
     }
-    excel.Quit();
     console.log("Završena štampa za turu:", turaId);
 }
 const forbiddenChars = ['[', '\\', '/', '$', '(', ')', ']'];
