@@ -135,12 +135,30 @@ export async function printDostavnaTura(folderPath, dostavneTure, klinike, turaI
         return;
     }
     const klinikeZaStampu = klinike.filter(k => tura.klinike.includes(k.user));
-    const excel = new winax.Object('Excel.Application');
+    // const excel = new winax.Object('Excel.Application') as ExcelApplication; 
+    let excel;
+    try {
+        excel = new winax.Object('Excel.Application');
+    }
+    catch (err) {
+        console.error("Excel COM objekat nije mogao da se napravi:", err);
+        return;
+    }
+    if (!excel || typeof excel.Workbooks?.Open !== 'function') {
+        console.error("Excel nije dostupan ili nije pravilno instaliran.");
+        return;
+    }
     excel.Visible = false;
     for (const klinika of klinikeZaStampu) {
-        const naziv = klinika.naziv.trim().toLowerCase();
-        const matchingFiles = allFiles.filter(file => file.toLowerCase().includes(naziv));
+        const naziv = klinika.naziv.trim().toLowerCase().replace(/\s+/g, ' ');
+        // Regex koji traži ime fajla koje počinje sa nazivom klinike,
+        // i posle može imati " - nešto" ili odmah ekstenziju
+        const fileRegex = new RegExp(`^${naziv}(?: - .+)?\\.xls[x]?$`, 'i');
+        const matchingFiles = allFiles.filter(file => fileRegex.test(file.toLowerCase()));
+        const alreadyPrinted = new Set();
         for (const fileName of matchingFiles) {
+            if (alreadyPrinted.has(fileName))
+                continue;
             const fullPath = path.join(folderPath, fileName);
             console.log(`Štampam za kliniku "${klinika.naziv}": ${fileName}`);
             try {
@@ -161,11 +179,18 @@ export async function printDostavnaTura(folderPath, dostavneTure, klinike, turaI
                     }
                 });
                 workbook.Close(false);
+                alreadyPrinted.add(fileName); // Zabeleži da je štampan
             }
             catch (err) {
                 console.error(`Greška pri štampi fajla ${fileName}:`, err);
             }
         }
+    }
+    if (typeof excel.Quit === 'function') {
+        excel.Quit();
+    }
+    else {
+        console.warn("excel.Quit nije funkcija – Excel se možda nije ispravno inicijalizovao.");
     }
     excel.Quit();
     console.log("Završena štampa za turu:", turaId);

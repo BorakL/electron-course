@@ -3,7 +3,7 @@ import axios from 'axios';
 import https from 'https';
 import path from 'path';
 import os from 'os';
-import { CreateFullFolderParams, DostavnaTura, DownloadFileParams, ExcelApplication, Klinika } from './types/types.js';
+import { CreateFullFolderParams, DostavnaTura, DownloadFileParams, Klinika } from './types/types.js';
 import { promises as fsp } from 'fs';
 import winax from "winax";
 // type ActiveXConstructor<T> = new (progId: string) => T;
@@ -169,7 +169,7 @@ export async function printDostavnaTura(
   }
 
   let allFiles: string[];
-  try { 
+  try {
     const files = await fsp.readdir(folderPath);
     allFiles = files.filter(f =>
       f.toLowerCase().endsWith('.xlsx') || f.toLowerCase().endsWith('.xls')
@@ -181,26 +181,43 @@ export async function printDostavnaTura(
 
   const klinikeZaStampu = klinike.filter(k => tura.klinike.includes(k.user));
 
-const excel = new winax.Object('Excel.Application') as ExcelApplication;
+  // const excel = new winax.Object('Excel.Application') as ExcelApplication; 
+let excel;
+  try {
+  excel = new winax.Object('Excel.Application');
+} catch (err) {
+  console.error("Excel COM objekat nije mogao da se napravi:", err);
+  return;
+}
 
+if (!excel || typeof excel.Workbooks?.Open !== 'function') {
+  console.error("Excel nije dostupan ili nije pravilno instaliran.");
+  return;
+}
 
   excel.Visible = false;
 
   for (const klinika of klinikeZaStampu) {
-    const naziv = klinika.naziv.trim().toLowerCase();
+    const naziv = klinika.naziv.trim().toLowerCase().replace(/\s+/g, ' ');
+    
+    // Regex koji traži ime fajla koje počinje sa nazivom klinike,
+    // i posle može imati " - nešto" ili odmah ekstenziju
+    const fileRegex = new RegExp(`^${naziv}(?: - .+)?\\.xls[x]?$`, 'i');
 
     const matchingFiles = allFiles.filter(file =>
-      file.toLowerCase().includes(naziv)
+      fileRegex.test(file.toLowerCase())
     );
+    const alreadyPrinted = new Set<string>();
 
     for (const fileName of matchingFiles) {
+      if (alreadyPrinted.has(fileName)) continue;
       const fullPath = path.join(folderPath, fileName);
       console.log(`Štampam za kliniku "${klinika.naziv}": ${fileName}`);
 
       try {
         const workbook = excel.Workbooks.Open(fullPath);
         const sheet = workbook.Sheets.Item(1);
-        
+
         // Podešavanja štampe
         (sheet.PageSetup.Zoom as unknown as boolean | number) = false;
         sheet.PageSetup.FitToPagesWide = 1;
@@ -209,7 +226,7 @@ const excel = new winax.Object('Excel.Application') as ExcelApplication;
         // Štampanje
         await new Promise<void>((resolve, reject) => {
           try {
-            sheet.PrintOut(1,1,2);
+            sheet.PrintOut(1, 1, 2);
             resolve();
           } catch (err) {
             reject(err);
@@ -217,11 +234,19 @@ const excel = new winax.Object('Excel.Application') as ExcelApplication;
         });
 
         workbook.Close(false);
+        alreadyPrinted.add(fileName); // Zabeleži da je štampan
       } catch (err) {
         console.error(`Greška pri štampi fajla ${fileName}:`, err);
       }
     }
   }
+
+  if (typeof excel.Quit === 'function') {
+    excel.Quit();
+  } else {
+    console.warn("excel.Quit nije funkcija – Excel se možda nije ispravno inicijalizovao.");
+  }
+
 
   excel.Quit();
   console.log("Završena štampa za turu:", turaId);
