@@ -38,6 +38,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
+    "@types/activex-excel": "^14.0.11",
     "@types/os-utils": "^0.0.4",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",

@@ -141,62 +141,62 @@ export async function printDostavnaTura(folderPath, dostavneTure, klinike, turaI
         return;
     }
     const klinikeZaStampu = klinike.filter(k => tura.klinike.includes(k.user));
-    // const excel = new winax.Object('Excel.Application') as ExcelApplication; 
-    let excel;
     try {
-        excel = new winax.Object('Excel.Application');
-    }
-    catch (err) {
-        console.error("Excel COM objekat nije mogao da se napravi:", err);
-        return;
-    }
-    if (!excel || typeof excel.Workbooks?.Open !== 'function') {
-        console.error("Excel nije dostupan ili nije pravilno instaliran.");
-        return;
-    }
-    excel.Visible = false;
-    for (const klinika of klinikeZaStampu) {
-        const naziv = klinika.naziv.trim().toLowerCase().replace(/\s+/g, ' ');
-        // Regex koji traži ime fajla koje počinje sa nazivom klinike,
-        // i posle može imati " - nešto" ili odmah ekstenziju
-        const fileRegex = new RegExp(`^${naziv}(?: - .+)?\\.xls[x]?$`, 'i');
-        const matchingFiles = allFiles.filter(file => fileRegex.test(file.toLowerCase()));
-        const alreadyPrinted = new Set();
-        for (const fileName of matchingFiles) {
-            if (alreadyPrinted.has(fileName))
-                continue;
-            const fullPath = path.join(folderPath, fileName);
-            console.log(`Štampam za kliniku "${klinika.naziv}": ${fileName}`);
-            try {
-                const workbook = excel.Workbooks.Open(fullPath);
-                const sheet = workbook.Sheets.Item(1);
-                // Podešavanja štampe
-                sheet.PageSetup.Zoom = false;
-                sheet.PageSetup.FitToPagesWide = 1;
-                sheet.PageSetup.FitToPagesTall = 1;
-                // Štampanje
-                await new Promise((resolve, reject) => {
-                    try {
-                        sheet.PrintOut(1, 1, 2);
-                        resolve();
-                    }
-                    catch (err) {
-                        reject(err);
-                    }
-                });
-                workbook.Close(false);
-                alreadyPrinted.add(fileName); // Zabeleži da je štampan
-            }
-            catch (err) {
-                console.error(`Greška pri štampi fajla ${fileName}:`, err);
+        for (const klinika of klinikeZaStampu) {
+            const naziv = klinika.naziv.trim().toLowerCase().replace(/\s+/g, ' ');
+            const fileRegex = new RegExp(`^${naziv}(?: - .+)?\\.xls[x]?$`, 'i');
+            const matchingFiles = allFiles.filter(file => fileRegex.test(file.toLowerCase()));
+            const alreadyPrinted = new Set();
+            for (const fileName of matchingFiles) {
+                const excel = new winax.Object('Excel.Application');
+                if (!excel || typeof excel.Workbooks?.Open !== 'function') {
+                    console.error("Excel nije dostupan ili nije pravilno instaliran.");
+                    return;
+                }
+                excel.Visible = true;
+                if (alreadyPrinted.has(fileName))
+                    continue;
+                const fullPath = path.join(folderPath, fileName);
+                console.log(`Štampam za kliniku "${klinika.naziv}": ${fileName}`);
+                let workbook = null;
+                let sheet;
+                try {
+                    workbook = excel.Workbooks.Open(fullPath);
+                    const sheetCount = workbook.Sheets.Count;
+                    console.log("Sheet count:", sheetCount);
+                    sheet = workbook.Sheets.Item(1);
+                    // Podešavanja štampe
+                    sheet.PageSetup.Zoom = false;
+                    sheet.PageSetup.FitToPagesWide = 1;
+                    sheet.PageSetup.FitToPagesTall = 1;
+                    // Štampanje
+                    await new Promise((resolve, reject) => {
+                        try {
+                            sheet.PrintOut(1, 1, 2);
+                            resolve();
+                        }
+                        catch (err) {
+                            reject(err);
+                        }
+                    });
+                    workbook.Close(false);
+                    alreadyPrinted.add(fileName);
+                }
+                catch (err) {
+                    console.error(`Greška pri štampi fajla ${fileName}:`, err);
+                }
+                try {
+                    excel.Quit();
+                    console.log("Excel zatvoren.");
+                }
+                catch (err) {
+                    console.warn("Greška prilikom zatvaranja Excela:", err);
+                }
             }
         }
     }
-    if (typeof excel.Quit === 'function') {
-        excel.Quit();
-    }
-    else {
-        console.warn("excel.Quit nije funkcija – Excel se možda nije ispravno inicijalizovao.");
+    catch (err) {
+        console.error("Excel COM objekat nije mogao da se koristi:", err);
     }
     console.log("Završena štampa za turu:", turaId);
 }
