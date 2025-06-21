@@ -3,9 +3,10 @@ import axios from 'axios';
 import https from 'https';
 import path from 'path';
 import os from 'os';
-import { CreateFullFolderParams, DostavnaTura, DownloadFileParams, Klinika } from './types/types.js';
+import { CreateFullFolderParams, DostavnaTura, DostavnaTuraObject, DownloadFileParams, Klinika } from './types/types.js';
 import { promises as fsp } from 'fs';
 import winax from "winax";
+import { readJsonFile } from './fsHelpers/jsonUtils.js';
 
 
 interface ExcelSheet {
@@ -126,9 +127,12 @@ export async function downloadFile({
             }
             return logs;
         }
+        const dostavneTure: DostavnaTuraObject = await readJsonFile("dostavneTure.json")
+        const ture: DostavnaTura[] = dostavneTure?.ture;
 
         const klinika = cliniks[currentIndex];
-        const fileName = `${klinika.naziv?.toUpperCase()}.xlsx`;
+        const turaID = pronadjiTuruZaKliniku(klinika.user,ture)
+        const fileName = `${turaID || ""} ${klinika.naziv?.toUpperCase()}.xlsx`;
         const filePath = path.join(saveFolder, fileName);
         const fileUrl = `${url}?kategorija=${category}&date=${date}&firm=${klinika.firm}&user=${klinika.user}`;
 
@@ -204,7 +208,7 @@ export async function printDostavnaTura(
 
     for (const klinika of klinikeZaStampu) {
       const naziv = klinika.naziv.trim().toLowerCase().replace(/\s+/g, ' ');
-      const fileRegex = new RegExp(`^${naziv}(?: - .+)?\\.xls[x]?$`, 'i');
+      const fileRegex = new RegExp(`^(?:\\d{1,2}\\s*)?${naziv}(?: - .+)?\\.xls[x]?$`, 'i');
       const matchingFiles = allFiles.filter(file =>
         fileRegex.test(file.toLowerCase())
       );
@@ -217,7 +221,7 @@ export async function printDostavnaTura(
           return;
         }
 
-        excel.Visible = true;
+        excel.Visible = false;
         if (alreadyPrinted.has(fileName)) continue;
         const fullPath = path.join(folderPath, fileName);
         console.log(`Štampam za kliniku "${klinika.naziv}": ${fileName}`);
@@ -288,3 +292,16 @@ export const hasKeyword = (filterGroup:FilterGroup, dietName:string):boolean => 
     }
   });
 } 
+
+
+export function pronadjiTuruZaKliniku(
+  userId: number,
+  dostavneTure: DostavnaTura[]
+): number | null {
+  for (const tura of dostavneTure) {
+    if (tura.klinike.includes(userId)) {
+      return tura.id;
+    }
+  }
+  return null; // ako nije pronađena
+}

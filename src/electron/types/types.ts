@@ -105,3 +105,8 @@ export interface Worksheet {
   ): void;
   PrintOut(): void;
 }
+
+export interface DostavnaTuraObject {
+  ture: DostavnaTura[],
+  nerasporedjeneKlinike: number[]
+}

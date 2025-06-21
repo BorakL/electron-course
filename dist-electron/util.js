@@ -5,6 +5,7 @@ import path from 'path';
 import os from 'os';
 import { promises as fsp } from 'fs';
 import winax from "winax";
+import { readJsonFile } from './fsHelpers/jsonUtils.js';
 // type ActiveXConstructor<T> = new (progId: string) => T;
 // Napravi konstruktor za Excel.Application
 // const ExcelApp = winax as unknown as ActiveXConstructor<ExcelApplication>;
@@ -81,8 +82,11 @@ export async function createFullFolder({ cliniks, url, refererUrl, category, dat
             }
             return logs;
         }
+        const dostavneTure = await readJsonFile("dostavneTure.json");
+        const ture = dostavneTure?.ture;
         const klinika = cliniks[currentIndex];
-        const fileName = `${klinika.naziv?.toUpperCase()}.xlsx`;
+        const turaID = pronadjiTuruZaKliniku(klinika.user, ture);
+        const fileName = `${turaID || ""} ${klinika.naziv?.toUpperCase()}.xlsx`;
         const filePath = path.join(saveFolder, fileName);
         const fileUrl = `${url}?kategorija=${category}&date=${date}&firm=${klinika.firm}&user=${klinika.user}`;
         console.log(`📥 Preuzimam: ${fileUrl} -> ${filePath} (Pokušaji preostali: ${attemptsLeft})`);
@@ -144,7 +148,7 @@ export async function printDostavnaTura(folderPath, dostavneTure, klinike, turaI
     try {
         for (const klinika of klinikeZaStampu) {
             const naziv = klinika.naziv.trim().toLowerCase().replace(/\s+/g, ' ');
-            const fileRegex = new RegExp(`^${naziv}(?: - .+)?\\.xls[x]?$`, 'i');
+            const fileRegex = new RegExp(`^(?:\\d{1,2}\\s*)?${naziv}(?: - .+)?\\.xls[x]?$`, 'i');
             const matchingFiles = allFiles.filter(file => fileRegex.test(file.toLowerCase()));
             const alreadyPrinted = new Set();
             for (const fileName of matchingFiles) {
@@ -153,7 +157,7 @@ export async function printDostavnaTura(folderPath, dostavneTure, klinike, turaI
                     console.error("Excel nije dostupan ili nije pravilno instaliran.");
                     return;
                 }
-                excel.Visible = true;
+                excel.Visible = false;
                 if (alreadyPrinted.has(fileName))
                     continue;
                 const fullPath = path.join(folderPath, fileName);
@@ -220,3 +224,11 @@ export const hasKeyword = (filterGroup, dietName) => {
         }
     });
 };
+export function pronadjiTuruZaKliniku(userId, dostavneTure) {
+    for (const tura of dostavneTure) {
+        if (tura.klinike.includes(userId)) {
+            return tura.id;
+        }
+    }
+    return null; // ako nije pronađena
+}

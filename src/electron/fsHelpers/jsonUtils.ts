@@ -7,9 +7,9 @@ import { dialog } from "electron";
 const appFolder = process.cwd(); // ili path.dirname(process.execPath)
 
 //Development
-const dataFolder = path.join(appFolder, "src/electron","data");
+// const dataFolder = path.join(appFolder, "src/electron","data");
 //Production
-// const dataFolder = path.join(appFolder, 'data');
+const dataFolder = path.join(appFolder, 'data');
 
 const FILE_NAME = 'dostavneTure.json';
 if (!fs.existsSync(dataFolder)) {
