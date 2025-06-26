@@ -85,11 +85,15 @@ const KlinikaDetails = () => {
             <div className="col-sm-8">
                 <input
                 className={`form-control ${errors.naziv ? 'is-invalid' : ''}`}
-                {...register('naziv', { required: 'Naziv je obavezan' })}
+                {...register('naziv', { 
+                      required: true,
+                      pattern: {
+                        value: /^[a-zA-Z0-9čćžšđČĆŽŠĐ]+$/,
+                        message: "Dozvoljeni su samo alfanumerički karakteri bez razmaka i specijalnih znakova."
+                      }  
+                 })}
                 />
-                {errors.naziv && (
-                <div className="invalid-feedback">{errors.naziv.message}</div>
-                )}
+                {errors.naziv && <div className="text-danger">{errors.naziv.message || "Ovo polje je obavezno."}</div>}
             </div>
           </div>
 

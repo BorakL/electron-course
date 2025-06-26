@@ -41,6 +41,7 @@ declare global {
             processDietFiles: (dietFilters: DietFilter[], tableParams: TableParams, folterPath:string) => Promise<void>;
             selectFolder: () => Promise<null | string>;
             printDostavnaTura: (folderPath:string, dostavneTure:DostavnaTura[], klinike:Klinika[], turaId:nuber) => Promise<void>
-        }
+            loginAndGetSession: (username:string, password:string) => Promise<string | null>
+          }
     }
 }

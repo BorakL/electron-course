@@ -58,9 +58,16 @@ const AddKlinika = () => {
       <div className="col-sm-10">
         <input
           className="form-control"
-          {...register("naziv", { required: true })}
+          {...register("naziv", { 
+            required: true, 
+            pattern: {
+              value: /^[a-zA-Z0-9čćžšđČĆŽŠĐ]+$/,
+              message: "Dozvoljeni su samo alfanumerički karakteri bez razmaka i specijalnih znakova."
+            }
+          }
+        )}
         />
-        {errors.naziv && <div className="text-danger">Ovo polje je obavezno.</div>}
+        {errors.naziv && <div className="text-danger">{errors.naziv.message || "Ovo polje je obavezno."}</div>}
       </div>
     </div>
 

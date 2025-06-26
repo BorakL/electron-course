@@ -49,6 +49,34 @@ export async function downloadFile({ fileUrl, filePath, refererUrl, firm, user, 
         throw error;
     }
 }
+export async function loginAndGetSession(username, password) {
+    const loginUrl = "https://prochef.rs/hospital/admin_login.php";
+    const formData = new URLSearchParams();
+    formData.append("username", username);
+    formData.append("password", password);
+    try {
+        const response = await axios.post(loginUrl, formData.toString(), {
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            maxRedirects: 0, // Ne sledi 302 redirect
+            validateStatus: (status) => status >= 200 && status < 400,
+        });
+        const { status, headers } = response;
+        const location = headers["location"];
+        const setCookie = headers["set-cookie"];
+        const isRedirectToMenu = status === 302 && location === "menu_creation.php";
+        const sessionCookie = setCookie?.find((cookie) => cookie.startsWith("PHPSESSID="));
+        if (isRedirectToMenu && sessionCookie) {
+            const phpSessionId = sessionCookie.split(";")[0].split("=")[1];
+            return phpSessionId; // uspešan login
+        }
+        // Ako nije redirektovano na menu ili nema cookie
+        return null;
+    }
+    catch (error) {
+        console.error("Login error:", error);
+        return null;
+    }
+}
 // Funkcija za kreiranje foldera i preuzimanje fajlova sa retry mehanizmom
 // export function createFullFolder(cliniks: Klinika[], url: string | undefined, refererUrl: string | undefined, category: number, date: string, session: string): void {
 export async function createFullFolder({ cliniks, url, refererUrl, category, date, session }) {

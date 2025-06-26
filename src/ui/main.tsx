@@ -7,13 +7,16 @@ import { store } from './redux/store.ts'
 import { HashRouter } from 'react-router'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { ConfirmProvider } from './context/confirmContext.tsx'
+import { SessionProvider } from './context/sessionContext.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <HashRouter>
       <Provider store={store}>
         <ConfirmProvider>
-          <App />
+          <SessionProvider>
+            <App />
+          </SessionProvider>
         </ConfirmProvider>
       </Provider>
     </HashRouter>

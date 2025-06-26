@@ -1,6 +1,6 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import path from 'path';
-import { createFullFolder, isDev, printDostavnaTura } from './util.js';
+import { createFullFolder, isDev, loginAndGetSession, printDostavnaTura } from './util.js';
 // import { pollResources } from './resourceManager.js';
 import { getPreloadPath } from './pathResolver.js';
 import dotenv from 'dotenv';
@@ -72,5 +72,8 @@ app.on("ready", () => {
     });
     ipcMain.handle('printDostavnaTura', (event, folderPath, dostavneTure, klinika, turaId) => {
         return printDostavnaTura(folderPath, dostavneTure, klinika, turaId);
+    });
+    ipcMain.handle('loginAndGetSession', async (_event, username, password) => {
+        return loginAndGetSession(username, password);
     });
 });

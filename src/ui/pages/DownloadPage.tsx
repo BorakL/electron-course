@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react'; 
 import { useForm } from 'react-hook-form';
+import { useSession } from '../context/sessionContext';
+import { useNavigate } from 'react-router';
 
 const DownloadPage = ()=>{
     type FormValues = {
         category: 1 | 2 | 3;
         date: string;
-        session: string;
       };
     
       const form = useForm<FormValues>({
         defaultValues: {
           category: 1,
-          date: "",
-          session: "",
+          date: ""
         },
       });
       type Logs = {
@@ -26,6 +26,8 @@ const DownloadPage = ()=>{
       const[klinike,setKlinike] = useState([]);
       const { register, handleSubmit, formState, watch, setValue } = form;
       const { errors } = formState;
+      const {session} = useSession();
+      const navigate = useNavigate();
     
       const watchDate = watch("date");
     
@@ -73,7 +75,7 @@ const DownloadPage = ()=>{
             refererUrl,
             category: form.getValues("category"),
             date: formattedDate, // Slanje formatiranog datuma
-            session: form.getValues("session"),
+            session: session
           });
           setLoading(false);
           setLogs(logs)
@@ -123,7 +125,7 @@ const DownloadPage = ()=>{
             )}
           </div>
 
-          {/* PHPSESSID */}
+          {/* PHPSESSID       
           <div className="mb-3">
             <label htmlFor="session" className="form-label">
               PHPSESSID:
@@ -140,6 +142,7 @@ const DownloadPage = ()=>{
               <div className="invalid-feedback">{errors.session.message}</div>
             )}
           </div>
+          */}
 
           {/* Dugme za submit */}
           <button type="submit" className="btn btn-primary" disabled={loading}>
@@ -180,6 +183,11 @@ const DownloadPage = ()=>{
                     ))}
                   </ul>
                 </div>
+            }
+
+            {
+              logs.status === "INVALID_SESSION" && 
+              <button onClick={()=>navigate("/login")}>Prijavi se</button>
             }
           </div>
           )}
