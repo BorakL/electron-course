@@ -50,7 +50,8 @@ export async function downloadFile({ fileUrl, filePath, refererUrl, firm, user, 
     }
 }
 export async function loginAndGetSession(username, password) {
-    const loginUrl = "https://prochef.rs/hospital/admin_login.php";
+    console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+    const loginUrl = "https://www.prochef.rs/hospital/admin_login.php";
     const formData = new URLSearchParams();
     formData.append("username", username);
     formData.append("password", password);

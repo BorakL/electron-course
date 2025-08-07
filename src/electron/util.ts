@@ -85,8 +85,7 @@ export async function downloadFile({
 
 
 export async function loginAndGetSession(username: string, password: string) {
-  const loginUrl = "https://prochef.rs/hospital/admin_login.php";
-
+  const loginUrl = "https://www.prochef.rs/hospital/admin_login.php";
   const formData = new URLSearchParams();
   formData.append("username", username);
   formData.append("password", password);
@@ -101,7 +100,6 @@ export async function loginAndGetSession(username: string, password: string) {
     const { status, headers } = response;
     const location = headers["location"];
     const setCookie = headers["set-cookie"];
-
     const isRedirectToMenu = status === 302 && location === "menu_creation.php";
     const sessionCookie = setCookie?.find((cookie) => cookie.startsWith("PHPSESSID="));
 
