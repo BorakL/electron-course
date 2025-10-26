@@ -173,6 +173,8 @@ export async function printDostavnaTura(folderPath, dostavneTure, klinike, turaI
         return;
     }
     const klinikeZaStampu = klinike.filter(k => tura.klinike.includes(k.id));
+    const excel = new winax.Object('Excel.Application');
+    excel.Visible = false;
     try {
         for (const klinika of klinikeZaStampu) {
             const naziv = klinika.naziv.trim().toLowerCase().replace(/\s+/g, ' ');
@@ -180,12 +182,10 @@ export async function printDostavnaTura(folderPath, dostavneTure, klinike, turaI
             const matchingFiles = allFiles.filter(file => fileRegex.test(file.toLowerCase()));
             const alreadyPrinted = new Set();
             for (const fileName of matchingFiles) {
-                const excel = new winax.Object('Excel.Application');
                 if (!excel || typeof excel.Workbooks?.Open !== 'function') {
                     console.error("Excel nije dostupan ili nije pravilno instaliran.");
                     return;
                 }
-                excel.Visible = false;
                 if (alreadyPrinted.has(fileName))
                     continue;
                 const fullPath = path.join(folderPath, fileName);
@@ -217,14 +217,12 @@ export async function printDostavnaTura(folderPath, dostavneTure, klinike, turaI
                 catch (err) {
                     console.error(`Greška pri štampi fajla ${fileName}:`, err);
                 }
-                try {
-                    excel.Quit();
-                    console.log("Excel zatvoren.");
-                }
-                catch (err) {
-                    console.warn("Greška prilikom zatvaranja Excela:", err);
-                }
             }
+        }
+        excel.Quit();
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        if (global.gc) {
+            global.gc();
         }
     }
     catch (err) {
