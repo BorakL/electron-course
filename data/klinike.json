@@ -1,5 +1,6 @@
 [
   {
+    "id": 1761158260580,
     "naziv": "valjevo",
     "ostaliNazivi": [
       "valjevo"
@@ -9,9 +10,12 @@
     "bolnica": "ZDRAVSTVENI CENTAR VALJEVO",
     "klinika": "OPŠTA BOLNICA VALJEVO",
     "firm": 60,
-    "user": 694
+    "user": [
+      694
+    ]
   },
   {
+    "id": 1761158260581,
     "naziv": "s palanka",
     "ostaliNazivi": [
       "s palanka",
@@ -24,9 +28,12 @@
     "bolnica": "OPŠTA BOLNICA:'STEFAN VISOKI' SMEDEREVSKA PALANKA",
     "klinika": "OPŠTA BOLNICA:'STEFAN VISOKI'",
     "firm": 72,
-    "user": 707
+    "user": [
+      707
+    ]
   },
   {
+    "id": 1761158260582,
     "naziv": "onkologija",
     "ostaliNazivi": [
       "onkologija"
@@ -36,9 +43,12 @@
     "bolnica": "INSTITUT ZA ONKOLOGIJU I RADIOLOGIJU SRBIJE",
     "klinika": "INSTITUT ZA ONKOLOGIJU I RADIOLOGIJU SRBIJE",
     "firm": 71,
-    "user": 706
+    "user": [
+      706
+    ]
   },
   {
+    "id": 1761158260583,
     "naziv": "urologija",
     "ostaliNazivi": [
       "urologija",
@@ -49,9 +59,12 @@
     "bolnica": "UNIVERZITETSKI KLINIČKI CENTAR SRBIJE",
     "klinika": "KLINIKA ZA UROLOGIJU",
     "firm": 66,
-    "user": 701
+    "user": [
+      701
+    ]
   },
   {
+    "id": 1761158260584,
     "naziv": "reumatologija",
     "ostaliNazivi": [
       "reumatologija"
@@ -61,9 +74,12 @@
     "bolnica": "INSTITUT ZA REUMATOLOGIJU",
     "klinika": "INSTITUT ZA REUMATOLOGIJU",
     "firm": 63,
-    "user": 697
+    "user": [
+      697
+    ]
   },
   {
+    "id": 1761158260585,
     "naziv": "neonatologija",
     "ostaliNazivi": [
       "neonatologija"
@@ -73,9 +89,12 @@
     "bolnica": "INSTITUT ZA NEONATOLOGIJU",
     "klinika": "INSTITUT ZA NEONATOLOGIJU",
     "firm": 61,
-    "user": 695
+    "user": [
+      695
+    ]
   },
   {
+    "id": 1761158260586,
     "naziv": "palmotićeva",
     "ostaliNazivi": [
       "palmotićeva",
@@ -86,9 +105,12 @@
     "bolnica": "INSTITUT ZA MENTALNO ZDRAVLJE",
     "klinika": "INSTITUT ZA MENTALNO ZDRAVLJE",
     "firm": 70,
-    "user": 705
+    "user": [
+      705
+    ]
   },
   {
+    "id": 1761158260587,
     "naziv": "kardiohirurgija",
     "ostaliNazivi": [
       "kardiohirurgija"
@@ -98,9 +120,12 @@
     "bolnica": "UNIVERZITETSKI KLINIČKI CENTAR SRBIJE",
     "klinika": "KLINIKA ZA KARDIOHIRURGIJU",
     "firm": 45,
-    "user": 660
+    "user": [
+      660
+    ]
   },
   {
+    "id": 1761158260588,
     "naziv": "vaskularna",
     "ostaliNazivi": [
       "vaskularna"
@@ -110,9 +135,12 @@
     "bolnica": "UNIVERZITETSKI KLINIČKI CENTAR SRBIJE",
     "klinika": "KLINIKA ZA VASKULARNU HIRURGIJU",
     "firm": 45,
-    "user": 661
+    "user": [
+      661
+    ]
   },
   {
+    "id": 1761158260589,
     "naziv": "pulmologija",
     "ostaliNazivi": [
       "pulmologija"
@@ -122,9 +150,12 @@
     "bolnica": "UNIVERZITETSKI KLINIČKI CENTAR SRBIJE",
     "klinika": "KLINIKA ZA PULMOLOGIJU",
     "firm": 47,
-    "user": 664
+    "user": [
+      664
+    ]
   },
   {
+    "id": 1761158260590,
     "naziv": "ortopedija ukc",
     "ostaliNazivi": [
       "ortopedija",
@@ -135,9 +166,12 @@
     "bolnica": "UNIVERZITETSKI KLINIČKI CENTAR SRBIJE",
     "klinika": "KLINIKA ZA ORTOPEDSKU HIRURGIJU I TRAUMATOLOGIJU (A)",
     "firm": 50,
-    "user": 667
+    "user": [
+      667
+    ]
   },
   {
+    "id": 1761158260591,
     "naziv": "endokrinologija",
     "ostaliNazivi": [
       "endokrina"
@@ -147,9 +181,12 @@
     "bolnica": "UNIVERZITETSKI KLINIČKI CENTAR SRBIJE",
     "klinika": "KLINIKA ZA ENDOKRINOLOGIJU DIJABETES I BOLESTI METABOLIZMA",
     "firm": 53,
-    "user": 678
+    "user": [
+      678
+    ]
   },
   {
+    "id": 1761158260592,
     "naziv": "kardiologija",
     "ostaliNazivi": [
       "kardiologija"
@@ -159,9 +196,12 @@
     "bolnica": "UNIVERZITETSKI KLINIČKI CENTAR SRBIJE",
     "klinika": "KLINIKA ZA KARDIOLOGIJU KLINIČKO ODELJENJE 3",
     "firm": 53,
-    "user": 679
+    "user": [
+      679
+    ]
   },
   {
+    "id": 1761158260593,
     "naziv": "gak",
     "ostaliNazivi": [
       "gak",
@@ -172,9 +212,12 @@
     "bolnica": "UNIVERZITETSKI KLINIČKI CENTAR SRBIJE",
     "klinika": "KLINIKA ZA GINEKOLOGIJU I AKUŠERSTVO",
     "firm": 69,
-    "user": 704
+    "user": [
+      704
+    ]
   },
   {
+    "id": 1761158260594,
     "naziv": "banjica",
     "ostaliNazivi": [
       "banjica"
@@ -184,9 +227,12 @@
     "bolnica": "INSTITUT ZA ORTOPEDIJU BANJICA",
     "klinika": "INSTITUT ZA ORTOPEDIJU BANJICA",
     "firm": 49,
-    "user": 666
+    "user": [
+      666
+    ]
   },
   {
+    "id": 1761158260595,
     "naziv": "bežanija",
     "ostaliNazivi": [
       "bezanija",
@@ -199,9 +245,12 @@
     "bolnica": "KBC BEŽANIJSKA KOSA",
     "klinika": "KBC BEŽANIJSKA KOSA",
     "firm": 59,
-    "user": 686
+    "user": [
+      686
+    ]
   },
   {
+    "id": 1761158260596,
     "naziv": "dermatovenerologija",
     "ostaliNazivi": [
       "kozno",
@@ -213,9 +262,12 @@
     "bolnica": "UNIVERZITETSKI KLINIČKI CENTAR SRBIJE",
     "klinika": "KLINIKA ZA DERMATOVENEROLOGIJU",
     "firm": 56,
-    "user": 683
+    "user": [
+      683
+    ]
   },
   {
+    "id": 1761158260597,
     "naziv": "psihijatrija",
     "ostaliNazivi": [
       "psihijatrija"
@@ -225,9 +277,12 @@
     "bolnica": "UNIVERZITETSKI KLINIČKI CENTAR SRBIJE",
     "klinika": "KLINIKA ZA PSIHIJATRIJU",
     "firm": 58,
-    "user": 685
+    "user": [
+      685
+    ]
   },
   {
+    "id": 1761158260598,
     "naziv": "očno",
     "ostaliNazivi": [
       "očno"
@@ -237,9 +292,12 @@
     "bolnica": "UNIVERZITETSKI KLINIČKI CENTAR SRBIJE",
     "klinika": "KLINIKA ZA OČNE BOLESTI",
     "firm": 57,
-    "user": 684
+    "user": [
+      684
+    ]
   },
   {
+    "id": 1761158260599,
     "naziv": "ORL I MFH",
     "ostaliNazivi": [
       "orl i mfh"
@@ -249,9 +307,12 @@
     "bolnica": "UNIVERZITETSKI KLINIČKI CENTAR SRBIJE",
     "klinika": "KLINIKA ZA ORL I MFH",
     "firm": 55,
-    "user": 682
+    "user": [
+      682
+    ]
   },
   {
+    "id": 1761158260600,
     "naziv": "nefrologija",
     "ostaliNazivi": [
       "nefrologija"
@@ -261,9 +322,12 @@
     "bolnica": "UNIVERZITETSKI KLINIČKI CENTAR SRBIJE",
     "klinika": "KLINIKA ZA NEFROLOGIJU",
     "firm": 62,
-    "user": 696
+    "user": [
+      696
+    ]
   },
   {
+    "id": 1761158260601,
     "naziv": "urologija 2",
     "ostaliNazivi": [
       "urologija2"
@@ -273,9 +337,12 @@
     "bolnica": "UNIVERZITETSKI KLINIČKI CENTAR SRBIJE",
     "klinika": "KLINIKA ZA UROLOGIJU - PASTEROVA 2",
     "firm": 64,
-    "user": 698
+    "user": [
+      698
+    ]
   },
   {
+    "id": 1761158260602,
     "naziv": "neurohirurgija",
     "ostaliNazivi": [
       "neurohirurgija punkt1",
@@ -288,9 +355,12 @@
     "bolnica": "UNIVERZITETSKI KLINIČKI CENTAR SRBIJE",
     "klinika": "KLINIKA ZA NEUROHIRURGIJU",
     "firm": 65,
-    "user": 699
+    "user": [
+      699
+    ]
   },
   {
+    "id": 1761158260603,
     "naziv": "plastika",
     "ostaliNazivi": [
       "plastika",
@@ -302,9 +372,12 @@
     "bolnica": "UNIVERZITETSKI KLINIČKI CENTAR SRBIJE",
     "klinika": "KLINIKA ZA UROLOGIJU",
     "firm": 67,
-    "user": 702
+    "user": [
+      702
+    ]
   },
   {
+    "id": 1761158260604,
     "naziv": "ortopedija b",
     "ostaliNazivi": [
       "ortopedija b"
@@ -314,9 +387,12 @@
     "bolnica": "UNIVERZITETSKI KLINIČKI CENTAR SRBIJE",
     "klinika": "KLINIKA ZA OPEKOTINE, PLASTIČNU I REKONSTRUKTIVNU HIRURGIJU",
     "firm": 68,
-    "user": 703
+    "user": [
+      703
+    ]
   },
   {
+    "id": 1761158260605,
     "naziv": "neurologija",
     "ostaliNazivi": [
       "neurologija"
@@ -326,9 +402,12 @@
     "bolnica": "UNIVERZITETSKI KLINIČKI CENTAR SRBIJE",
     "klinika": "KLINIKA ZA NEUROLOGIJU",
     "firm": 54,
-    "user": 680
+    "user": [
+      680
+    ]
   },
   {
+    "id": 1761158260606,
     "naziv": "blok a interna",
     "ostaliNazivi": [
       "blok a interna",
@@ -340,9 +419,12 @@
     "bolnica": "KBC 'DR DRAGIŠA MIŠOVIĆ' - DEDINJE",
     "klinika": "INTERNA KLINIKA",
     "firm": 51,
-    "user": 670
+    "user": [
+      670
+    ]
   },
   {
+    "id": 1761158260607,
     "naziv": "blok a hirurgija",
     "ostaliNazivi": [
       "blok a hirurgija",
@@ -354,9 +436,12 @@
     "bolnica": "KBC 'DR DRAGIŠA MIŠOVIĆ' - DEDINJE",
     "klinika": "HIRURGIJA",
     "firm": 51,
-    "user": 671
+    "user": [
+      671
+    ]
   },
   {
+    "id": 1761158260608,
     "naziv": "blok a orl",
     "ostaliNazivi": [
       "blok a orl",
@@ -368,9 +453,12 @@
     "bolnica": "KBC 'DR DRAGIŠA MIŠOVIĆ' - ORL",
     "klinika": "ORL",
     "firm": 51,
-    "user": 672
+    "user": [
+      672
+    ]
   },
   {
+    "id": 1761158260609,
     "naziv": "blok a psihijatrija",
     "ostaliNazivi": [
       "blok a psihijatrija",
@@ -382,9 +470,12 @@
     "bolnica": "KBC 'DR DRAGIŠA MIŠOVIĆ' - PSIHIJATRIJA",
     "klinika": "PSIHIJATRIJA",
     "firm": 51,
-    "user": 673
+    "user": [
+      673
+    ]
   },
   {
+    "id": 1761158260610,
     "naziv": "blok b dečija",
     "ostaliNazivi": [
       "blok b dečija",
@@ -396,9 +487,12 @@
     "bolnica": "KBC 'DR DRAGIŠA MIŠOVIĆ' - DEDINJE",
     "klinika": "DEČIJA",
     "firm": 52,
-    "user": 675
+    "user": [
+      675
+    ]
   },
   {
+    "id": 1761158260611,
     "naziv": "blok b gerijatrija",
     "ostaliNazivi": [
       "blok b gerijatrija",
@@ -412,9 +506,12 @@
     "bolnica": "KBC 'DR DRAGIŠA MIŠOVIĆ' - DEDINJE",
     "klinika": "KLINIKA B",
     "firm": 52,
-    "user": 681
+    "user": [
+      681
+    ]
   },
   {
+    "id": 1761158260612,
     "naziv": "blok b urologija",
     "ostaliNazivi": [
       "blok b urologija",
@@ -426,9 +523,12 @@
     "bolnica": "KBC 'DR DRAGIŠA MIŠOVIĆ' - DEDINJE",
     "klinika": "UROLOGIJA",
     "firm": 52,
-    "user": 676
+    "user": [
+      676
+    ]
   },
   {
+    "id": 1761158260613,
     "naziv": "blok b ginekologija",
     "ostaliNazivi": [
       "blok b ginekologija",
@@ -440,6 +540,23 @@
     "bolnica": "KBC 'DR DRAGIŠA MIŠOVIĆ' - DEDINJE",
     "klinika": "GINEKOLOGIJA",
     "firm": 52,
-    "user": 677
+    "user": [
+      677
+    ]
+  },
+  {
+    "naziv": "INFEKTIVNA",
+    "bolnicaApp": "INFEKTIVNA",
+    "klinikaApp": "INFEKTIVNA",
+    "bolnica": "INFEKTIVNA",
+    "klinika": "INFEKTIVNA",
+    "firm": 48,
+    "id": 1761468279711,
+    "user": [
+      689,
+      687,
+      692,
+      693
+    ]
   }
 ]

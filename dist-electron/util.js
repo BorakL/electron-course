@@ -27,7 +27,7 @@ export async function downloadFile({ fileUrl, filePath, refererUrl, firm, user, 
                 'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
                 "Accept": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36",
-                "Referer": `${refererUrl}?firm=${firm}&user=${user}&date=${date}`,
+                "Referer": `${refererUrl}?firm=${firm}&user[]=${user.join("&user[]=")}&date=${date}`,
                 "Cookie": `PHPSESSID=${session}`
             }
         });
@@ -50,7 +50,6 @@ export async function downloadFile({ fileUrl, filePath, refererUrl, firm, user, 
     }
 }
 export async function loginAndGetSession(username, password) {
-    console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
     const loginUrl = "https://www.prochef.rs/hospital/admin_login.php";
     const formData = new URLSearchParams();
     formData.append("username", username);
@@ -114,10 +113,10 @@ export async function createFullFolder({ cliniks, url, refererUrl, category, dat
         const dostavneTure = await readJsonFile("dostavneTure.json");
         const ture = dostavneTure?.ture;
         const klinika = cliniks[currentIndex];
-        const turaID = pronadjiTuruZaKliniku(klinika.user, ture);
+        const turaID = pronadjiTuruZaKliniku(klinika.id, ture);
         const fileName = `${turaID || ""} ${klinika.naziv?.toUpperCase()}.xlsx`;
         const filePath = path.join(saveFolder, fileName);
-        const fileUrl = `${url}?kategorija=${category}&date=${date}&firm=${klinika.firm}&user=${klinika.user}`;
+        const fileUrl = `${url}?kategorija=${category}&date=${date}&firm=${klinika.firm}&user[]=${klinika.user.join("&user[]=")}`;
         console.log(`📥 Preuzimam: ${fileUrl} -> ${filePath} (Pokušaji preostali: ${attemptsLeft})`);
         try {
             // await downloadFile(fileUrl, filePath, refererUrl, klinika.firm, klinika.user, date, session);
@@ -173,7 +172,7 @@ export async function printDostavnaTura(folderPath, dostavneTure, klinike, turaI
         console.error("Greška pri čitanju fajlova iz foldera:", err);
         return;
     }
-    const klinikeZaStampu = klinike.filter(k => tura.klinike.includes(k.user));
+    const klinikeZaStampu = klinike.filter(k => tura.klinike.includes(k.id));
     try {
         for (const klinika of klinikeZaStampu) {
             const naziv = klinika.naziv.trim().toLowerCase().replace(/\s+/g, ' ');

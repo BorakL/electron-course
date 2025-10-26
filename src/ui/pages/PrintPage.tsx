@@ -52,7 +52,7 @@ export default function PrintPage() {
   },[folderPath])
 
   const getNazivKlinike = (id: number): string =>
-    klinike.find(k => k.user === id)?.naziv || `Nepoznata klinika (${id})`;
+    klinike.find(k => k.id === id)?.naziv || `Nepoznata klinika (${id})`;
 
     const handleSelectFolder = async () => {
         const selectedPath = await window.electronApp.selectFolder();

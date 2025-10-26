@@ -3,12 +3,7 @@ import { useConfirm } from "../context/confirmContext";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { IoIosLogOut } from "react-icons/io";
 import { FaTruck } from "react-icons/fa";
-
-
-type Klinika = {
-  user: number;
-  naziv: string;
-};
+import { Klinika } from "../types";
 
 type TureData = {
   ture: {
@@ -45,7 +40,7 @@ export default function ListaDostavnihTura() {
   }, []);
 
   const getNazivKlinike = (id: number): string =>
-    klinike.find(k => k.user === id)?.naziv || `Nepoznata klinika (${id})`;
+    klinike.find(k => k.id === id)?.naziv || `Nepoznata klinika (${id})`;
 
   const removeClinickHandler = async (message: string, tourId:number, clinickId:number) => {
     confirm({
@@ -156,7 +151,7 @@ const addTuraHandler = async () => {
           <div key={tura.id} className="col-md-6 mb-4">
             <div className="card shadow-sm">
               <div className="card-header d-flex justify-content-between align-items-center">
-                <h5 className="mb-0"><FaTruck/></h5>
+                <h5 className="mb-0">{tura.id} <FaTruck/></h5>
                 <div>
                   <button 
                     className="btn btn-sm btn-danger"

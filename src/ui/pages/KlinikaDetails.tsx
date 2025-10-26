@@ -3,16 +3,7 @@ import { useParams } from "react-router";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useConfirm } from "../context/confirmContext";
-
-export type Klinika = {
-    naziv:string,
-    bolnicaApp: string,
-    klinikaApp: string,
-    bolnica: string,
-    klinika: string,
-    firm: number,
-    user: number
-}
+import { Klinika } from "../types";
 
 const KlinikaDetails = () => {
     const { id } = useParams();
@@ -27,7 +18,8 @@ const KlinikaDetails = () => {
     const fetchKlinika = async (id: string | undefined) => {
         try {
             const data: Klinika[] = await window.electronApp.readJsonFile("klinike.json");
-            const selected = data.find(k => k.user === Number(id));
+            const selected = data.find(k => Number(k.id) === Number(id));
+
             setKlinika(selected || null);
             if (selected) {
                 reset(selected); // popunjavamo formu default vrednostima
@@ -44,7 +36,7 @@ const KlinikaDetails = () => {
         onConfirm: async()=>{
           if (!klinika) return;
           try {
-              await window.electronApp.deleteJsonItemById("klinike.json", Number(klinikaId), "user");
+              await window.electronApp.deleteJsonItemById("klinike.json", Number(klinikaId), "id");
               await window.electronApp.ocistiNevazecuKlinikuIzTura(Number(klinikaId));
               navigate("/klinike");
           } catch (error) {
@@ -63,7 +55,7 @@ const KlinikaDetails = () => {
     const onSubmit = async (formData: Klinika) => {
         try {
             const data: Klinika[] = await window.electronApp.readJsonFile("klinike.json");
-            const updatedData = data.map(k => (k.user === Number(id) ? formData : k));
+            const updatedData = data.map(k => (k.id === Number(id) ? formData : k));
             await window.electronApp.writeJsonFile("klinike.json", updatedData);
             setKlinika(formData);
             setIsEditing(false);
@@ -137,7 +129,7 @@ const KlinikaDetails = () => {
             </div>
           </div>
 
-          <div className="row mb-3">
+          {/* <div className="row mb-3">
             <label className="col-sm-4 col-form-label">User:</label>
             <div className="col-sm-8">
                 <input
@@ -149,7 +141,7 @@ const KlinikaDetails = () => {
                 <div className="invalid-feedback">{errors.user.message}</div>
                 )}
             </div>
-          </div>
+          </div> */}
 
           <div className="row mb-3">
             <label className="col-sm-4 col-form-label">Bolnica App:</label>
@@ -196,7 +188,7 @@ const KlinikaDetails = () => {
           <p><strong>Bolnica App:</strong> {klinika.bolnicaApp}</p>
           <p><strong>Klinika App:</strong> {klinika.klinikaApp}</p>
           <p><strong>Firm:</strong> {klinika.firm}</p>
-          <p><strong>User:</strong> {klinika.user}</p>
+          <p><strong>User:</strong> {klinika.user.join(",")}</p>
           <div className="mt-3">
           <button
               className="btn btn-primary me-2"
@@ -204,7 +196,7 @@ const KlinikaDetails = () => {
           >
               Izmeni
           </button>
-          <button className="btn btn-danger" onClick={()=>handleDelete("Da li ste sigurni da želite da obrišete ovu kliniku?",klinika,klinika.user)}>
+          <button className="btn btn-danger" onClick={()=>handleDelete("Da li ste sigurni da želite da obrišete ovu kliniku?",klinika,klinika.id)}>
               Obriši
           </button>
           </div>

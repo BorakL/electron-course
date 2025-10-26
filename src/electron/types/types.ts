@@ -1,11 +1,12 @@
 export type Klinika = {
+    id:number,
     naziv:string,
     bolnicaApp: string,
     klinikaApp: string,
     bolnica: string,
     klinika: string,
     firm: number,
-    user: number
+    user: number[]
 }
 
 export type DownloadFileParams = {
@@ -13,7 +14,7 @@ export type DownloadFileParams = {
     filePath: string,
     refererUrl: string | undefined, 
     firm: number, 
-    user: number, 
+    user: number[], 
     date: string, 
     session: string
 }

@@ -8,6 +8,8 @@ const AddKlinika = () => {
   const navigate = useNavigate();
   const [allKlinike, setAllKlinike] = useState<Klinika[]>([]);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [userIds, setUserIds] = useState<number[]>([])
+  const [newUserId,setNewUserId] = useState("")
 
   useEffect(() => {
     const fetchKlinike = async () => {
@@ -29,17 +31,28 @@ const AddKlinika = () => {
       return; // prekini submit
     }
 
-    const newKlinika: Klinika = { ...data };
+    const newKlinika: Klinika = { ...data, id: Date.now(), user:userIds };
     const updated = [...allKlinike, newKlinika];
 
     try {
       await window.electronApp.writeJsonFile("klinike.json", updated);
-      await window.electronApp.dodajKlinikuUNerasporedjene(newKlinika.user)
+      await window.electronApp.dodajKlinikuUNerasporedjene(newKlinika.id)
       navigate(`/klinike`);
     } catch (err) {
       console.error("Greška pri čuvanju nove klinike:", err);
     }
   };
+
+  const handleRemoveUserId = (u:number)=>{
+    const index = userIds.indexOf(u);
+    if(index<0) return;
+    const newUserIds = userIds.filter(userId => userId!==u)
+    setUserIds(newUserIds)
+  }
+  const handleAddUserId = ()=>{
+    setUserIds(prev => [...prev, Number(newUserId)])
+    setNewUserId("")
+  }
 
   return (
     <div className="container mt-5">
@@ -61,8 +74,8 @@ const AddKlinika = () => {
           {...register("naziv", { 
             required: true, 
             pattern: {
-              value: /^[a-zA-Z0-9čćžšđČĆŽŠĐ]+$/,
-              message: "Dozvoljeni su samo alfanumerički karakteri bez razmaka i specijalnih znakova."
+              value: /^[a-zA-Z0-9čćžšđČĆŽŠĐ\s]+$/,
+              message: "Dozvoljeni su samo razmak i alfanumerički karakteri bez specijalnih znakova."
             }
           }
         )}
@@ -133,7 +146,7 @@ const AddKlinika = () => {
     </div>
 
     {/* Polje: User */}
-    <div className="row mb-2 align-items-center">
+    {/* <div className="row mb-2 align-items-center">
       <label className="col-sm-2 col-form-label">User ID</label>
       <div className="col-sm-10">
         <input
@@ -143,6 +156,20 @@ const AddKlinika = () => {
         />
         {errors.user && <div className="text-danger">Ovo polje je obavezno.</div>}
       </div>
+    </div> */}
+
+    <div>
+      {
+        userIds.map(u => 
+        <div key={u}>
+          <span>{u}</span>
+          <button type="button" onClick={()=>handleRemoveUserId(u)}>Remove UserId</button>
+        </div>)
+      }
+      <div>
+          <input type="number" onChange={(e)=>setNewUserId(e.target.value)} name="newUser" value={newUserId}/>
+          <button type="button" onClick={handleAddUserId}>Add User</button>
+      </div>
     </div>
 
     <div className="text-end">
@@ -151,6 +178,7 @@ const AddKlinika = () => {
       </button>
     </div>
   </form>
+
 </div>
 
 

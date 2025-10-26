@@ -1,15 +1,6 @@
 import { useEffect, useState } from "react";
-import { Link } from 'react-router-dom';
-
-export type Klinika = {
-    naziv:string,
-    bolnicaApp: string,
-    klinikaApp: string,
-    bolnica: string,
-    klinika: string,
-    firm: number,
-    user: number
-}
+import { Link } from 'react-router-dom'; 
+import { Klinika } from "../types";
 
 
 const KlinikeList = ()=>{
@@ -34,8 +25,8 @@ const KlinikeList = ()=>{
 
       <ul className="list-group mb-4">
         {klinike.map((klinika) => (
-          <li key={klinika.user} className="list-group-item mb-2">
-            <Link to={`/klinike/${klinika.user}`} className="text-decoration-none">
+          <li key={klinika.id} className="list-group-item mb-2">
+            <Link to={`/klinike/${klinika.id}`} className="text-decoration-none">
               {klinika.naziv.toUpperCase()}
             </Link>
           </li>
