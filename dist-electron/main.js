@@ -6,6 +6,7 @@ import { getPreloadPath } from './pathResolver.js';
 import dotenv from 'dotenv';
 import { appendJsonItem, deleteJsonItemById, dodajKlinikuUNerasporedjene, dodajKlinikuUTuru, dodajNovuTuru, getFilePath, obrisiTuru, ocistiNevazecuKlinikuIzTura, readJsonFile, selectFolder, ukloniKlinikuIzNerasporedjenih, ukloniKlinikuIzTure, updateJsonItemById, writeJsonFile } from './fsHelpers/jsonUtils.js';
 import processDietFiles from './xlsx/processDietFiles.js';
+import addLicensePlate from './xlsx/addLicensePlate.js';
 // Definiši __dirname za ES module 
 dotenv.config({ path: path.join(process.cwd(), '.env.electron') });
 app.on("ready", () => {
@@ -75,5 +76,8 @@ app.on("ready", () => {
     });
     ipcMain.handle('loginAndGetSession', async (_event, username, password) => {
         return loginAndGetSession(username, password);
+    });
+    ipcMain.handle('addLicesePlate', async (event, folderPath, tableParams) => {
+        return addLicensePlate(folderPath, tableParams);
     });
 });

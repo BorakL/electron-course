@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 import { appendJsonItem, deleteJsonItemById, dodajKlinikuUNerasporedjene, dodajKlinikuUTuru, dodajNovuTuru, getFilePath, obrisiTuru, ocistiNevazecuKlinikuIzTura, readJsonFile, selectFolder, ukloniKlinikuIzNerasporedjenih, ukloniKlinikuIzTure, updateJsonItemById, writeJsonFile } from './fsHelpers/jsonUtils.js';
 import processDietFiles, { DietFilter, TableParams } from './xlsx/processDietFiles.js';
 import { DostavnaTura, Klinika, Logs } from './types/types.js';
+import addLicensePlate from './xlsx/addLicensePlate.js';
 
 
 // Definiši __dirname za ES module 
@@ -80,5 +81,8 @@ app.on("ready", ()=>{
     })
     ipcMain.handle('loginAndGetSession', async(_event, username: string, password: string) => {
         return loginAndGetSession(username, password)
+    })
+    ipcMain.handle('addLicesePlate', async(event, folderPath:string, tableParams:TableParams)=>{
+        return addLicensePlate(folderPath, tableParams)
     })
 })

@@ -32,6 +32,7 @@ const EditPage = ()=>{
             await window.electronApp.processDietFiles(filteri, tableParams, folderPath);
             setWaiting(false);
             setIfDietsSepareted(true);
+            // await window.electronApp.addLicensePlate(folderPath, tableParams)
         }catch(error){
             console.log("Greška prilikom odvajanja dijeta", error)
         }

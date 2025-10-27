@@ -558,5 +558,85 @@
       692,
       693
     ]
+  },
+  {
+    "naziv": "ZVEZDARA PEDIJATRIJA",
+    "bolnicaApp": "KBC ZVEZDARA PEDIJATRIJA",
+    "klinikaApp": "PEDIJATRIJA KBCZ",
+    "bolnica": "ZVEZDARA PEDIJATRIJA",
+    "klinika": "ZVEZDARA PEDIJATRIJA",
+    "firm": 77,
+    "id": 1761582452797,
+    "user": [
+      720
+    ]
+  },
+  {
+    "naziv": "ZVEZDARA PREŠEVSKA",
+    "bolnicaApp": "KBC ZVEZDARA PREŠEVSKA",
+    "klinikaApp": "ZVEZDARA PREŠEVKSA",
+    "bolnica": "ZVEZDARA PREŠEVSKA",
+    "klinika": "ZVEZDARA PREŠEVSKA",
+    "firm": 78,
+    "id": 1761582593805,
+    "user": [
+      721,
+      722,
+      723,
+      724,
+      726,
+      727
+    ]
+  },
+  {
+    "naziv": "ZVEZDARA HIRURGIJA",
+    "bolnicaApp": "KBC ZVEZDARA HIRURGIJA",
+    "klinikaApp": "ZVEZDARA HIRURGIJA",
+    "bolnica": "ZVEZDARA HIRURGIJA",
+    "klinika": "ZVEZDARA HIRURGIJA",
+    "firm": 76,
+    "id": 1761582784149,
+    "user": [
+      714
+    ]
+  },
+  {
+    "naziv": "ZVEZDARA UROLOGIJA",
+    "bolnicaApp": "KBC ZVEZDARA UROLOGIJA",
+    "klinikaApp": "ZVEZDARA UROLOGIJA",
+    "bolnica": "ZVEZDARA UROLOGIJA",
+    "klinika": "ZVEZDARA UROLOGIJA",
+    "firm": 76,
+    "id": 1761582827893,
+    "user": [
+      715
+    ]
+  },
+  {
+    "naziv": "ZVEZDARA OČNO",
+    "bolnicaApp": "KBC ZVEZDARA OČNO",
+    "klinikaApp": "ZVEZDARA OČNO",
+    "bolnica": "ZVEZDARA OČNO",
+    "klinika": "ZVEZDARA OČNO",
+    "firm": 76,
+    "id": 1761582869205,
+    "user": [
+      725
+    ]
+  },
+  {
+    "naziv": "ZVEZDARA INTERNA",
+    "bolnicaApp": "KBC ZVEZDARA INTERNA",
+    "klinikaApp": "ZVEZDARA INTERNA",
+    "bolnica": "ZVEZDARA INTERNA",
+    "klinika": "ZVEZDARA INTERNA",
+    "firm": 76,
+    "id": 1761583388757,
+    "user": [
+      716,
+      717,
+      718,
+      719
+    ]
   }
 ]

@@ -124,5 +124,10 @@ electron.contextBridge.exposeInMainWorld("electronApp", {
     ): Promise<void> =>
         ipcRenderer.invoke('printDostavnaTura', folderPath, dostavneTure, klinika, turaId),
 
-    loginAndGetSession: (username: string, password: string) => ipcRenderer.invoke("loginAndGetSession", username, password)
+    loginAndGetSession: (username: string, password: string) => ipcRenderer.invoke("loginAndGetSession", username, password),
+
+    addLicensePlate: (
+        folderPath:string,
+        tableParams: TableParams
+    ): Promise<void> => ipcRenderer.invoke('addLicesePlate', folderPath, tableParams)
 })
