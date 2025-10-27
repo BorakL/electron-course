@@ -10,7 +10,7 @@ const HomePage = ()=>{
            
             <Link to="/download">
               <div><FiDownload/></div>
-              <div>1. Downloaduj otpremnice</div>
+              <div>1. Preuzmi otpremnice</div>
             </Link>
  
             <Link to="/editPage">

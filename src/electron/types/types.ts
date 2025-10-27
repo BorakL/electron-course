@@ -27,7 +27,8 @@ export type CreateFullFolderParams = {
     refererUrl: string | undefined,
     category: number,
     date: string,
-    session: string
+    session: string,
+    groupId: number
 }
 
 export interface DostavnaTura {

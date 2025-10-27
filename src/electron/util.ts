@@ -127,17 +127,28 @@ export async function loginAndGetSession(username: string, password: string) {
         refererUrl,
         category,
         date,
-        session
+        session,
+        groupId
     }: CreateFullFolderParams): Promise<Logs | undefined> {
     const mealMap: Record<number, string>  = {
       1: "D",
       2: "R",
       3: "V"
     }
+    const dostavneTure: DostavnaTuraObject = await readJsonFile("dostavneTure.json")
+    const ture: DostavnaTura[] = dostavneTure?.ture;
+    let tura:DostavnaTura | undefined;
+    if(groupId){
+      tura = ture.find(tura => tura.id===groupId);
+      if(tura && tura.klinike && tura.klinike.length > 0){
+        cliniks = cliniks.filter(clinik => tura?.klinike.some(k => k===clinik.id))    
+      }
+    }
     const mealCategory = mealMap[category] || "";
-    const today = `${date}-${mealCategory}`;
+    const today = groupId>0 ? `${groupId} ${date}-${mealCategory}` : `${date}-${mealCategory}`;
     const desktopPath = path.join(os.homedir(), "Desktop");
     const saveFolder = path.join(desktopPath, today);
+
 
     if (!fs.existsSync(saveFolder)) {
         fs.mkdirSync(saveFolder, { recursive: true });
@@ -163,8 +174,6 @@ export async function loginAndGetSession(username: string, password: string) {
             }
             return logs;
         }
-        const dostavneTure: DostavnaTuraObject = await readJsonFile("dostavneTure.json")
-        const ture: DostavnaTura[] = dostavneTure?.ture;
 
         const klinika = cliniks[currentIndex];
         const turaID = pronadjiTuruZaKliniku(klinika.id,ture)

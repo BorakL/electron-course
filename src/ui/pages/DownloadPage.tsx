@@ -2,9 +2,11 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSession } from '../context/sessionContext';
 import { useNavigate } from 'react-router';
+import { DostavnaTura } from '../types';
 
 const DownloadPage = ()=>{
     type FormValues = {
+        groupId:number,
         category: 1 | 2 | 3;
         date: string;
       };
@@ -12,6 +14,7 @@ const DownloadPage = ()=>{
       const form = useForm<FormValues>({
         defaultValues: {
           category: 1,
+          groupId: 0,
           date: ""
         },
       });
@@ -24,6 +27,7 @@ const DownloadPage = ()=>{
       const[logs,setLogs] = useState<Logs | null>(null);
       const[loading,setLoading] = useState(false);
       const[klinike,setKlinike] = useState([]);
+      const[dostavneTure,setDostavneTure] = useState<DostavnaTura[]|null>(null)
       const { register, handleSubmit, formState, watch, setValue } = form;
       const { errors } = formState;
       const {session} = useSession();
@@ -50,7 +54,9 @@ const DownloadPage = ()=>{
         const fetchData = async()=>{
           try{
             const klinikeData = await window.electronApp.readJsonFile("klinike.json")
+            const dostavneTure = await window.electronApp.readJsonFile("dostavneTure.json")
             setKlinike(klinikeData)
+            setDostavneTure(dostavneTure?.ture || [])
           }catch(error){
             console.log("Greška pri učitavanju klinika",error)
           }
@@ -75,7 +81,8 @@ const DownloadPage = ()=>{
             refererUrl,
             category: form.getValues("category"),
             date: formattedDate, // Slanje formatiranog datuma
-            session: session
+            session: session,
+            groupId: form.getValues("groupId")
           });
           setLoading(false);
           setLogs(logs)
@@ -87,7 +94,7 @@ const DownloadPage = ()=>{
 
     return(
       <div className=" container-fluid mt-4">
-        <h2 className="mb-4">Download otpremnica</h2>
+        <h2 className="mb-4">Preuzimanje otpremnica</h2>
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
           {/* Obrok */}
           <div className="mb-3">
@@ -111,6 +118,18 @@ const DownloadPage = ()=>{
             )}
           </div>
 
+          <div className="mb-3">
+            <select
+              id="groupId"
+              {...register('groupId', {
+                valueAsNumber: true
+              })}
+            >
+              <option value={0}>-- Sve linije --</option>
+              {dostavneTure?.map(d=><option key={d.id} value={d.id}>{d.id}</option>)}
+            </select>            
+          </div>
+
           {/* Datum */}
           <div className="mb-3">
             <input
@@ -125,28 +144,10 @@ const DownloadPage = ()=>{
             )}
           </div>
 
-          {/* PHPSESSID       
-          <div className="mb-3">
-            <label htmlFor="session" className="form-label">
-              PHPSESSID:
-            </label>
-            <input
-              type="text"
-              id="session"
-              className={`form-control ${errors.session ? 'is-invalid' : ''}`}
-              {...register('session', {
-                required: 'Unesi PHPSESSID',
-              })}
-            />
-            {errors.session && (
-              <div className="invalid-feedback">{errors.session.message}</div>
-            )}
-          </div>
-          */}
 
           {/* Dugme za submit */}
           <button type="submit" className="btn btn-primary" disabled={loading}>
-            Downloaduj otpremnice
+            Preuzmi otpremnice
           </button>
         </form>
         <div>

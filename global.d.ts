@@ -8,7 +8,8 @@ type CreateFullFolderParams = {
     refererUrl: string | undefined,
     category: number,
     date: string,
-    session: string
+    session: string,
+    groupId: number
 }
 interface DietFilter {
   title: string;

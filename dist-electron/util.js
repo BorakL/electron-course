@@ -79,14 +79,23 @@ export async function loginAndGetSession(username, password) {
 }
 // Funkcija za kreiranje foldera i preuzimanje fajlova sa retry mehanizmom
 // export function createFullFolder(cliniks: Klinika[], url: string | undefined, refererUrl: string | undefined, category: number, date: string, session: string): void {
-export async function createFullFolder({ cliniks, url, refererUrl, category, date, session }) {
+export async function createFullFolder({ cliniks, url, refererUrl, category, date, session, groupId }) {
     const mealMap = {
         1: "D",
         2: "R",
         3: "V"
     };
+    const dostavneTure = await readJsonFile("dostavneTure.json");
+    const ture = dostavneTure?.ture;
+    let tura;
+    if (groupId) {
+        tura = ture.find(tura => tura.id === groupId);
+        if (tura && tura.klinike && tura.klinike.length > 0) {
+            cliniks = cliniks.filter(clinik => tura?.klinike.some(k => k === clinik.id));
+        }
+    }
     const mealCategory = mealMap[category] || "";
-    const today = `${date}-${mealCategory}`;
+    const today = groupId > 0 ? `${groupId} ${date}-${mealCategory}` : `${date}-${mealCategory}`;
     const desktopPath = path.join(os.homedir(), "Desktop");
     const saveFolder = path.join(desktopPath, today);
     if (!fs.existsSync(saveFolder)) {
@@ -110,8 +119,6 @@ export async function createFullFolder({ cliniks, url, refererUrl, category, dat
             }
             return logs;
         }
-        const dostavneTure = await readJsonFile("dostavneTure.json");
-        const ture = dostavneTure?.ture;
         const klinika = cliniks[currentIndex];
         const turaID = pronadjiTuruZaKliniku(klinika.id, ture);
         const fileName = `${turaID || ""} ${klinika.naziv?.toUpperCase()}.xlsx`;

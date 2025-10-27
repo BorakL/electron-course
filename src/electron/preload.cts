@@ -27,8 +27,9 @@ electron.contextBridge.exposeInMainWorld("electronApp", {
         refererUrl: string,
         kategorija: number,
         date: string,
-        session: string
-    ) => await ipcRenderer.invoke(`createFullFolder`, klinike, url, refererUrl, kategorija, date, session),
+        session: string,
+        groupId: number
+    ) => await ipcRenderer.invoke(`createFullFolder`, klinike, url, refererUrl, kategorija, date, session, groupId),
     
     // osnovne funkcije nad fajlovima
     getFilePath: (fileName: string): Promise<string> =>
