@@ -1,6 +1,6 @@
-import { WorksheetLike } from "xlsx-populate";
+import { Worksheet } from "xlsx-populate";
 
-const hideRow = (sheet: WorksheetLike, currentRow: number): void => {
+const hideRow = (sheet: Worksheet, currentRow: number): void => {
   const maxCol = sheet.usedRange().endCell().columnNumber();
 
   for (let col = 1; col <= maxCol; col++) {

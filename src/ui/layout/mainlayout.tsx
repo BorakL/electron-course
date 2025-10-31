@@ -34,7 +34,8 @@ const Layout = () => {
                 { to: '/print', label: 'Štampanje' },
                 { to: '/klinike', label: 'Klinike' },
                 { to: '/dostavneTure', label: 'Linije za razvoz' },
-                { to: '/filteri', label: 'Filteri za otpremnice' }
+                { to: '/filteri', label: 'Filteri za otpremnice' },
+                { to: '/vanRfzo', label: 'Van Rfzo' }
               ].map((item) => (
                 <li className="nav-item" key={item.to}>
                   <NavLink

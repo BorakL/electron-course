@@ -106,6 +106,7 @@ export interface Worksheet {
     Orientation?: number,
   ): void;
   PrintOut(): void;
+  insertRows?(row: number, amount?: number): void;
 }
 
 export interface DostavnaTuraObject {
