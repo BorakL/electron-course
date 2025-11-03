@@ -13,7 +13,7 @@ import AddKlinika from './pages/AddKlinika';
 import IzdvajanjeDijeta from './pages/IzdvajanjeDijeta';
 import LoginPage from './pages/LoginPage';
 import { useSession } from './context/sessionContext';
-import VanRfzoForm from './pages/VanRfzoForm';
+import VanRfzo from './pages/VanRfzo';
 // import { useAppDispatch, useAppSelector } from './redux/hooks';
 
 function App() {
@@ -32,7 +32,7 @@ function App() {
             <Route path="/dostavneTure:id" element={<DostavnaTuraDetails/>} />
             <Route path="/addKlinika" element={<AddKlinika/>} />
             <Route path="/filteri" element={<IzdvajanjeDijeta/>}/>
-            <Route path="/vanRfzo" element={<VanRfzoForm/>}/>
+            <Route path="/vanRfzo" element={<VanRfzo/>}/>
             <Route path="*" element={<Navigate to="/download" />} />
           </Route> 
         </Routes>

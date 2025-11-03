@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSession } from '../context/sessionContext';
 import { useNavigate } from 'react-router';
-import { DostavnaTura } from '../types';
+import { DostavnaTura, DownloadShippingDocsParams } from '../types';
 
 const DownloadPage = ()=>{
     type FormValues = {
@@ -27,6 +27,7 @@ const DownloadPage = ()=>{
       const[logs,setLogs] = useState<Logs | null>(null);
       const[loading,setLoading] = useState(false);
       const[klinike,setKlinike] = useState([]);
+      const[klinikeVanRfzo,setKlinikeVanRfzo] = useState([]);
       const[dostavneTure,setDostavneTure] = useState<DostavnaTura[]|null>(null)
       const { register, handleSubmit, formState, watch, setValue } = form;
       const { errors } = formState;
@@ -55,7 +56,9 @@ const DownloadPage = ()=>{
           try{
             const klinikeData = await window.electronApp.readJsonFile("klinike.json")
             const dostavneTure = await window.electronApp.readJsonFile("dostavneTure.json")
+            const vrfzoKlinikeData = await window.electronApp.readJsonFile("klinikeVanRfzo.json")
             setKlinike(klinikeData)
+            setKlinikeVanRfzo(vrfzoKlinikeData.vrfzoCliniks ?? [])
             setDostavneTure(dostavneTure?.ture || [])
           }catch(error){
             console.log("Greška pri učitavanju klinika",error)
@@ -64,25 +67,22 @@ const DownloadPage = ()=>{
         fetchData();
       },[])
     
-      const onSubmit = () => {
-        downloadShippingDocs();
-      };
-    
-      const downloadShippingDocs = async () => {
-        const refererUrl = "https://prochef.rs/hospital/otpremnice.php";
-        const url = "https://prochef.rs/hospital/create_pdf_invoice_otpremnica_v1.php";
+      const downloadShippingDocs = async ({cliniks, url, refererUrl, suffix}:DownloadShippingDocsParams) => {
+        // const refererUrl = "https://prochef.rs/hospital/otpremnice.php";
+        // const url = "https://prochef.rs/hospital/create_pdf_invoice_otpremnica_v1.php";
         const formattedDate = formatDate(watchDate); // Formatiran datum pre slanja
     
         try {
           setLoading(true);
           const logs = await window.electronApp.createFullFolder({
-            cliniks: klinike,
+            cliniks,
             url,
             refererUrl,
             category: form.getValues("category"),
             date: formattedDate, // Slanje formatiranog datuma
             session: session,
-            groupId: form.getValues("groupId")
+            groupId: form.getValues("groupId"),
+            suffix
           });
           setLoading(false);
           setLogs(logs)
@@ -95,7 +95,7 @@ const DownloadPage = ()=>{
     return(
       <div className=" container-fluid mt-4">
         <h2 className="mb-4">Preuzimanje otpremnica</h2>
-        <form onSubmit={handleSubmit(onSubmit)} noValidate>
+        <form noValidate>
           {/* Obrok */}
           <div className="mb-3">
             <select
@@ -146,9 +146,36 @@ const DownloadPage = ()=>{
 
 
           {/* Dugme za submit */}
-          <button type="submit" className="btn btn-primary" disabled={loading}>
-            Preuzmi otpremnice
-          </button>
+          <div className="mb-3">
+            <button 
+              type="button" 
+              className="btn btn-primary" 
+              disabled={loading}
+              onClick={handleSubmit(() => downloadShippingDocs({
+                cliniks: klinike,
+                url: "https://prochef.rs/hospital/create_pdf_invoice_otpremnica_v1.php",
+                refererUrl: "https://prochef.rs/hospital/otpremnice.php"
+              }))}
+            >
+              Preuzmi otpremnice
+            </button>
+          </div>
+          <div className="mb-3">
+            <button 
+              type="button" 
+              className="btn btn-primary" 
+              disabled={loading}
+              onClick={handleSubmit(() => downloadShippingDocs({
+                cliniks: klinikeVanRfzo,
+                url: "https://prochef.rs/hospital/create_pdf_invoice_otpremnica_van_rfzo_v1.php",
+                refererUrl: "https://prochef.rs/hospital/otpremnice_van_rfzo.php",
+                suffix: "vanRfzo"
+              }))}
+            >
+              Preuzmi van rfzo otpremnice
+            </button>
+          </div>
+
         </form>
         <div>
           {loading && (

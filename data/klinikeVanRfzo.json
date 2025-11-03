@@ -1,0 +1,65 @@
+{
+    "date": "3-2-2025",
+    "vrfzoCliniks" : [
+        {
+            "id": 1761158260591,
+            "naziv": "endokrinologija",
+            "ostaliNazivi": [
+            "endokrina"
+            ],
+            "bolnicaApp": "INTERNA B",
+            "klinikaApp": "ENDOKRINOLOGIJA",
+            "bolnica": "UNIVERZITETSKI KLINIČKI CENTAR SRBIJE",
+            "klinika": "KLINIKA ZA ENDOKRINOLOGIJU DIJABETES I BOLESTI METABOLIZMA",
+            "firm": 53,
+            "user": [
+            678
+            ]
+        },
+        {
+            "id": 1761158260598,
+            "naziv": "očno",
+            "ostaliNazivi": [
+            "očno"
+            ],
+            "bolnicaApp": "KLINIKA ZA OČNE BOLESTI",
+            "klinikaApp": "OČNO",
+            "bolnica": "UNIVERZITETSKI KLINIČKI CENTAR SRBIJE",
+            "klinika": "KLINIKA ZA OČNE BOLESTI",
+            "firm": 57,
+            "user": [
+            684
+            ]
+        },
+        {
+            "id": 1761158260600,
+            "naziv": "nefrologija",
+            "ostaliNazivi": [
+            "nefrologija"
+            ],
+            "bolnicaApp": "KLINIKA ZA NEFROLOGIJU",
+            "klinikaApp": "NEFROLOGIJA",
+            "bolnica": "UNIVERZITETSKI KLINIČKI CENTAR SRBIJE",
+            "klinika": "KLINIKA ZA NEFROLOGIJU",
+            "firm": 62,
+            "user": [
+            696
+            ]
+        },
+        {
+            "id": 1761158260605,
+            "naziv": "neurologija",
+            "ostaliNazivi": [
+            "neurologija"
+            ],
+            "bolnicaApp": "KLINIKA ZA NEUROLOGIJU",
+            "klinikaApp": "NEUROLOGIJA",
+            "bolnica": "UNIVERZITETSKI KLINIČKI CENTAR SRBIJE",
+            "klinika": "KLINIKA ZA NEUROLOGIJU",
+            "firm": 54,
+            "user": [
+            680
+            ]
+        }
+    ]
+}

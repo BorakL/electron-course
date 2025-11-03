@@ -28,7 +28,8 @@ export type CreateFullFolderParams = {
     category: number,
     date: string,
     session: string,
-    groupId: number
+    groupId?: number | undefined,
+    suffix: string | undefined
 }
 
 export interface DostavnaTura {

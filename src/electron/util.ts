@@ -128,7 +128,8 @@ export async function loginAndGetSession(username: string, password: string) {
         category,
         date,
         session,
-        groupId
+        groupId,
+        suffix
     }: CreateFullFolderParams): Promise<Logs | undefined> {
     const mealMap: Record<number, string>  = {
       1: "D",
@@ -145,7 +146,7 @@ export async function loginAndGetSession(username: string, password: string) {
       }
     }
     const mealCategory = mealMap[category] || "";
-    const today = groupId>0 ? `${groupId} ${date}-${mealCategory}` : `${date}-${mealCategory}`;
+    const today = groupId && groupId>0 ? `${groupId} ${date}-${mealCategory}` : `${date}-${mealCategory}`;
     const desktopPath = path.join(os.homedir(), "Desktop");
     const saveFolder = path.join(desktopPath, today);
 
@@ -177,7 +178,7 @@ export async function loginAndGetSession(username: string, password: string) {
 
         const klinika = cliniks[currentIndex];
         const turaID = pronadjiTuruZaKliniku(klinika.id,ture)
-        const fileName = `${turaID || ""} ${klinika.naziv?.toUpperCase()}.xlsx`;
+        const fileName = `${turaID || ""} ${klinika.naziv?.toUpperCase()} ${suffix ? ` - ${suffix}` : ""}.xlsx`;
         const filePath = path.join(saveFolder, fileName);
         const fileUrl = `${url}?kategorija=${category}&date=${date}&firm=${klinika.firm}&user[]=${klinika.user.join("&user[]=")}`;
 

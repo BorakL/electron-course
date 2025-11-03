@@ -79,7 +79,7 @@ export async function loginAndGetSession(username, password) {
 }
 // Funkcija za kreiranje foldera i preuzimanje fajlova sa retry mehanizmom
 // export function createFullFolder(cliniks: Klinika[], url: string | undefined, refererUrl: string | undefined, category: number, date: string, session: string): void {
-export async function createFullFolder({ cliniks, url, refererUrl, category, date, session, groupId }) {
+export async function createFullFolder({ cliniks, url, refererUrl, category, date, session, groupId, suffix }) {
     const mealMap = {
         1: "D",
         2: "R",
@@ -95,7 +95,7 @@ export async function createFullFolder({ cliniks, url, refererUrl, category, dat
         }
     }
     const mealCategory = mealMap[category] || "";
-    const today = groupId > 0 ? `${groupId} ${date}-${mealCategory}` : `${date}-${mealCategory}`;
+    const today = groupId && groupId > 0 ? `${groupId} ${date}-${mealCategory}` : `${date}-${mealCategory}`;
     const desktopPath = path.join(os.homedir(), "Desktop");
     const saveFolder = path.join(desktopPath, today);
     if (!fs.existsSync(saveFolder)) {
@@ -121,7 +121,7 @@ export async function createFullFolder({ cliniks, url, refererUrl, category, dat
         }
         const klinika = cliniks[currentIndex];
         const turaID = pronadjiTuruZaKliniku(klinika.id, ture);
-        const fileName = `${turaID || ""} ${klinika.naziv?.toUpperCase()}.xlsx`;
+        const fileName = `${turaID || ""} ${klinika.naziv?.toUpperCase()} ${suffix ? ` - ${suffix}` : ""}.xlsx`;
         const filePath = path.join(saveFolder, fileName);
         const fileUrl = `${url}?kategorija=${category}&date=${date}&firm=${klinika.firm}&user[]=${klinika.user.join("&user[]=")}`;
         console.log(`📥 Preuzimam: ${fileUrl} -> ${filePath} (Pokušaji preostali: ${attemptsLeft})`);

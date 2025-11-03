@@ -21,17 +21,24 @@ export type DownloadFileParams = {
 
 // klinike: Klinika[], url: string | undefined, refererUrl: string | undefined, kategorija: number, date: string, session: string
 
-export type CreateFullFolderParams = {
-    cliniks: Klinika[],
-    url: string | undefined, 
-    refererUrl: string | undefined,
-    category: number,
-    date: string,
-    session: string,
-    groupId: number
-}
+// export type CreateFullFolderParams = {
+//     cliniks: Klinika[],
+//     url: string | undefined, 
+//     refererUrl: string | undefined,
+//     category: number,
+//     date: string,
+//     session: string,
+//     groupId: number
+// }
 
 export interface DostavnaTura {
   id: number;
   klinike: number[]; // sadrži ID-eve klinika
+}
+
+export type DownloadShippingDocsParams = {
+  cliniks: Klinika[], 
+  url: string, 
+  refererUrl: string, 
+  suffix?: string | undefined
 }
