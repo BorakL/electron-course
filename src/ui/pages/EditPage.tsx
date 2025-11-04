@@ -56,7 +56,8 @@ const EditPage = ()=>{
       <button
         className="btn btn-success"
         onClick={odvojiDijeteHanlder}
-        disabled={!folderPath || folderPath!=="" && ifDietsSepareted }
+        disabled={!folderPath || (folderPath !== "" && ifDietsSepareted)}
+
       >
         Izdvoj dijete
       </button>

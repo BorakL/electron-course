@@ -58,7 +58,7 @@ const DownloadPage = ()=>{
             const dostavneTure = await window.electronApp.readJsonFile("dostavneTure.json")
             const vrfzoKlinikeData = await window.electronApp.readJsonFile("klinikeVanRfzo.json")
             setKlinike(klinikeData)
-            setKlinikeVanRfzo(vrfzoKlinikeData.vrfzoCliniks ?? [])
+            setKlinikeVanRfzo(vrfzoKlinikeData.clinics ?? [])
             setDostavneTure(dostavneTure?.ture || [])
           }catch(error){
             console.log("Greška pri učitavanju klinika",error)
