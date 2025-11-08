@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"; 
 import { Klinika } from "../types";
-import { LuPrinter, LuPrinterCheck } from "react-icons/lu"; 
-import { useConfirm } from "../context/confirmContext";
+import { LuPrinter, LuPrinterCheck } from "react-icons/lu";
 
 type TureData = {
   ture: {
@@ -19,7 +18,6 @@ export default function PrintPage() {
   const[showMessage,setShowMessage] = useState<boolean>(false);
   const[printedTours, setPrintedTours] = useState<number[]>([]);
   const[isPrinting, setIsPrinting] = useState<boolean>(false);
-  const {confirm} = useConfirm()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,16 +38,6 @@ export default function PrintPage() {
 
     fetchData();
   }, []);
-
-  useEffect(() => {
-    if(folderPath!=="") {
-      confirm({
-        message: 
-        `Pre štampanja, u odabranom folderu:\n ${folderPath}: \n - Za ručak/večeru obriši sve dnevne bolnice \n - Za doručak saberi iznose dnevnih bolnica za ceo dan, za klinike: Valjevo, Nefrologija, B Blok Urologija`,
-        inform: true 
-      })
-    }
-  },[folderPath])
 
   const getNazivKlinike = (id: number): string =>
     klinike.find(k => k.id === id)?.naziv || `Nepoznata klinika (${id})`;

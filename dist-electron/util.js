@@ -6,6 +6,14 @@ import os from 'os';
 import { promises as fsp } from 'fs';
 import winax from "winax";
 import { readJsonFile } from './fsHelpers/jsonUtils.js';
+// interface ExcelSheet {
+//   PageSetup: {
+//     Zoom: boolean | number;
+//     FitToPagesWide: number;
+//     FitToPagesTall: number;
+//   };
+//   PrintOut: (from?: number, to?: number, copies?: number) => void;
+// }
 // type ActiveXConstructor<T> = new (progId: string) => T;
 // Napravi konstruktor za Excel.Application
 // const ExcelApp = winax as unknown as ActiveXConstructor<ExcelApplication>;
@@ -198,26 +206,29 @@ export async function printDostavnaTura(folderPath, dostavneTure, klinike, turaI
                 const fullPath = path.join(folderPath, fileName);
                 console.log(`Štampam za kliniku "${klinika.naziv}": ${fileName}`);
                 let workbook = null;
-                let sheet;
+                // let sheet: ExcelSheet;
                 try {
                     workbook = excel.Workbooks.Open(fullPath);
+                    console.log("aaaaaaaaaa", excel.ActivePrinter);
                     const sheetCount = workbook.Sheets.Count;
                     console.log("Sheet count:", sheetCount);
-                    sheet = workbook.Sheets.Item(1);
+                    // sheet = workbook.Sheets.Item(1);
                     // Podešavanja štampe
-                    sheet.PageSetup.Zoom = false;
-                    sheet.PageSetup.FitToPagesWide = 1;
-                    sheet.PageSetup.FitToPagesTall = 1;
+                    // sheet.PageSetup.Zoom = false;
+                    // sheet.PageSetup.FitToPagesWide = 1;
+                    // sheet.PageSetup.FitToPagesTall = 1;
                     // Štampanje
-                    await new Promise((resolve, reject) => {
-                        try {
-                            sheet.PrintOut(1, 1, 2);
-                            resolve();
-                        }
-                        catch (err) {
-                            reject(err);
-                        }
-                    });
+                    // await new Promise<void>((resolve, reject) => {
+                    //   try {
+                    //     sheet.PrintOut(1, 1, 2);
+                    //     resolve();
+                    //   } catch (err) {
+                    //     console.log("Greška prilikom štampanja",err)
+                    //     reject(err);
+                    //   }
+                    // });
+                    //Pokreni macro da odštampa otpremnicu
+                    excel.Run("StampajOtpremnicu");
                     workbook.Close(false);
                     alreadyPrinted.add(fileName);
                 }
@@ -249,7 +260,7 @@ export const hasKeyword = (filterGroup, dietName) => {
                 return regex.test(dietName);
             }
             catch {
-                return false; // ako regex nije validan, preskoči ga  
+                return false; // ako regex nije validan, preskoči ga
             }
         }
         else {
