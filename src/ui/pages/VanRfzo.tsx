@@ -5,10 +5,13 @@ import { useFieldArray, useForm} from "react-hook-form";
 const VanRfzo = ()=>{
     const[clinics,setClinics] = useState<Klinika[]>([]);
     const[selectedClinicId,setSelectedClinicId] = useState<number>(0)
+    const[showMessage, setShowMessage] = useState<boolean>(false);
     const{
         register,
         control,
         handleSubmit,
+        getValues,
+        watch,
         formState:{errors},
         reset
     } = useForm<VanRfzoForm>({
@@ -34,6 +37,7 @@ const VanRfzo = ()=>{
     const onSubmit = async(data: VanRfzoForm) => {
         try{
             await window.electronApp.writeJsonFile("klinikeVanRfzo.json", data)
+            setShowMessage(true)
         }catch(error){
             console.log("error",error)
         }
@@ -53,18 +57,33 @@ const VanRfzo = ()=>{
         fetchClinics();
     },[])
 
+    useEffect(()=>{
+        const subscription = watch(() => {
+            setShowMessage(false)
+        });
+        return () => subscription.unsubscribe(); // Unsubscribe on component unmount
+    }, [watch]);
+
     return(
         <div className="mb-3">
         <form className="container mt-4" onSubmit={handleSubmit(onSubmit)}>
-            {/* DATE */}
-            <div className="mb-3">
-                <label className="form-label">Datum</label>
-                <input 
-                    type="date" 
-                    className="form-control"
-                    {...register("date", {required:true})} 
-                />
-            </div>
+
+
+            {/* Datum */}
+          <div className="mb-3">
+            <input
+              type="date"
+              id="date"
+              {...register('date', {
+                required: 'Selektuj datum',
+              })}
+            />
+            {errors.date && (
+              <div className="invalid-feedback">{errors.date.message}</div>
+            )}
+          </div>
+
+
             <div>{errors.date?.message}</div>
 
             {/* SELECT + ADD BUTTON */}
@@ -98,7 +117,8 @@ const VanRfzo = ()=>{
                 </li>)}
             </ul>
 
-            <button type="submit" className="btn btn-primary">Sačuvaj</button>
+            <button type="submit" className="btn btn-primary" disabled={showMessage}>Sačuvaj</button>
+            {showMessage ? <p><strong>{`✅ Klinike van Rfzo-a za dan ${getValues("date")} su uspešno sačuvane!`} </strong></p> : null}
         </form>
         </div>
     )

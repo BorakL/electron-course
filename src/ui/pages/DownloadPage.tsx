@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useSession } from '../context/sessionContext';
 import { useNavigate } from 'react-router';
 import { DostavnaTura, DownloadShippingDocsParams } from '../types';
+import ConfirmModal from '../components/confirmModal';
 
 const DownloadPage = ()=>{
     type FormValues = {
@@ -28,7 +29,9 @@ const DownloadPage = ()=>{
       const[loading,setLoading] = useState(false);
       const[klinike,setKlinike] = useState([]);
       const[klinikeVanRfzo,setKlinikeVanRfzo] = useState([]);
-      const[dostavneTure,setDostavneTure] = useState<DostavnaTura[]|null>(null)
+      const[klinikeVanRfzoDate, setKlinikeVanRfzoDate] = useState<string | null>(null);
+      const[dostavneTure,setDostavneTure] = useState<DostavnaTura[]|null>(null);
+      const[showMessage,setShowMessage] = useState<boolean>(false);
       const { register, handleSubmit, formState, watch, setValue } = form;
       const { errors } = formState;
       const {session} = useSession();
@@ -37,7 +40,7 @@ const DownloadPage = ()=>{
       const watchDate = watch("date");
     
       // Funkcija za formatiranje datuma u DD-MM-YYYY format
-      const formatDate = (date: string) => {
+      const formatDate = (date: string | null) => {
         if (!date) return "";
         const [year, month, day] = date.split("-");
         return `${day}-${month}-${year}`; // YYYY-MM-DD ➝ DD-MM-YYYY
@@ -59,6 +62,7 @@ const DownloadPage = ()=>{
             const vrfzoKlinikeData = await window.electronApp.readJsonFile("klinikeVanRfzo.json")
             setKlinike(klinikeData)
             setKlinikeVanRfzo(vrfzoKlinikeData.clinics ?? [])
+            setKlinikeVanRfzoDate(vrfzoKlinikeData.date ?? null)
             setDostavneTure(dostavneTure?.ture || [])
           }catch(error){
             console.log("Greška pri učitavanju klinika",error)
@@ -91,6 +95,21 @@ const DownloadPage = ()=>{
           console.error("Greška pri pozivanju createFullFolder:", error);
         }
       };
+
+    const downloadShippingDocsVrfzo = ()=>{
+      const formattedDate = formatDate(watchDate); // Formatiran datum pre slanja
+      const klinikeVanRfzoFormattedDate = formatDate(klinikeVanRfzoDate)
+      if(formattedDate!==klinikeVanRfzoFormattedDate){
+        setShowMessage(true);
+      }else{
+        downloadShippingDocs({
+            cliniks: klinikeVanRfzo,
+            url: "https://prochef.rs/hospital/create_pdf_invoice_otpremnica_van_rfzo_v1.php",
+            refererUrl: "https://prochef.rs/hospital/otpremnice_van_rfzo.php",
+            suffix: "vanRfzo"
+        })
+      }
+    }
 
     return(
       <div className=" container-fluid mt-4">
@@ -165,12 +184,7 @@ const DownloadPage = ()=>{
               type="button" 
               className="btn btn-primary" 
               disabled={loading}
-              onClick={handleSubmit(() => downloadShippingDocs({
-                cliniks: klinikeVanRfzo,
-                url: "https://prochef.rs/hospital/create_pdf_invoice_otpremnica_van_rfzo_v1.php",
-                refererUrl: "https://prochef.rs/hospital/otpremnice_van_rfzo.php",
-                suffix: "vanRfzo"
-              }))}
+              onClick={handleSubmit(() => downloadShippingDocsVrfzo())}
             >
               Preuzmi van rfzo otpremnice
             </button>
@@ -220,6 +234,19 @@ const DownloadPage = ()=>{
           </div>
           )}
         </div>
+
+        <ConfirmModal
+          show={showMessage}
+          onClose={()=>setShowMessage(false)}
+          onConfirm={() => downloadShippingDocs({
+            cliniks: klinikeVanRfzo,
+            url: "https://prochef.rs/hospital/create_pdf_invoice_otpremnica_van_rfzo_v1.php",
+            refererUrl: "https://prochef.rs/hospital/otpremnice_van_rfzo.php",
+            suffix: "vanRfzo"
+          })}
+          inform={true}
+          message="Datum za dijete van rfzo-a se ne poklapa sa odabranim datumom za preuzimanje otpremnica van rfzo-a! Da li ste sigurni da želite da nastavite?"
+        />
       </div>
     )
 }

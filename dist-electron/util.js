@@ -4,16 +4,7 @@ import https from 'https';
 import path from 'path';
 import os from 'os';
 import { promises as fsp } from 'fs';
-import winax from "winax";
 import { readJsonFile } from './fsHelpers/jsonUtils.js';
-// interface ExcelSheet {
-//   PageSetup: {
-//     Zoom: boolean | number;
-//     FitToPagesWide: number;
-//     FitToPagesTall: number;
-//   };
-//   PrintOut: (from?: number, to?: number, copies?: number) => void;
-// }
 // type ActiveXConstructor<T> = new (progId: string) => T;
 // Napravi konstruktor za Excel.Application
 // const ExcelApp = winax as unknown as ActiveXConstructor<ExcelApplication>;
@@ -188,8 +179,6 @@ export async function printDostavnaTura(folderPath, dostavneTure, klinike, turaI
         return;
     }
     const klinikeZaStampu = klinike.filter(k => tura.klinike.includes(k.id));
-    const excel = new winax.Object('Excel.Application');
-    excel.Visible = false;
     try {
         for (const klinika of klinikeZaStampu) {
             const naziv = klinika.naziv.trim().toLowerCase().replace(/\s+/g, ' ');
@@ -197,50 +186,18 @@ export async function printDostavnaTura(folderPath, dostavneTure, klinike, turaI
             const matchingFiles = allFiles.filter(file => fileRegex.test(file.toLowerCase()));
             const alreadyPrinted = new Set();
             for (const fileName of matchingFiles) {
-                if (!excel || typeof excel.Workbooks?.Open !== 'function') {
-                    console.error("Excel nije dostupan ili nije pravilno instaliran.");
-                    return;
-                }
                 if (alreadyPrinted.has(fileName))
                     continue;
-                const fullPath = path.join(folderPath, fileName);
+                // const fullPath = path.join(folderPath, fileName);
                 console.log(`Štampam za kliniku "${klinika.naziv}": ${fileName}`);
-                let workbook = null;
-                // let sheet: ExcelSheet;
                 try {
-                    workbook = excel.Workbooks.Open(fullPath);
-                    console.log("aaaaaaaaaa", excel.ActivePrinter);
-                    const sheetCount = workbook.Sheets.Count;
-                    console.log("Sheet count:", sheetCount);
-                    // sheet = workbook.Sheets.Item(1);
-                    // Podešavanja štampe
-                    // sheet.PageSetup.Zoom = false;
-                    // sheet.PageSetup.FitToPagesWide = 1;
-                    // sheet.PageSetup.FitToPagesTall = 1;
-                    // Štampanje
-                    // await new Promise<void>((resolve, reject) => {
-                    //   try {
-                    //     sheet.PrintOut(1, 1, 2);
-                    //     resolve();
-                    //   } catch (err) {
-                    //     console.log("Greška prilikom štampanja",err)
-                    //     reject(err);
-                    //   }
-                    // });
-                    //Pokreni macro da odštampa otpremnicu
-                    excel.Run("StampajOtpremnicu");
-                    workbook.Close(false);
+                    //Evo ovo je kod u kojeg bi ti sada trebao da umetneš štampanje excel fajlova pomoću VBA koda.
                     alreadyPrinted.add(fileName);
                 }
                 catch (err) {
                     console.error(`Greška pri štampi fajla ${fileName}:`, err);
                 }
             }
-        }
-        excel.Quit();
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        if (global.gc) {
-            global.gc();
         }
     }
     catch (err) {
@@ -260,7 +217,7 @@ export const hasKeyword = (filterGroup, dietName) => {
                 return regex.test(dietName);
             }
             catch {
-                return false; // ako regex nije validan, preskoči ga
+                return false; // ako regex nije validan, preskoči ga  
             }
         }
         else {

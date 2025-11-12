@@ -1,66 +1,6 @@
 {
   "clinics": [
     {
-      "id": 1761158260591,
-      "naziv": "endokrinologija",
-      "ostaliNazivi": [
-        "endokrina"
-      ],
-      "bolnicaApp": "INTERNA B",
-      "klinikaApp": "ENDOKRINOLOGIJA",
-      "bolnica": "UNIVERZITETSKI KLINIČKI CENTAR SRBIJE",
-      "klinika": "KLINIKA ZA ENDOKRINOLOGIJU DIJABETES I BOLESTI METABOLIZMA",
-      "firm": 53,
-      "user": [
-        678
-      ]
-    },
-    {
-      "id": 1761158260598,
-      "naziv": "očno",
-      "ostaliNazivi": [
-        "očno"
-      ],
-      "bolnicaApp": "KLINIKA ZA OČNE BOLESTI",
-      "klinikaApp": "OČNO",
-      "bolnica": "UNIVERZITETSKI KLINIČKI CENTAR SRBIJE",
-      "klinika": "KLINIKA ZA OČNE BOLESTI",
-      "firm": 57,
-      "user": [
-        684
-      ]
-    },
-    {
-      "id": 1761158260600,
-      "naziv": "nefrologija",
-      "ostaliNazivi": [
-        "nefrologija"
-      ],
-      "bolnicaApp": "KLINIKA ZA NEFROLOGIJU",
-      "klinikaApp": "NEFROLOGIJA",
-      "bolnica": "UNIVERZITETSKI KLINIČKI CENTAR SRBIJE",
-      "klinika": "KLINIKA ZA NEFROLOGIJU",
-      "firm": 62,
-      "user": [
-        696
-      ]
-    },
-    {
-      "id": 1761158260589,
-      "naziv": "pulmologija",
-      "ostaliNazivi": [
-        "pulmologija"
-      ],
-      "bolnicaApp": "klinika za pulmologiju",
-      "klinikaApp": "pulmologija",
-      "bolnica": "UNIVERZITETSKI KLINIČKI CENTAR SRBIJE",
-      "klinika": "KLINIKA ZA PULMOLOGIJU",
-      "firm": 47,
-      "user": [
-        664
-      ]
-    },
-    {
       "id": 1761158260590,
       "naziv": "ortopedija ukc",
       "ostaliNazivi": [
@@ -77,20 +17,36 @@
       ]
     },
     {
-      "id": 1761158260605,
-      "naziv": "neurologija",
+      "id": 1761158260580,
+      "naziv": "valjevo",
       "ostaliNazivi": [
-        "neurologija"
+        "valjevo"
       ],
-      "bolnicaApp": "KLINIKA ZA NEUROLOGIJU",
-      "klinikaApp": "NEUROLOGIJA",
-      "bolnica": "UNIVERZITETSKI KLINIČKI CENTAR SRBIJE",
-      "klinika": "KLINIKA ZA NEUROLOGIJU",
-      "firm": 54,
+      "bolnicaApp": "ZDRAVSTVENI CENTAR VALJEVO",
+      "klinikaApp": "OPŠTA",
+      "bolnica": "ZDRAVSTVENI CENTAR VALJEVO",
+      "klinika": "OPŠTA BOLNICA VALJEVO",
+      "firm": 60,
       "user": [
-        680
+        694
+      ]
+    },
+    {
+      "id": 1761158260583,
+      "naziv": "urologija",
+      "ostaliNazivi": [
+        "urologija",
+        "urologija ukc"
+      ],
+      "bolnicaApp": "KLINIKA ZA UROLOGIJU",
+      "klinikaApp": "UROLOGIJA UKC",
+      "bolnica": "UNIVERZITETSKI KLINIČKI CENTAR SRBIJE",
+      "klinika": "KLINIKA ZA UROLOGIJU",
+      "firm": 66,
+      "user": [
+        701
       ]
     }
   ],
-  "date": "2025-11-04"
+  "date": "2025-11-11"
 }

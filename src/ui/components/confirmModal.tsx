@@ -39,13 +39,13 @@ const ConfirmModal = ({ show, onClose, onConfirm, inform, title = "Potvrda", mes
                   Otkaži
                 </button>
                 <button className="btn btn-danger" onClick={onConfirm}>
-                  Obriši
+                  OK
                 </button>
               </div>
               :
               <div className="modal-footer">
                 <button className="btn btn-secondary" onClick={onClose}>
-                  Otkaži
+                  OK
                 </button>
               </div>
             }
