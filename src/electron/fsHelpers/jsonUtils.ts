@@ -223,7 +223,7 @@ import {
 type CounterMap = Record<string, number>;
 
 export async function mergeExcels(folderPath: string, outputPath: string): Promise<void> {
-    const filesForCheck: string[] = ["DB NEFROLOGIJA", "FAKULTET"];
+    const filesForCheck: string[] = ["BATAJNICA NEFROLOGIJA", "FAKULTET"];
     const mainWorkbook: Workbook = new ExcelJS.Workbook();
     const files: string[] = fs.readdirSync(folderPath)
         .filter((file: string) => file.endsWith(".xlsx"));
