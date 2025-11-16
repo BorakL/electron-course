@@ -1,8 +1,7 @@
-import fs from "fs";
 import path from 'path';
-
 import { DostavnaTura } from "../types/types.js";
 import { dialog } from "electron";
+import ExcelJS from 'exceljs'
 
 const appFolder = process.cwd(); // ili path.dirname(process.execPath)
 
@@ -208,4 +207,106 @@ export async function selectFolder(): Promise<null | string> {
     console.log("Greška pri selektovanju foldera", error);
     return null;
   }
+}
+
+
+//Merdzuj sve excel fajlove iz jednog foldera u jedan excel fajl
+import fs from "fs";
+import {
+    Workbook,
+    Worksheet,
+    Row,
+    Cell,
+    Column
+} from "exceljs";
+
+type CounterMap = Record<string, number>;
+
+export async function mergeExcels(folderPath: string, outputPath: string): Promise<void> {
+    const filesForCheck: string[] = ["DB NEFROLOGIJA", "FAKULTET"];
+    const mainWorkbook: Workbook = new ExcelJS.Workbook();
+    const files: string[] = fs.readdirSync(folderPath)
+        .filter((file: string) => file.endsWith(".xlsx"));
+    files.sort((a, b) => {
+      const aNum = parseInt(a);
+      const bNum = parseInt(b);
+      return aNum - bNum;
+    });
+
+    const counterMap: CounterMap = {};
+
+    for (const file of files) {
+        const filePath: string = path.join(folderPath, file);
+
+        // Extract number prefix before first space
+        const match: RegExpMatchArray | null = file.match(/^(\d+)\s+/);
+        if (!match) {
+            console.log(`Skipping file (no number prefix): ${file}`);
+            continue;
+        }
+
+        const prefix: string = match[1];
+
+        // Prepare counter
+        counterMap[prefix] = (counterMap[prefix] ?? 0) + 1;
+
+        
+        const sheetName: string = `${prefix}-${counterMap[prefix]}${filesForCheck.some(f=>file.includes(f)) ? "-Proveri" : ""}`;
+
+        const tempWorkbook: Workbook = new ExcelJS.Workbook();
+        await tempWorkbook.xlsx.readFile(filePath);
+
+        const sourceSheet: Worksheet = tempWorkbook.worksheets[0];
+        const targetSheet: Worksheet = mainWorkbook.addWorksheet(sheetName);
+
+        // Copy full sheet
+        await copySheet(sourceSheet, targetSheet);
+
+        console.log(`✔ Added sheet: ${sheetName}`);
+    }
+    await mainWorkbook.xlsx.writeFile(outputPath);
+
+    console.log(`\n🎉 Done! File saved as: ${outputPath}`);
+}
+
+
+/* -----------------------------------------------------------
+    COPY SHEET FUNCTION (WITH TYPE ANNOTATIONS)
+------------------------------------------------------------ */
+
+async function copySheet(source: Worksheet, target: Worksheet): Promise<void> {
+    /* ----- Copy Column Widths ----- */
+    source.columns.forEach((col: Partial<Column> | null, index: number) => {
+        if (col && typeof col.width === "number") {
+            target.getColumn(index + 1).width = col.width * 1.11;
+        }
+    });
+
+    /* ----- Copy Cells: Values + Style ----- */
+    source.eachRow({ includeEmpty: true }, (row: Row, rowNumber: number) => {
+        const newRow: Row = target.getRow(rowNumber);
+
+        row.eachCell({ includeEmpty: true }, (cell: Cell, colNumber: number) => {
+            const newCell: Cell = newRow.getCell(colNumber);
+
+            // Copy cell value
+            newCell.value = cell.value;
+
+            // Copy style (deep clone)
+            if (cell.style) {
+                newCell.style = JSON.parse(JSON.stringify(cell.style));
+            }
+
+            // Copy formula if exists
+            if (cell.formula) {
+                newCell.value = { formula: cell.formula, result: cell.result };
+            }
+        });
+
+        // Copy row height
+        
+            newRow.height = row.height * 1.25; 
+    });
+    target.mergeCells("A1:C1");
+
 }

@@ -22,11 +22,16 @@ declare module 'xlsx-populate' {
     };
     insertRows(row: number, amount: number): void;
     range(startRow: number, startCol: number, endRow: number, endCol: number): Range;
+    name(): string;
+    name(newName: string): Sheet;
   }
 
   export interface Workbook {
     sheet(index: number): Worksheet;
     toFileAsync(path: string): Promise<void>;
+    sheets(): Sheet[];
+    addSheet(name?: string): Sheet;
+    deleteSheet(sheet: string | Sheet): void;
   }
 
   // export interface WorksheetLike {

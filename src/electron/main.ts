@@ -4,7 +4,7 @@ import {createFullFolder, isDev, loginAndGetSession, printDostavnaTura} from './
 // import { pollResources } from './resourceManager.js';
 import { getPreloadPath } from './pathResolver.js'; 
 import dotenv from 'dotenv';  
-import { appendJsonItem, deleteJsonItemById, dodajKlinikuUNerasporedjene, dodajKlinikuUTuru, dodajNovuTuru, getFilePath, obrisiTuru, ocistiNevazecuKlinikuIzTura, readJsonFile, selectFolder, ukloniKlinikuIzNerasporedjenih, ukloniKlinikuIzTure, updateJsonItemById, writeJsonFile } from './fsHelpers/jsonUtils.js';
+import { appendJsonItem, deleteJsonItemById, dodajKlinikuUNerasporedjene, dodajKlinikuUTuru, dodajNovuTuru, getFilePath, mergeExcels, obrisiTuru, ocistiNevazecuKlinikuIzTura, readJsonFile, selectFolder, ukloniKlinikuIzNerasporedjenih, ukloniKlinikuIzTure, updateJsonItemById, writeJsonFile } from './fsHelpers/jsonUtils.js';
 import processDietFiles, { DietFilter, TableParams } from './xlsx/processDietFiles.js';
 import { DostavnaTura, Klinika, Logs } from './types/types.js';
 
@@ -80,5 +80,8 @@ app.on("ready", ()=>{
     })
     ipcMain.handle('loginAndGetSession', async(_event, username: string, password: string) => {
         return loginAndGetSession(username, password)
+    })
+    ipcMain.handle('mergeExcels', async(event, folderPath:string, outputPath:string) => {
+        return mergeExcels(folderPath, outputPath)
     })
 })

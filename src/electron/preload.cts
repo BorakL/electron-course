@@ -125,4 +125,9 @@ electron.contextBridge.exposeInMainWorld("electronApp", {
         ipcRenderer.invoke('printDostavnaTura', folderPath, dostavneTure, klinika, turaId),
 
     loginAndGetSession: (username: string, password: string) => ipcRenderer.invoke("loginAndGetSession", username, password),
+
+    mergeExcels: (
+        folderPath:string, 
+        outputPath:string
+    ): Promise<void> => ipcRenderer.invoke('mergeExcels', folderPath, outputPath)
 })

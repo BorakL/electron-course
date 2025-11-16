@@ -114,3 +114,5 @@ export interface DostavnaTuraObject {
   ture: DostavnaTura[],
   nerasporedjeneKlinike: number[]
 }
+
+export type CounterMap = Record<string, number>;

@@ -1,6 +1,6 @@
-import fs from "fs";
 import path from 'path';
 import { dialog } from "electron";
+import ExcelJS from 'exceljs';
 const appFolder = process.cwd(); // ili path.dirname(process.execPath)
 //Development
 // const dataFolder = path.join(appFolder, "src/electron","data");
@@ -162,4 +162,71 @@ export async function selectFolder() {
         console.log("Greška pri selektovanju foldera", error);
         return null;
     }
+}
+//Merdzuj sve excel fajlove iz jednog foldera u jedan excel fajl
+import fs from "fs";
+export async function mergeExcels(folderPath, outputPath) {
+    const filesForCheck = ["DB NEFROLOGIJA", "FAKULTET"];
+    const mainWorkbook = new ExcelJS.Workbook();
+    const files = fs.readdirSync(folderPath)
+        .filter((file) => file.endsWith(".xlsx"));
+    files.sort((a, b) => {
+        const aNum = parseInt(a);
+        const bNum = parseInt(b);
+        return aNum - bNum;
+    });
+    const counterMap = {};
+    for (const file of files) {
+        const filePath = path.join(folderPath, file);
+        // Extract number prefix before first space
+        const match = file.match(/^(\d+)\s+/);
+        if (!match) {
+            console.log(`Skipping file (no number prefix): ${file}`);
+            continue;
+        }
+        const prefix = match[1];
+        // Prepare counter
+        counterMap[prefix] = (counterMap[prefix] ?? 0) + 1;
+        const sheetName = `${prefix}-${counterMap[prefix]}${filesForCheck.some(f => file.includes(f)) ? "-Proveri" : ""}`;
+        const tempWorkbook = new ExcelJS.Workbook();
+        await tempWorkbook.xlsx.readFile(filePath);
+        const sourceSheet = tempWorkbook.worksheets[0];
+        const targetSheet = mainWorkbook.addWorksheet(sheetName);
+        // Copy full sheet
+        await copySheet(sourceSheet, targetSheet);
+        console.log(`✔ Added sheet: ${sheetName}`);
+    }
+    await mainWorkbook.xlsx.writeFile(outputPath);
+    console.log(`\n🎉 Done! File saved as: ${outputPath}`);
+}
+/* -----------------------------------------------------------
+    COPY SHEET FUNCTION (WITH TYPE ANNOTATIONS)
+------------------------------------------------------------ */
+async function copySheet(source, target) {
+    /* ----- Copy Column Widths ----- */
+    source.columns.forEach((col, index) => {
+        if (col && typeof col.width === "number") {
+            target.getColumn(index + 1).width = col.width * 1.11;
+        }
+    });
+    /* ----- Copy Cells: Values + Style ----- */
+    source.eachRow({ includeEmpty: true }, (row, rowNumber) => {
+        const newRow = target.getRow(rowNumber);
+        row.eachCell({ includeEmpty: true }, (cell, colNumber) => {
+            const newCell = newRow.getCell(colNumber);
+            // Copy cell value
+            newCell.value = cell.value;
+            // Copy style (deep clone)
+            if (cell.style) {
+                newCell.style = JSON.parse(JSON.stringify(cell.style));
+            }
+            // Copy formula if exists
+            if (cell.formula) {
+                newCell.value = { formula: cell.formula, result: cell.result };
+            }
+        });
+        // Copy row height
+        newRow.height = row.height * 1.25;
+    });
+    target.mergeCells("A1:C1");
 }

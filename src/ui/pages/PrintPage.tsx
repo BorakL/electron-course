@@ -1,82 +1,28 @@
-import { useEffect, useState } from "react"; 
-import { Klinika } from "../types";
-import { LuPrinter, LuPrinterCheck } from "react-icons/lu";
-
-type TureData = {
-  ture: {
-    id: number;
-    klinike: number[];
-  }[];
-  nerasporedjeneKlinike: number[];
-};
+import { useState } from "react";
 
 export default function PrintPage() {
-  const [tureData, setTureData] = useState<TureData | null>(null);
-  const [klinike, setKlinike] = useState<Klinika[]>([]);
-  const [loading, setLoading] = useState(true); 
   const[folderPath, setFolderPath] = useState<string>("");
   const[showMessage,setShowMessage] = useState<boolean>(false);
-  const[printedTours, setPrintedTours] = useState<number[]>([]);
-  const[isPrinting, setIsPrinting] = useState<boolean>(false);
+  const[fileIsMerged,setFileIsMerged] = useState<boolean>(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [tureJson, klinikeJson] = await Promise.all([
-          window.electronApp.readJsonFile("dostavneTure.json") as Promise<TureData>,
-          window.electronApp.readJsonFile("klinike.json") as Promise<Klinika[]>,
-        ]);
-
-        setTureData(tureJson);
-        setKlinike(klinikeJson);
-      } catch (error) {
-        console.error("Greška pri učitavanju podataka:", error);
-      } finally {
-        setLoading(false);
+  const handleSelectFolder = async () => {
+      const selectedPath = await window.electronApp.selectFolder();
+      if (selectedPath) {
+          console.log('Odabrani folder:', folderPath);
+          setFolderPath(selectedPath)
+          setShowMessage(false)
+          setFileIsMerged(false)
+      } else {
+          console.log('Izbor foldera je otkazan.');
       }
-    };
+  };
 
-    fetchData();
-  }, []);
-
-  const getNazivKlinike = (id: number): string =>
-    klinike.find(k => k.id === id)?.naziv || `Nepoznata klinika (${id})`;
-
-    const handleSelectFolder = async () => {
-        const selectedPath = await window.electronApp.selectFolder();
-        if (selectedPath) {
-            console.log('Odabrani folder:', folderPath);
-            setFolderPath(selectedPath)
-            setShowMessage(false)
-        } else {
-            console.log('Izbor foldera je otkazan.');
-        }
-    };
-
-const handlePrint = async (turaId: number) => {
-  try {
-    if (folderPath === "") {
-      setShowMessage(true);
-    } else if (tureData?.ture && klinike) {
-      setShowMessage(false);
-      setIsPrinting(true); // 🔒 Zaključaj sve štampe
-      setPrintedTours(prev => [...prev, turaId]);
-
-      await window.electronApp.printDostavnaTura(folderPath, tureData.ture, klinike, turaId);
-
-      // ⏱ Pauza dok se ne dozvoli novo štampanje
-      setIsPrinting(false); // 🔓 Otključaj sve
-
-    }
-  } catch (error) {
-    console.log("Greška prilikom pokretanja štampe:", error);
-    setIsPrinting(false); // U slučaju greške - otključaj
+  const handleMergeExcels = async ():Promise<void> => {
+    const mergedFileName = `${folderPath}/Merged.xlsx`
+    if(folderPath) await window.electronApp.mergeExcels(folderPath,mergedFileName)
+    setFileIsMerged(true)
   }
-};
 
-
-
-  if (loading || !tureData) return <p>Učitavanje...</p>;
 
   return (
     <div className="container py-4">
@@ -90,29 +36,19 @@ const handlePrint = async (turaId: number) => {
               showMessage ? <p className="mt-2"> <strong className="text-danger">Prvo selektuj folder sa otpremnicama za štampanje!</strong> </p> : ""
             }
         </div>
-
-      <div className="row">
-        {tureData.ture.map((tura) => (
-          <div key={tura.id} className="col-md-4 mb-4">
-            <button 
-              disabled={isPrinting}
-              onClick={()=>handlePrint(tura.id)} 
-              className={`btn btn-light ${printedTours.includes(tura.id) ? "border border-2" : null}`}
-            >
-              <div className="mb-2 font">
-                {!printedTours.includes(tura.id) ? <LuPrinter/> : <LuPrinterCheck color="red"/>}
-              </div>
-              <ul className="list-group mb-3">
-                {tura.klinike.map((id) => (
-                  <li key={id} className="list-group-item d-flex justify-content-between align-items-center">
-                    {getNazivKlinike(id)?.toUpperCase()}
-                  </li>
-                ))}
-              </ul>
-            </button>
-          </div>
-        ))}
-      </div>
+        <div className="mb-3">
+          <button 
+            type="button" 
+            className="btn btn-success" 
+            disabled={!folderPath || fileIsMerged ? true : false}
+            onClick={handleMergeExcels}
+          >
+            Merdžuj fajlove za štampu
+          </button>
+          {
+            folderPath && fileIsMerged ? <p className="mt-2"> <strong className="text-success">Excel fajlovi u odabranom folderu su uspešno merdžovani u jedan fajl</strong> </p> : ""
+          }
+        </div>
     </div>
   );
 }

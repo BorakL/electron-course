@@ -28,4 +28,5 @@ electron_2.default.contextBridge.exposeInMainWorld("electronApp", {
     selectFolder: () => electron_1.ipcRenderer.invoke('selectFolder'),
     printDostavnaTura: (folderPath, dostavneTure, klinika, turaId) => electron_1.ipcRenderer.invoke('printDostavnaTura', folderPath, dostavneTure, klinika, turaId),
     loginAndGetSession: (username, password) => electron_1.ipcRenderer.invoke("loginAndGetSession", username, password),
+    mergeExcels: (folderPath, outputPath) => electron_1.ipcRenderer.invoke('mergeExcels', folderPath, outputPath)
 });
