@@ -166,7 +166,7 @@ export async function selectFolder() {
 //Merdzuj sve excel fajlove iz jednog foldera u jedan excel fajl
 import fs from "fs";
 export async function mergeExcels(folderPath, outputPath) {
-    const filesForCheck = ["DB NEFROLOGIJA", "FAKULTET"];
+    const filesForCheck = ["BATAJNICA NEFROLOGIJA", "FAKULTET"];
     const mainWorkbook = new ExcelJS.Workbook();
     const files = fs.readdirSync(folderPath)
         .filter((file) => file.endsWith(".xlsx"));
