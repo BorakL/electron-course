@@ -203,6 +203,22 @@ export async function mergeExcels(folderPath, outputPath) {
     COPY SHEET FUNCTION (WITH TYPE ANNOTATIONS)
 ------------------------------------------------------------ */
 async function copySheet(source, target) {
+    const tableParams = {
+        firstRow: 12,
+        lastRowTitle: "UKUPNO:",
+    };
+    /* ---- FIND LAST ROW FIRST ---- */
+    let lastRowNumber = -1;
+    for (let r = 1; r <= source.rowCount; r++) {
+        const val = source.getRow(r).getCell(1).value?.toString() || "";
+        if (val.includes(tableParams.lastRowTitle)) {
+            lastRowNumber = r;
+            break;
+        }
+    }
+    if (lastRowNumber === -1) {
+        lastRowNumber = source.rowCount;
+    }
     /* ----- Copy Column Widths ----- */
     source.columns.forEach((col, index) => {
         if (col && typeof col.width === "number") {
@@ -214,18 +230,20 @@ async function copySheet(source, target) {
         const newRow = target.getRow(rowNumber);
         row.eachCell({ includeEmpty: true }, (cell, colNumber) => {
             const newCell = newRow.getCell(colNumber);
-            // Copy cell value
             newCell.value = cell.value;
-            // Copy style (deep clone)
-            if (cell.style) {
+            if (cell.style)
                 newCell.style = JSON.parse(JSON.stringify(cell.style));
-            }
-            // Copy formula if exists
             if (cell.formula) {
                 newCell.value = { formula: cell.formula, result: cell.result };
             }
         });
-        // Copy row height
+        /* ---- HIDE EMPTY ROWS BETWEEN FIRST ROW AND LAST "UKUPNO:" ROW ---- */
+        if (rowNumber >= tableParams.firstRow && rowNumber < lastRowNumber) {
+            const value = row.getCell(1).value;
+            if (value === null || value === "" || value === undefined) {
+                newRow.hidden = true;
+            }
+        }
         newRow.height = row.height * 1.25;
     });
     target.mergeCells("A1:C1");

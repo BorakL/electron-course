@@ -215,8 +215,6 @@ import fs from "fs";
 import {
     Workbook,
     Worksheet,
-    Row,
-    Cell,
     Column
 } from "exceljs";
 
@@ -275,6 +273,27 @@ export async function mergeExcels(folderPath: string, outputPath: string): Promi
 ------------------------------------------------------------ */
 
 async function copySheet(source: Worksheet, target: Worksheet): Promise<void> {
+
+    const tableParams = {
+        firstRow: 12,
+        lastRowTitle: "UKUPNO:",
+    };
+
+    /* ---- FIND LAST ROW FIRST ---- */
+    let lastRowNumber = -1;
+
+    for (let r = 1; r <= source.rowCount; r++) {
+        const val = source.getRow(r).getCell(1).value?.toString() || "";
+        if (val.includes(tableParams.lastRowTitle)) {
+            lastRowNumber = r;
+            break;
+        }
+    }
+
+    if (lastRowNumber === -1) {
+        lastRowNumber = source.rowCount;
+    }
+
     /* ----- Copy Column Widths ----- */
     source.columns.forEach((col: Partial<Column> | null, index: number) => {
         if (col && typeof col.width === "number") {
@@ -283,30 +302,28 @@ async function copySheet(source: Worksheet, target: Worksheet): Promise<void> {
     });
 
     /* ----- Copy Cells: Values + Style ----- */
-    source.eachRow({ includeEmpty: true }, (row: Row, rowNumber: number) => {
-        const newRow: Row = target.getRow(rowNumber);
+    source.eachRow({ includeEmpty: true }, (row, rowNumber) => {
+        const newRow = target.getRow(rowNumber);
 
-        row.eachCell({ includeEmpty: true }, (cell: Cell, colNumber: number) => {
-            const newCell: Cell = newRow.getCell(colNumber);
-
-            // Copy cell value
+        row.eachCell({ includeEmpty: true }, (cell, colNumber) => {
+            const newCell = newRow.getCell(colNumber);
             newCell.value = cell.value;
-
-            // Copy style (deep clone)
-            if (cell.style) {
-                newCell.style = JSON.parse(JSON.stringify(cell.style));
-            }
-
-            // Copy formula if exists
+            if (cell.style) newCell.style = JSON.parse(JSON.stringify(cell.style));
             if (cell.formula) {
                 newCell.value = { formula: cell.formula, result: cell.result };
             }
         });
 
-        // Copy row height
-        
-            newRow.height = row.height * 1.25; 
-    });
-    target.mergeCells("A1:C1");
+        /* ---- HIDE EMPTY ROWS BETWEEN FIRST ROW AND LAST "UKUPNO:" ROW ---- */
+        if (rowNumber >= tableParams.firstRow && rowNumber < lastRowNumber) {
+            const value = row.getCell(1).value;
+            if (value === null || value === "" || value === undefined) {
+                newRow.hidden = true;
+            }
+        }
 
+        newRow.height = row.height * 1.25;
+    });
+
+    target.mergeCells("A1:C1");
 }
