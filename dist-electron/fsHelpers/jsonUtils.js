@@ -196,6 +196,24 @@ export async function mergeExcels(folderPath, outputPath) {
         await copySheet(sourceSheet, targetSheet);
         console.log(`✔ Added sheet: ${sheetName}`);
     }
+    mainWorkbook.eachSheet(sheet => {
+        sheet.pageSetup = {
+            orientation: 'portrait',
+            paperSize: 9,
+            horizontalCentered: true,
+            fitToPage: true,
+            fitToWidth: 1,
+            fitToHeight: 1,
+            margins: {
+                left: 0.25,
+                right: 0.25,
+                top: 0.4,
+                bottom: 0.25,
+                header: 0.4,
+                footer: 0.25
+            }
+        };
+    });
     await mainWorkbook.xlsx.writeFile(outputPath);
     console.log(`\n🎉 Done! File saved as: ${outputPath}`);
 }
@@ -231,8 +249,17 @@ async function copySheet(source, target) {
         row.eachCell({ includeEmpty: true }, (cell, colNumber) => {
             const newCell = newRow.getCell(colNumber);
             newCell.value = cell.value;
-            if (cell.style)
-                newCell.style = JSON.parse(JSON.stringify(cell.style));
+            // if (cell.style && Object.keys(cell.style).length !== 0) newCell.style = JSON.parse(JSON.stringify(cell.style));
+            if (cell.style && Object.keys(cell.style).length !== 0) {
+                if (cell.style.font && Object.keys(cell.style.font).length !== 0)
+                    newCell.style.font = JSON.parse(JSON.stringify(cell.style.font));
+                if (cell.style.border && Object.keys(cell.style.border).length !== 0)
+                    newCell.style.border = JSON.parse(JSON.stringify(cell.style.border));
+                if (cell.style.fill && Object.keys(cell.style.fill).length !== 0)
+                    newCell.style.fill = JSON.parse(JSON.stringify(cell.style.fill));
+                if (cell.style.alignment && Object.keys(cell.style.alignment).length !== 0)
+                    newCell.style.alignment = JSON.parse(JSON.stringify(cell.style.alignment));
+            }
             if (cell.formula) {
                 newCell.value = { formula: cell.formula, result: cell.result };
             }

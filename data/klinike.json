@@ -638,5 +638,41 @@
       718,
       719
     ]
+  },
+  {
+    "naziv": "BATAJNICA PALIJATIVA",
+    "bolnicaApp": "BATAJNICA",
+    "klinikaApp": "BATAJNICA",
+    "bolnica": "BATAJNICA",
+    "klinika": "BATAJNICA",
+    "firm": 75,
+    "id": 1762275916411,
+    "user": [
+      711
+    ]
+  },
+  {
+    "naziv": "BATAJNICA NEFROLOGIJA",
+    "bolnicaApp": "BATAJNICA",
+    "klinikaApp": "BATAJNICA",
+    "bolnica": "BATAJNICA",
+    "klinika": "BATAJNICA",
+    "firm": 75,
+    "id": 1762275948850,
+    "user": [
+      713
+    ]
+  },
+  {
+    "naziv": "FAKULTET",
+    "bolnicaApp": "FAKULTET",
+    "klinikaApp": "FAKULTET",
+    "bolnica": "FAKULTET",
+    "klinika": "FAKULTET",
+    "firm": 74,
+    "id": 1762275973858,
+    "user": [
+      710
+    ]
   }
 ]
