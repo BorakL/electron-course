@@ -31,52 +31,6 @@
       ]
     },
     {
-      "id": 1761158260600,
-      "naziv": "nefrologija",
-      "ostaliNazivi": [
-        "nefrologija"
-      ],
-      "bolnicaApp": "KLINIKA ZA NEFROLOGIJU",
-      "klinikaApp": "NEFROLOGIJA",
-      "bolnica": "UNIVERZITETSKI KLINIČKI CENTAR SRBIJE",
-      "klinika": "KLINIKA ZA NEFROLOGIJU",
-      "firm": 62,
-      "user": [
-        696
-      ]
-    },
-    {
-      "id": 1761158260589,
-      "naziv": "pulmologija",
-      "ostaliNazivi": [
-        "pulmologija"
-      ],
-      "bolnicaApp": "klinika za pulmologiju",
-      "klinikaApp": "pulmologija",
-      "bolnica": "UNIVERZITETSKI KLINIČKI CENTAR SRBIJE",
-      "klinika": "KLINIKA ZA PULMOLOGIJU",
-      "firm": 47,
-      "user": [
-        664
-      ]
-    },
-    {
-      "id": 1761158260590,
-      "naziv": "ortopedija ukc",
-      "ostaliNazivi": [
-        "ortopedija",
-        "ortopedija A"
-      ],
-      "bolnicaApp": "ORTOPEDIJA A",
-      "klinikaApp": "ORTOPEDIJA UKC",
-      "bolnica": "UNIVERZITETSKI KLINIČKI CENTAR SRBIJE",
-      "klinika": "KLINIKA ZA ORTOPEDSKU HIRURGIJU I TRAUMATOLOGIJU (A)",
-      "firm": 50,
-      "user": [
-        667
-      ]
-    },
-    {
       "id": 1761158260605,
       "naziv": "neurologija",
       "ostaliNazivi": [
@@ -90,7 +44,24 @@
       "user": [
         680
       ]
+    },
+    {
+      "id": 1761158260596,
+      "naziv": "dermatovenerologija",
+      "ostaliNazivi": [
+        "kozno",
+        "kožno",
+        "dermatologija"
+      ],
+      "bolnicaApp": "KLINIKA ZA DERMATOVENEROLOGIJU",
+      "klinikaApp": "KOŽNO",
+      "bolnica": "UNIVERZITETSKI KLINIČKI CENTAR SRBIJE",
+      "klinika": "KLINIKA ZA DERMATOVENEROLOGIJU",
+      "firm": 56,
+      "user": [
+        683
+      ]
     }
   ],
-  "date": "2025-11-04"
+  "date": "2025-11-19"
 }
