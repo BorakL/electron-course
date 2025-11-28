@@ -353,3 +353,69 @@ async function copySheet(source: Worksheet, target: Worksheet): Promise<void> {
 
     target.mergeCells("A1:C1");
 }
+
+
+
+
+const CLINIC_ROW = 2;
+const CLINIC_START_COL = 3; // C
+const DIET_COL = 2;          // B
+const FIRST_DIET_ROW = 4;
+
+export async function getClinicsWithMeals(filePath: string): Promise<string[]> {
+  const workbook = new ExcelJS.Workbook();
+  await workbook.xlsx.readFile(filePath);
+
+  const sheet = workbook.worksheets[0];
+  const clinics: { name: string; col: number }[] = [];
+
+  // -------------------------
+  // 1. Uzimamo nazive klinika
+  // -------------------------
+
+  let col = CLINIC_START_COL;
+
+  while (true) {
+    const cell = sheet.getRow(CLINIC_ROW).getCell(col).value;
+    const clinicName = cell?.toString().trim();
+
+    if (!clinicName) break;
+
+    clinics.push({ name: clinicName, col });
+    col++;
+  }
+
+  // ----------------------------------------
+  // 2. Prolazimo kroz dijete (kolona B)
+  // ----------------------------------------
+
+  const result: string[] = [];
+
+  for (const clinic of clinics) {
+    let hasMeals = false;
+    let row = FIRST_DIET_ROW;
+
+    while (true) {
+      const dietCell = sheet.getRow(row).getCell(DIET_COL).value;
+      const dietName = dietCell?.toString().trim();
+
+      // Ako nema naziva – kraj dijeta
+      if (!dietName || dietName === "0") break;
+
+      const value = sheet.getRow(row).getCell(clinic.col).value;
+
+      if (typeof value === "number" && value > 0) {
+        hasMeals = true;
+        break;
+      }
+
+      row++;
+    }
+
+    if (hasMeals) {
+      result.push(clinic.name);
+    }
+  }
+
+  return result;
+}
