@@ -111,6 +111,24 @@ const DownloadPage = ()=>{
       }
     }
 
+    const downloadShippingDocsSpecMeals = async() => {
+      const formattedDate = formatDate(watchDate);
+      const category = form.getValues("category");
+      const specMealsClinicsNames = await window.electronApp.getClinicsWithMeals({
+        url: `https://www.prochef.rs/hospital/trebovanje_za_pakovanje.php?date=${formattedDate}&category_id=${category}&firm=-1&user=-1&dk_id=2&poizvod_cat_id=1&order_type=3&print_file_no=-1&stampa=stampa`,
+        // refererUrl: "https://prochef.rs/hospital/otpremnice_van_rfzo.php",
+        session
+      })
+      console.log("specMealsClinicsNames",specMealsClinicsNames)
+      // const specMealsClinics = getClinicsWithSpecMeals(klinike,specMealsClinicsNames) 
+        // downloadShippingDocs({
+        //     cliniks: specMealsClinics,
+        //     url: "https://prochef.rs/hospital/create_pdf_invoice_otpremnica_van_rfzo_v1.php",
+        //     refererUrl: "https://prochef.rs/hospital/otpremnice_van_rfzo.php",
+        //     suffix: "Specijalni obrok"
+        // }) 
+    }
+
     return(
       <div className=" container-fluid mt-4">
         <h2 className="mb-4">Preuzimanje otpremnica</h2>
@@ -187,6 +205,17 @@ const DownloadPage = ()=>{
               onClick={handleSubmit(() => downloadShippingDocsVrfzo())}
             >
               Preuzmi van rfzo otpremnice
+            </button>
+          </div>
+
+          <div className="mb-3">
+            <button 
+              type="button" 
+              className="btn btn-primary" 
+              disabled={loading}
+              onClick={handleSubmit(() => downloadShippingDocsSpecMeals())}
+            >
+              Preuzmi specijalni obrok otpremnice
             </button>
           </div>
 

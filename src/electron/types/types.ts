@@ -116,3 +116,11 @@ export interface DostavnaTuraObject {
 }
 
 export type CounterMap = Record<string, number>;
+
+export interface GetClinicsWithMealsParams {
+  url: string,
+  refererUrl: string,
+  date: string,
+  category: number,
+  session: string
+}

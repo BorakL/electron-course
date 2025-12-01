@@ -1,6 +1,6 @@
 import { ipcRenderer } from "electron"; 
 // @ts-ignore
-import  { DostavnaTura, Klinika } from "./types/types.js";   
+import  { DostavnaTura, GetClinicsWithMealsParams, Klinika } from "./types/types.js";   
 // import { dowloadMoreFiles } from "./util";
 import electron from 'electron';
 // import { DietFilter, TableParams } from "./xlsx/processDietFiles.js";
@@ -129,5 +129,9 @@ electron.contextBridge.exposeInMainWorld("electronApp", {
     mergeExcels: (
         folderPath:string, 
         outputPath:string
-    ): Promise<void> => ipcRenderer.invoke('mergeExcels', folderPath, outputPath)
+    ): Promise<void> => ipcRenderer.invoke('mergeExcels', folderPath, outputPath),
+
+    getClinicsWithMeals: (
+        params: GetClinicsWithMealsParams
+    ): Promise<string[]> => ipcRenderer.invoke('getClinicsWithMeals', params)
 })

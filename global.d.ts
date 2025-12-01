@@ -44,7 +44,8 @@ declare global {
             printDostavnaTura: (folderPath:string, dostavneTure:DostavnaTura[], klinike:Klinika[], turaId:nuber) => Promise<void>
             loginAndGetSession: (username:string, password:string) => Promise<string | null>
             addLicensePlate: (folderPath:string, tableParams:TableParams)=> Promise<void>
-            mergeExcels(folderPath:string, outputPath:string): Promise<void> 
+            mergeExcels(folderPath:string, outputPath:string): Promise<void>
+            getClinicsWithMeals(GetClinicsWithMealsParams): Promise<string[]>
           }
     }
 }
