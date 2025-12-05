@@ -3,9 +3,10 @@ import axios from 'axios';
 import https from 'https';
 import path from 'path';
 import os from 'os';
-import { CreateFullFolderParams, DostavnaTura, DostavnaTuraObject, DownloadFileParams, GetClinicsWithMealsParams, Klinika } from './types/types.js';
+import { CreateFullFolderParams, DostavnaTura, DostavnaTuraObject, DownloadFileParams, Klinika } from './types/types.js';
 import { promises as fsp } from 'fs';
 import { readJsonFile } from './fsHelpers/jsonUtils.js';
+import { DietFilter } from './xlsx/processDietFiles.js';
 import ExcelJS from 'exceljs'
 
 
@@ -307,104 +308,76 @@ export function pronadjiTuruZaKliniku(
 
 
 
-
-const CLINIC_ROW = 2;
-const CLINIC_START_COL = 3; // C
-const DIET_COL = 2;          // B
-const FIRST_DIET_ROW = 4; 
-
-// fileUrl
-// https://www.prochef.rs/hospital/trebovanje_za_pakovanje.php?date=27%2F11%2F2025&category_id=1&firm=-1&user=-1&dk_id=2&poizvod_cat_id=1&order_type=3&print_file_no=-1&stampa=stampa
-// Referer url:
-// https://www.prochef.rs/hospital/trebovanje_za_pakovanje.php?date=27%2F11%2F2025&category_id=1&firm=-1&user=-1&dk_id=2&poizvod_cat_id=1&order_type=3
- 
-
-
-
-export async function getClinicsWithMeals({
-  url,
-  refererUrl,
-  // date,
-  // category,
-  session
-}:GetClinicsWithMealsParams): Promise<string[]> {
-  let specDietClinicsFile: ArrayBuffer;
-
-  //Download specDiet clinics
-  try{
-    const response = await axios({
-        url,
-        method: "GET",
-        responseType: "arraybuffer",
-        httpsAgent: new https.Agent({ rejectUnauthorized: false }),
-        headers: {
-          'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-          "Accept": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36",
-          // "Referer": `${refererUrl}?firm=-1&user=-1&dk_id=2&date=${date}&category_id=${category}poizvod_cat_id=1&order_type=3`,
-          "Referer": `${refererUrl}`,
-          "Cookie": `PHPSESSID=${session}`
-        }
-    })
-    specDietClinicsFile = response.data
-  }catch(error){
-    console.log("Greška pri preuzimanju klinika sa specijalnim dijetama", error)
-    return [];
-  }
-
+export async function getClinicsWithSpecMeals(filePath: string, dietFilters:DietFilter[]): Promise<string[]> {
+ // 2) UCITAVANJE EXCELA DIREKTNO IZ BUFFERA
   const workbook = new ExcelJS.Workbook();
-  await workbook.xlsx.load(specDietClinicsFile);
+  await workbook.xlsx.readFile(filePath)
 
   const sheet = workbook.worksheets[0];
-  const clinics: { name: string; col: number }[] = [];
 
-  // -------------------------
-  // 1. Uzimamo nazive klinika
-  // -------------------------
+  // -----------------------------------
+  // 3) PRONALAZAK KLINIKA (drugi red, kolona C pa desno)
+  // -----------------------------------
 
-  let col = CLINIC_START_COL;
+  const FIRST_CLINIC_ROW = 2;
+  const FIRST_CLINIC_COL = 3;
+  const DIET_COL = 2;          // B
+  const FIRST_DIET_ROW = 4; 
+  const CLINIC_ROW = 2;
+
+  let col = FIRST_CLINIC_COL;
+  let lastClinicCol:number;
 
   while (true) {
-    const cell = sheet.getRow(CLINIC_ROW).getCell(col).value;
-    const clinicName = cell?.toString().trim();
+    const cell = sheet.getRow(FIRST_CLINIC_ROW).getCell(col).value;
 
-    if (!clinicName) break;
-
-    clinics.push({ name: clinicName, col });
+    if (!cell || cell.toString().trim() === "" || cell.toString().trim() === "0") {
+      lastClinicCol = col;
+      break; // kraj klinika
+    }
     col++;
   }
 
-  // ----------------------------------------
-  // 2. Prolazimo kroz dijete (kolona B)
-  // ----------------------------------------
+  // -----------------------------------
+  // 4) PRONALAZAK DIJETA (kolona B, od reda 4 pa dole)
+  // -----------------------------------
 
-  const result: string[] = [];
+  let row = FIRST_DIET_ROW;
+  const specDietsClinics:string[] = [];
 
-  for (const clinic of clinics) {
-    let hasMeals = false;
-    let row = FIRST_DIET_ROW;
+  while (true) {
+    const dietName = sheet.getRow(row).getCell(DIET_COL).value?.toString();
+    let hasKeywordData = false;
 
-    while (true) {
-      const dietCell = sheet.getRow(row).getCell(DIET_COL).value;
-      const dietName = dietCell?.toString().trim();
+    if (!dietName || dietName.toString().trim() === "" || dietName.toString().trim() === "0") {
+      break; // kraj dijeta
+    }
 
-      // Ako nema naziva – kraj dijeta
-      if (!dietName || dietName === "0") break;
+    //ako dietcell sadrži kriterijum za specijalni obrok onda uradi sledleće
+    for (const filter of dietFilters) {
+      if (!filter?.title || !Array.isArray(filter.keywords)) continue;
+      hasKeywordData = hasKeyword(filter,dietName)
+    }
 
-      const value = sheet.getRow(row).getCell(clinic.col).value;
-
-      if (typeof value === "number" && value > 0) {
-        hasMeals = true;
-        break;
+    if(hasKeywordData) {
+      let col = FIRST_CLINIC_COL;
+      while (true) {
+        const cell = sheet.getRow(row).getCell(col).value;
+        if (col === lastClinicCol) {
+          break; // kraj klinika
+        }
+        if(!cell && Number(cell)>0) {
+          const clinicName = sheet.getRow(CLINIC_ROW).getCell(col).value?.toString();
+          if(clinicName){
+            specDietsClinics.push(clinicName)
+          }
+        }
+        col++;
       }
-
-      row++;
     }
+    
 
-    if (hasMeals) {
-      result.push(clinic.name);
-    }
+    row++;
   }
-
-  return result
+  return specDietsClinics;
 }

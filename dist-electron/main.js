@@ -1,6 +1,6 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import path from 'path';
-import { createFullFolder, getClinicsWithMeals, isDev, loginAndGetSession, printDostavnaTura } from './util.js';
+import { createFullFolder, getClinicsWithSpecMeals, isDev, loginAndGetSession, printDostavnaTura } from './util.js';
 // import { pollResources } from './resourceManager.js';
 import { getPreloadPath } from './pathResolver.js';
 import dotenv from 'dotenv';
@@ -79,7 +79,7 @@ app.on("ready", () => {
     ipcMain.handle('mergeExcels', async (event, folderPath, outputPath) => {
         return mergeExcels(folderPath, outputPath);
     });
-    ipcMain.handle('getClinicsWithMeals', async (event, params) => {
-        return getClinicsWithMeals(params);
+    ipcMain.handle('getClinicsWiithSpecMeals', async (event, filePath, dietFilters) => {
+        return getClinicsWithSpecMeals(filePath, dietFilters);
     });
 });

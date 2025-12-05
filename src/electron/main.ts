@@ -1,12 +1,12 @@
 import {app, BrowserWindow, ipcMain} from 'electron';
 import path from 'path';
-import {createFullFolder, getClinicsWithMeals, isDev, loginAndGetSession, printDostavnaTura} from './util.js' 
+import {createFullFolder, getClinicsWithSpecMeals, isDev, loginAndGetSession, printDostavnaTura} from './util.js' 
 // import { pollResources } from './resourceManager.js';
 import { getPreloadPath } from './pathResolver.js'; 
 import dotenv from 'dotenv';  
 import { appendJsonItem, deleteJsonItemById, dodajKlinikuUNerasporedjene, dodajKlinikuUTuru, dodajNovuTuru, getFilePath, mergeExcels, obrisiTuru, ocistiNevazecuKlinikuIzTura, readJsonFile, selectFolder, ukloniKlinikuIzNerasporedjenih, ukloniKlinikuIzTure, updateJsonItemById, writeJsonFile } from './fsHelpers/jsonUtils.js';
 import processDietFiles, { DietFilter, TableParams } from './xlsx/processDietFiles.js';
-import { DostavnaTura, GetClinicsWithMealsParams, Klinika, Logs } from './types/types.js';
+import { DostavnaTura, Klinika, Logs } from './types/types.js';
 
 
 // Definiši __dirname za ES module 
@@ -84,7 +84,7 @@ app.on("ready", ()=>{
     ipcMain.handle('mergeExcels', async(event, folderPath:string, outputPath:string) => {
         return mergeExcels(folderPath, outputPath)
     })
-    ipcMain.handle('getClinicsWithMeals', async(event, params: GetClinicsWithMealsParams ) => {
-        return getClinicsWithMeals(params)
+    ipcMain.handle('getClinicsWiithSpecMeals', async(event, filePath:string, dietFilters:DietFilter[]) => {
+        return getClinicsWithSpecMeals(filePath, dietFilters)
     })
 })

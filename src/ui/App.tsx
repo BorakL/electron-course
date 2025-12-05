@@ -14,6 +14,7 @@ import IzdvajanjeDijeta from './pages/IzdvajanjeDijeta';
 import LoginPage from './pages/LoginPage';
 import { useSession } from './context/sessionContext';
 import VanRfzo from './pages/VanRfzo';
+import SpecOtpremnice from './pages/SpecOtpremnice';
 // import { useAppDispatch, useAppSelector } from './redux/hooks';
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
             <Route path="/addKlinika" element={<AddKlinika/>} />
             <Route path="/filteri" element={<IzdvajanjeDijeta/>}/>
             <Route path="/vanRfzo" element={<VanRfzo/>}/>
+            <Route path="/specOtpremnice" element={<SpecOtpremnice/>}/>
             <Route path="*" element={<Navigate to="/download" />} />
           </Route> 
         </Routes>

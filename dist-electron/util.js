@@ -234,80 +234,63 @@ export function pronadjiTuruZaKliniku(userId, dostavneTure) {
     }
     return null; // ako nije pronađena
 }
-const CLINIC_ROW = 2;
-const CLINIC_START_COL = 3; // C
-const DIET_COL = 2; // B
-const FIRST_DIET_ROW = 4;
-// fileUrl
-// https://www.prochef.rs/hospital/trebovanje_za_pakovanje.php?date=27%2F11%2F2025&category_id=1&firm=-1&user=-1&dk_id=2&poizvod_cat_id=1&order_type=3&print_file_no=-1&stampa=stampa
-// Referer url:
-// https://www.prochef.rs/hospital/trebovanje_za_pakovanje.php?date=27%2F11%2F2025&category_id=1&firm=-1&user=-1&dk_id=2&poizvod_cat_id=1&order_type=3
-export async function getClinicsWithMeals({ url, refererUrl, 
-// date,
-// category,
-session }) {
-    let specDietClinicsFile;
-    //Download specDiet clinics
-    try {
-        const response = await axios({
-            url,
-            method: "GET",
-            responseType: "arraybuffer",
-            httpsAgent: new https.Agent({ rejectUnauthorized: false }),
-            headers: {
-                'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                "Accept": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36",
-                // "Referer": `${refererUrl}?firm=-1&user=-1&dk_id=2&date=${date}&category_id=${category}poizvod_cat_id=1&order_type=3`,
-                "Referer": `${refererUrl}`,
-                "Cookie": `PHPSESSID=${session}`
-            }
-        });
-        specDietClinicsFile = response.data;
-    }
-    catch (error) {
-        console.log("Greška pri preuzimanju klinika sa specijalnim dijetama", error);
-        return [];
-    }
+export async function getClinicsWithSpecMeals(filePath, dietFilters) {
+    // 2) UCITAVANJE EXCELA DIREKTNO IZ BUFFERA
     const workbook = new ExcelJS.Workbook();
-    await workbook.xlsx.load(specDietClinicsFile);
+    await workbook.xlsx.readFile(filePath);
     const sheet = workbook.worksheets[0];
-    const clinics = [];
-    // -------------------------
-    // 1. Uzimamo nazive klinika
-    // -------------------------
-    let col = CLINIC_START_COL;
+    // -----------------------------------
+    // 3) PRONALAZAK KLINIKA (drugi red, kolona C pa desno)
+    // -----------------------------------
+    const FIRST_CLINIC_ROW = 2;
+    const FIRST_CLINIC_COL = 3;
+    const DIET_COL = 2; // B
+    const FIRST_DIET_ROW = 4;
+    const CLINIC_ROW = 2;
+    let col = FIRST_CLINIC_COL;
+    let lastClinicCol;
     while (true) {
-        const cell = sheet.getRow(CLINIC_ROW).getCell(col).value;
-        const clinicName = cell?.toString().trim();
-        if (!clinicName)
-            break;
-        clinics.push({ name: clinicName, col });
+        const cell = sheet.getRow(FIRST_CLINIC_ROW).getCell(col).value;
+        if (!cell || cell.toString().trim() === "" || cell.toString().trim() === "0") {
+            lastClinicCol = col;
+            break; // kraj klinika
+        }
         col++;
     }
-    // ----------------------------------------
-    // 2. Prolazimo kroz dijete (kolona B)
-    // ----------------------------------------
-    const result = [];
-    for (const clinic of clinics) {
-        let hasMeals = false;
-        let row = FIRST_DIET_ROW;
-        while (true) {
-            const dietCell = sheet.getRow(row).getCell(DIET_COL).value;
-            const dietName = dietCell?.toString().trim();
-            // Ako nema naziva – kraj dijeta
-            if (!dietName || dietName === "0")
-                break;
-            const value = sheet.getRow(row).getCell(clinic.col).value;
-            if (typeof value === "number" && value > 0) {
-                hasMeals = true;
-                break;
+    // -----------------------------------
+    // 4) PRONALAZAK DIJETA (kolona B, od reda 4 pa dole)
+    // -----------------------------------
+    let row = FIRST_DIET_ROW;
+    const specDietsClinics = [];
+    while (true) {
+        const dietName = sheet.getRow(row).getCell(DIET_COL).value?.toString();
+        let hasKeywordData = false;
+        if (!dietName || dietName.toString().trim() === "" || dietName.toString().trim() === "0") {
+            break; // kraj dijeta
+        }
+        //ako dietcell sadrži kriterijum za specijalni obrok onda uradi sledleće
+        for (const filter of dietFilters) {
+            if (!filter?.title || !Array.isArray(filter.keywords))
+                continue;
+            hasKeywordData = hasKeyword(filter, dietName);
+        }
+        if (hasKeywordData) {
+            let col = FIRST_CLINIC_COL;
+            while (true) {
+                const cell = sheet.getRow(row).getCell(col).value;
+                if (col === lastClinicCol) {
+                    break; // kraj klinika
+                }
+                if (!cell && Number(cell) > 0) {
+                    const clinicName = sheet.getRow(CLINIC_ROW).getCell(col).value?.toString();
+                    if (clinicName) {
+                        specDietsClinics.push(clinicName);
+                    }
+                }
+                col++;
             }
-            row++;
         }
-        if (hasMeals) {
-            result.push(clinic.name);
-        }
+        row++;
     }
-    return result;
+    return specDietsClinics;
 }

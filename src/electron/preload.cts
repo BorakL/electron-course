@@ -131,7 +131,8 @@ electron.contextBridge.exposeInMainWorld("electronApp", {
         outputPath:string
     ): Promise<void> => ipcRenderer.invoke('mergeExcels', folderPath, outputPath),
 
-    getClinicsWithMeals: (
-        params: GetClinicsWithMealsParams
-    ): Promise<string[]> => ipcRenderer.invoke('getClinicsWithMeals', params)
+    getClinicsWithSpecMeals: (
+        filePath: string,
+        dietFilters: DietFilter[]
+    ): Promise<string[]> => ipcRenderer.invoke('getClinicsWithSpecMeals', filePath, dietFilters)
 })
