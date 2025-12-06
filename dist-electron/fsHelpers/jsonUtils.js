@@ -163,6 +163,18 @@ export async function selectFolder() {
         return null;
     }
 }
+export async function selectFile() {
+    try {
+        const result = await dialog.showOpenDialog({
+            properties: ['openFile']
+        });
+        return result.canceled ? null : result.filePaths[0];
+    }
+    catch (error) {
+        console.log("Greška pri selektovanju fajla", error);
+        return null;
+    }
+}
 //Merdzuj sve excel fajlove iz jednog foldera u jedan excel fajl
 import fs from "fs";
 export async function mergeExcels(folderPath, outputPath) {

@@ -116,6 +116,8 @@ electron.contextBridge.exposeInMainWorld("electronApp", {
 
     selectFolder: (): Promise<null | string> => ipcRenderer.invoke('selectFolder'),
 
+    selectFile: (): Promise<null | string> => ipcRenderer.invoke('selectFile'),
+
     printDostavnaTura: (
         folderPath: string,
         dostavneTure: DostavnaTura[],

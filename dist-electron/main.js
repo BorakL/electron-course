@@ -4,7 +4,7 @@ import { createFullFolder, getClinicsWithSpecMeals, isDev, loginAndGetSession, p
 // import { pollResources } from './resourceManager.js';
 import { getPreloadPath } from './pathResolver.js';
 import dotenv from 'dotenv';
-import { appendJsonItem, deleteJsonItemById, dodajKlinikuUNerasporedjene, dodajKlinikuUTuru, dodajNovuTuru, getFilePath, mergeExcels, obrisiTuru, ocistiNevazecuKlinikuIzTura, readJsonFile, selectFolder, ukloniKlinikuIzNerasporedjenih, ukloniKlinikuIzTure, updateJsonItemById, writeJsonFile } from './fsHelpers/jsonUtils.js';
+import { appendJsonItem, deleteJsonItemById, dodajKlinikuUNerasporedjene, dodajKlinikuUTuru, dodajNovuTuru, getFilePath, mergeExcels, obrisiTuru, ocistiNevazecuKlinikuIzTura, readJsonFile, selectFile, selectFolder, ukloniKlinikuIzNerasporedjenih, ukloniKlinikuIzTure, updateJsonItemById, writeJsonFile } from './fsHelpers/jsonUtils.js';
 import processDietFiles from './xlsx/processDietFiles.js';
 // Definiši __dirname za ES module 
 dotenv.config({ path: path.join(process.cwd(), '.env.electron') });
@@ -69,6 +69,9 @@ app.on("ready", () => {
     });
     ipcMain.handle('selectFolder', () => {
         return selectFolder();
+    });
+    ipcMain.handle('selectFile', () => {
+        return selectFile();
     });
     ipcMain.handle('printDostavnaTura', (event, folderPath, dostavneTure, klinika, turaId) => {
         return printDostavnaTura(folderPath, dostavneTure, klinika, turaId);

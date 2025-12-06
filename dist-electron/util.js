@@ -235,13 +235,10 @@ export function pronadjiTuruZaKliniku(userId, dostavneTure) {
     return null; // ako nije pronađena
 }
 export async function getClinicsWithSpecMeals(filePath, dietFilters) {
-    // 2) UCITAVANJE EXCELA DIREKTNO IZ BUFFERA
     const workbook = new ExcelJS.Workbook();
+    //Otvaramo excel fajl na datoj putanji
     await workbook.xlsx.readFile(filePath);
     const sheet = workbook.worksheets[0];
-    // -----------------------------------
-    // 3) PRONALAZAK KLINIKA (drugi red, kolona C pa desno)
-    // -----------------------------------
     const FIRST_CLINIC_ROW = 2;
     const FIRST_CLINIC_COL = 3;
     const DIET_COL = 2; // B
@@ -249,6 +246,7 @@ export async function getClinicsWithSpecMeals(filePath, dietFilters) {
     const CLINIC_ROW = 2;
     let col = FIRST_CLINIC_COL;
     let lastClinicCol;
+    // Pronalazimo zadnju kolonu klinke (lastClinicCol)
     while (true) {
         const cell = sheet.getRow(FIRST_CLINIC_ROW).getCell(col).value;
         if (!cell || cell.toString().trim() === "" || cell.toString().trim() === "0") {
@@ -257,9 +255,6 @@ export async function getClinicsWithSpecMeals(filePath, dietFilters) {
         }
         col++;
     }
-    // -----------------------------------
-    // 4) PRONALAZAK DIJETA (kolona B, od reda 4 pa dole)
-    // -----------------------------------
     let row = FIRST_DIET_ROW;
     const specDietsClinics = [];
     while (true) {
@@ -268,12 +263,13 @@ export async function getClinicsWithSpecMeals(filePath, dietFilters) {
         if (!dietName || dietName.toString().trim() === "" || dietName.toString().trim() === "0") {
             break; // kraj dijeta
         }
-        //ako dietcell sadrži kriterijum za specijalni obrok onda uradi sledleće
+        // Promveravamo da li naziv dijete sadrži neki od filtera za specijalne obroke
         for (const filter of dietFilters) {
             if (!filter?.title || !Array.isArray(filter.keywords))
                 continue;
             hasKeywordData = hasKeyword(filter, dietName);
         }
+        // Ako u datom redu naziv dijete ima ključnu reč (filter za spec obrok), onda prođi kroz sve kolone (brojke) tog reda (te dijete)
         if (hasKeywordData) {
             let col = FIRST_CLINIC_COL;
             while (true) {
@@ -281,7 +277,8 @@ export async function getClinicsWithSpecMeals(filePath, dietFilters) {
                 if (col === lastClinicCol) {
                     break; // kraj klinika
                 }
-                if (!cell && Number(cell) > 0) {
+                // Ako postoji neka vrednost (veća od 0) za datu dijetu sa specijalnim obrokom, vidi za koju kliniku se odnosi i ubaci je u niz specDietsClinics
+                if (cell && Number(cell) > 0) {
                     const clinicName = sheet.getRow(CLINIC_ROW).getCell(col).value?.toString();
                     if (clinicName) {
                         specDietsClinics.push(clinicName);

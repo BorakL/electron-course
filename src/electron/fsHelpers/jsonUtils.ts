@@ -210,6 +210,19 @@ export async function selectFolder(): Promise<null | string> {
 }
 
 
+export async function selectFile(): Promise<null | string> {
+  try{
+    const result = await dialog.showOpenDialog({
+      properties: ['openFile']
+    })
+    return result.canceled ? null : result.filePaths[0];
+  }catch(error){
+    console.log("Greška pri selektovanju fajla", error);
+    return null;
+  }
+}
+
+
 //Merdzuj sve excel fajlove iz jednog foldera u jedan excel fajl
 import fs from "fs";
 import {

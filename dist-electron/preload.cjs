@@ -26,6 +26,7 @@ electron_2.default.contextBridge.exposeInMainWorld("electronApp", {
     ocistiNevazecuKlinikuIzTura: (clinickId) => electron_1.ipcRenderer.invoke('ocistiNevazecuKlinikuIzTura', clinickId),
     processDietFiles: (dietFilters, tableParams, folderPath) => electron_1.ipcRenderer.invoke('processDietFiles', dietFilters, tableParams, folderPath),
     selectFolder: () => electron_1.ipcRenderer.invoke('selectFolder'),
+    selectFile: () => electron_1.ipcRenderer.invoke('selectFile'),
     printDostavnaTura: (folderPath, dostavneTure, klinika, turaId) => electron_1.ipcRenderer.invoke('printDostavnaTura', folderPath, dostavneTure, klinika, turaId),
     loginAndGetSession: (username, password) => electron_1.ipcRenderer.invoke("loginAndGetSession", username, password),
     mergeExcels: (folderPath, outputPath) => electron_1.ipcRenderer.invoke('mergeExcels', folderPath, outputPath),

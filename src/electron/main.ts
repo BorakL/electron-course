@@ -4,7 +4,7 @@ import {createFullFolder, getClinicsWithSpecMeals, isDev, loginAndGetSession, pr
 // import { pollResources } from './resourceManager.js';
 import { getPreloadPath } from './pathResolver.js'; 
 import dotenv from 'dotenv';  
-import { appendJsonItem, deleteJsonItemById, dodajKlinikuUNerasporedjene, dodajKlinikuUTuru, dodajNovuTuru, getFilePath, mergeExcels, obrisiTuru, ocistiNevazecuKlinikuIzTura, readJsonFile, selectFolder, ukloniKlinikuIzNerasporedjenih, ukloniKlinikuIzTure, updateJsonItemById, writeJsonFile } from './fsHelpers/jsonUtils.js';
+import { appendJsonItem, deleteJsonItemById, dodajKlinikuUNerasporedjene, dodajKlinikuUTuru, dodajNovuTuru, getFilePath, mergeExcels, obrisiTuru, ocistiNevazecuKlinikuIzTura, readJsonFile, selectFile, selectFolder, ukloniKlinikuIzNerasporedjenih, ukloniKlinikuIzTure, updateJsonItemById, writeJsonFile } from './fsHelpers/jsonUtils.js';
 import processDietFiles, { DietFilter, TableParams } from './xlsx/processDietFiles.js';
 import { DostavnaTura, Klinika, Logs } from './types/types.js';
 
@@ -74,6 +74,9 @@ app.on("ready", ()=>{
     })
     ipcMain.handle('selectFolder', () => {
         return selectFolder();
+    })
+    ipcMain.handle('selectFile', () => {
+        return selectFile();
     })
     ipcMain.handle('printDostavnaTura', (event, folderPath:string, dostavneTure:DostavnaTura[], klinika:Klinika[], turaId:number) => {
         return printDostavnaTura(folderPath,dostavneTure,klinika,turaId)
