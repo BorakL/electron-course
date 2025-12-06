@@ -237,7 +237,13 @@ export function pronadjiTuruZaKliniku(userId, dostavneTure) {
 export async function getClinicsWithSpecMeals(filePath, dietFilters) {
     const workbook = new ExcelJS.Workbook();
     //Otvaramo excel fajl na datoj putanji
-    await workbook.xlsx.readFile(filePath);
+    try {
+        await workbook.xlsx.readFile(filePath);
+    }
+    catch (error) {
+        console.error("Greška prilikom čitanja Excel fajla", error);
+        throw new Error(`Ne mogu da otvorim fajl: ${filePath}`);
+    }
     const sheet = workbook.worksheets[0];
     const FIRST_CLINIC_ROW = 2;
     const FIRST_CLINIC_COL = 3;
@@ -267,7 +273,10 @@ export async function getClinicsWithSpecMeals(filePath, dietFilters) {
         for (const filter of dietFilters) {
             if (!filter?.title || !Array.isArray(filter.keywords))
                 continue;
-            hasKeywordData = hasKeyword(filter, dietName);
+            if (hasKeyword(filter, dietName)) {
+                hasKeywordData = true;
+            }
+            break;
         }
         // Ako u datom redu naziv dijete ima ključnu reč (filter za spec obrok), onda prođi kroz sve kolone (brojke) tog reda (te dijete)
         if (hasKeywordData) {
@@ -289,5 +298,5 @@ export async function getClinicsWithSpecMeals(filePath, dietFilters) {
         }
         row++;
     }
-    return specDietsClinics;
+    return [...new Set(specDietsClinics)];
 }

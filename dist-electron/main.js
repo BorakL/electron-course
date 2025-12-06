@@ -82,7 +82,7 @@ app.on("ready", () => {
     ipcMain.handle('mergeExcels', async (event, folderPath, outputPath) => {
         return mergeExcels(folderPath, outputPath);
     });
-    ipcMain.handle('getClinicsWiithSpecMeals', async (event, filePath, dietFilters) => {
+    ipcMain.handle('getClinicsWithSpecMeals', async (event, filePath, dietFilters) => {
         return getClinicsWithSpecMeals(filePath, dietFilters);
     });
 });
