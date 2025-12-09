@@ -1,15 +1,22 @@
 import { useForm } from "react-hook-form";
-import { Klinika } from "../../ui/types.ts";
+import { ClinicItem, Klinika } from "../../ui/types.ts";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+
 
 const AddKlinika = () => {
   const { register, handleSubmit, formState: { errors } } = useForm<Klinika>();
   const navigate = useNavigate();
+
   const [allKlinike, setAllKlinike] = useState<Klinika[]>([]);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [userIds, setUserIds] = useState<number[]>([])
-  const [newUserId,setNewUserId] = useState("")
+
+  const [userIds, setUserIds] = useState<number[]>([]);
+
+  // ✅ lista klinika {userId, name}
+  const [clinics, setClinics] = useState<ClinicItem[]>([]);
+  const [newClinicUserId, setNewClinicUserId] = useState("");
+  const [newClinicName, setNewClinicName] = useState("");
 
   useEffect(() => {
     const fetchKlinike = async () => {
@@ -24,164 +31,191 @@ const AddKlinika = () => {
   }, []);
 
   const onSubmit = async (data: Klinika) => {
-    const duplicate = allKlinike.find(k => k.user === data.user || k.naziv === data.naziv);
+    const duplicate = allKlinike.find(k =>
+      k.naziv === data.naziv ||
+      userIds.some(u =>
+        k.clinics.some(obj => Number(Object.keys(obj)[0]) === u)
+      )
+    );
 
     if (duplicate) {
-      setErrorMessage("Klinika sa ovim korisničkim ID-jem ili nazivom već postoji.");
-      return; // prekini submit
+      setErrorMessage("Klinika sa ovim user ID-jem ili nazivom već postoji.");
+      return;
     }
 
-    const newKlinika: Klinika = { ...data, id: Date.now(), user:userIds };
+    // 👇 transformacija u oblik [{132:"Zgrada"}, ...]
+    const klinikeObjekti = clinics.map(c => ({
+      [c.userId]: c.name
+    }));
+
+    const newKlinika: Klinika = {
+      ...data,
+      id: Date.now(),
+      clinics: klinikeObjekti
+    };
+
     const updated = [...allKlinike, newKlinika];
 
     try {
       await window.electronApp.writeJsonFile("klinike.json", updated);
-      await window.electronApp.dodajKlinikuUNerasporedjene(newKlinika.id)
+      await window.electronApp.dodajKlinikuUNerasporedjene(newKlinika.id);
       navigate(`/klinike`);
     } catch (err) {
       console.error("Greška pri čuvanju nove klinike:", err);
     }
   };
 
-  const handleRemoveUserId = (u:number)=>{
-    const index = userIds.indexOf(u);
-    if(index<0) return;
-    const newUserIds = userIds.filter(userId => userId!==u)
-    setUserIds(newUserIds)
-  }
-  const handleAddUserId = ()=>{
-    setUserIds(prev => [...prev, Number(newUserId)])
-    setNewUserId("")
-  }
+  const handleRemoveUserId = (u: number) => {
+    setUserIds(prev => prev.filter(id => id !== u));
+  };
+
+  const handleAddClinic = () => {
+    if (!newClinicUserId || !newClinicName) return;
+
+    const exists = clinics.some(c => c.userId === Number(newClinicUserId));
+    if (exists) {
+      alert("Ovaj userId već postoji!");
+      return;
+    }
+
+    setClinics(prev => [
+      ...prev,
+      {
+        userId: Number(newClinicUserId),
+        name: newClinicName
+      }
+    ]);
+
+    setNewClinicUserId("");
+    setNewClinicName("");
+  };
+
+  const handleRemoveClinic = (userId: number) => {
+    setClinics(prev => prev.filter(c => c.userId !== userId));
+  };
 
   return (
     <div className="container mt-5">
-  <h2 className="mb-4">Dodaj novu kliniku</h2>
+      <h2 className="mb-4">Dodaj novu kliniku</h2>
 
-  {errorMessage && (
-    <div className="alert alert-danger" role="alert">
-      {errorMessage}
+      {errorMessage && (
+        <div className="alert alert-danger" role="alert">
+          {errorMessage}
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit(onSubmit)}>
+
+        {/* Naziv */}
+        <div className="row mb-2 align-items-center">
+          <label className="col-sm-2 col-form-label">Naziv</label>
+          <div className="col-sm-10">
+            <input
+              className="form-control"
+              {...register("naziv", {
+                required: true,
+                pattern: {
+                  value: /^[a-zA-Z0-9čćžšđČĆŽŠĐ\s]+$/,
+                  message: "Dozvoljeni su samo razmak i slova/brojevi."
+                }
+              })}
+            />
+            {errors.naziv && <div className="text-danger">{errors.naziv.message}</div>}
+          </div>
+        </div>
+
+        {/* Bolnica */}
+        <div className="row mb-2 align-items-center">
+          <label className="col-sm-2 col-form-label">Bolnica</label>
+          <div className="col-sm-10">
+            <input
+              className="form-control"
+              {...register("bolnica", { required: true })}
+            />
+            {errors.bolnica && <div className="text-danger">Ovo polje je obavezno.</div>}
+          </div>
+        </div>
+
+        {/* Firm */}
+        <div className="row mb-2 align-items-center">
+          <label className="col-sm-2 col-form-label">Firm</label>
+          <div className="col-sm-10">
+            <input
+              type="number"
+              className="form-control"
+              {...register("firm", { required: true, valueAsNumber: true })}
+            />
+            {errors.firm && <div className="text-danger">Ovo polje je obavezno.</div>}
+          </div>
+        </div>
+
+
+        {/* USER ID LIST */}
+        {userIds.map(u => (
+          <div key={u} className="d-flex align-items-center gap-2 mb-1">
+            <span className="badge bg-secondary">{u}</span>
+            <button type="button" className="btn btn-sm btn-danger" onClick={() => handleRemoveUserId(u)}>
+              Remove
+            </button>
+          </div>
+        ))}
+
+        {/* CLINIC OBJECTS */}
+        <h5>Klinike</h5>
+
+        {clinics.map((c) => (
+          <div key={c.userId} className="d-flex align-items-center gap-2 mb-2">
+            <span className="badge bg-info text-dark">
+              {c.userId} — {c.name}
+            </span>
+            <button
+              type="button"
+              className="btn btn-sm btn-danger"
+              onClick={() => handleRemoveClinic(c.userId)}
+            >
+              Remove
+            </button>
+          </div>
+        ))}
+
+        <div className="row g-2 mb-3">
+          <div className="col">
+            <input
+              type="number"
+              className="form-control"
+              placeholder="User ID"
+              value={newClinicUserId}
+              onChange={(e) => setNewClinicUserId(e.target.value)}
+            />
+          </div>
+          <div className="col">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Naziv klinike"
+              value={newClinicName}
+              onChange={(e) => setNewClinicName(e.target.value)}
+            />
+          </div>
+          <div className="col-auto">
+            <button
+              type="button"
+              className="btn btn-success"
+              onClick={handleAddClinic}
+            >
+              + Add klinika
+            </button>
+          </div>
+        </div>
+
+        <div className="text-end">
+          <button type="submit" className="btn btn-primary">
+            Sačuvaj
+          </button>
+        </div>
+
+      </form>
     </div>
-  )}
-
-  <form onSubmit={handleSubmit(onSubmit)}>
-    {/* Polje: Naziv */}
-    <div className="row mb-2 align-items-center">
-      <label className="col-sm-2 col-form-label">Naziv</label>
-      <div className="col-sm-10">
-        <input
-          className="form-control"
-          {...register("naziv", { 
-            required: true, 
-            pattern: {
-              value: /^[a-zA-Z0-9čćžšđČĆŽŠĐ\s]+$/,
-              message: "Dozvoljeni su samo razmak i alfanumerički karakteri bez specijalnih znakova."
-            }
-          }
-        )}
-        />
-        {errors.naziv && <div className="text-danger">{errors.naziv.message || "Ovo polje je obavezno."}</div>}
-      </div>
-    </div>
-
-    {/* Polje: Bolnica App */}
-    <div className="row mb-2 align-items-center">
-      <label className="col-sm-2 col-form-label">Bolnica App</label>
-      <div className="col-sm-10">
-        <input
-          className="form-control"
-          {...register("bolnicaApp", { required: true })}
-        />
-        {errors.bolnicaApp && <div className="text-danger">Ovo polje je obavezno.</div>}
-      </div>
-    </div>
-
-    {/* Polje: Klinika App */}
-    <div className="row mb-2 align-items-center">
-      <label className="col-sm-2 col-form-label">Klinika App</label>
-      <div className="col-sm-10">
-        <input
-          className="form-control"
-          {...register("klinikaApp", { required: true })}
-        />
-        {errors.klinikaApp && <div className="text-danger">Ovo polje je obavezno.</div>}
-      </div>
-    </div>
-
-    {/* Polje: Bolnica */}
-    <div className="row mb-2 align-items-center">
-      <label className="col-sm-2 col-form-label">Bolnica</label>
-      <div className="col-sm-10">
-        <input
-          className="form-control"
-          {...register("bolnica", { required: true })}
-        />
-        {errors.bolnica && <div className="text-danger">Ovo polje je obavezno.</div>}
-      </div>
-    </div>
-
-    {/* Polje: Klinika */}
-    <div className="row mb-2 align-items-center">
-      <label className="col-sm-2 col-form-label">Klinika</label>
-      <div className="col-sm-10">
-        <input
-          className="form-control"
-          {...register("klinika", { required: true })}
-        />
-        {errors.klinika && <div className="text-danger">Ovo polje je obavezno.</div>}
-      </div>
-    </div>
-
-    {/* Polje: Firm */}
-    <div className="row mb-2 align-items-center">
-      <label className="col-sm-2 col-form-label">Firm</label>
-      <div className="col-sm-10">
-        <input
-          type="number"
-          className="form-control"
-          {...register("firm", { required: true, valueAsNumber: true })}
-        />
-        {errors.firm && <div className="text-danger">Ovo polje je obavezno.</div>}
-      </div>
-    </div>
-
-    {/* Polje: User */}
-    {/* <div className="row mb-2 align-items-center">
-      <label className="col-sm-2 col-form-label">User ID</label>
-      <div className="col-sm-10">
-        <input
-          type="number"
-          className="form-control"
-          {...register("user", { required: true, valueAsNumber: true })}
-        />
-        {errors.user && <div className="text-danger">Ovo polje je obavezno.</div>}
-      </div>
-    </div> */}
-
-    <div>
-      {
-        userIds.map(u => 
-        <div key={u}>
-          <span>{u}</span>
-          <button type="button" onClick={()=>handleRemoveUserId(u)}>Remove UserId</button>
-        </div>)
-      }
-      <div>
-          <input type="number" onChange={(e)=>setNewUserId(e.target.value)} name="newUser" value={newUserId}/>
-          <button type="button" onClick={handleAddUserId}>Add User</button>
-      </div>
-    </div>
-
-    <div className="text-end">
-      <button type="submit" className="btn btn-primary">
-        Sačuvaj
-      </button>
-    </div>
-  </form>
-
-</div>
-
-
   );
 };
 

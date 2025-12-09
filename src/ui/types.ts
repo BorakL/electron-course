@@ -1,13 +1,17 @@
 export type Klinika = {
     id:number,
-    naziv:string,
-    bolnicaApp: string,
-    klinikaApp: string,
+    naziv:string,  
     bolnica: string,
-    klinika: string,
     firm: number,
-    user: number[]
+    clinics: ClinicMap[]
 }
+
+export type ClinicMap = Record<number, string>;
+
+export type ClinicItem = {
+  userId: number;
+  name: string;
+};
 
 export type DownloadFileParams = {
     fileUrl: string,
