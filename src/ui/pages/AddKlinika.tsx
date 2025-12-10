@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { ClinicItem, Klinika } from "../../ui/types.ts";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import UserIds from "../components/userIds.tsx";
 
 
 const AddKlinika = () => {
@@ -13,8 +14,6 @@ const AddKlinika = () => {
 
   // ✅ lista klinika {userId, name}
   const [clinics, setClinics] = useState<ClinicItem[]>([]);
-  const [newClinicUserId, setNewClinicUserId] = useState("");
-  const [newClinicName, setNewClinicName] = useState("");
 
   useEffect(() => {
     const fetchKlinike = async () => {
@@ -86,29 +85,6 @@ const AddKlinika = () => {
     }
   };
 
-  const handleAddClinic = () => {
-    if (!newClinicUserId || !newClinicName) return;
-
-    const exists = clinics.some(c => c.userId === Number(newClinicUserId));
-    if (exists) {
-      return;
-    }
-
-    setClinics(prev => [
-      ...prev,
-      {
-        userId: Number(newClinicUserId),
-        name: newClinicName
-      }
-    ]);
-    setNewClinicUserId("");
-    setNewClinicName("");
-  };
-
-  const handleRemoveClinic = (userId: number) => {
-    setClinics(prev => prev.filter(c => c.userId !== userId));
-  };
-
 const errorMessages = Object.keys(errorObject)
   .map((key) => {
     const k = key as keyof typeof errorObject;
@@ -178,51 +154,7 @@ const errorMessages = Object.keys(errorObject)
 
         {/* CLINIC OBJECTS */}
         <h5>UserIds</h5>
-
-        {clinics.map((c) => (
-          <div key={c.userId} className="d-flex align-items-center gap-2 mb-2">
-            <span className="badge bg-info text-dark">
-              {c.userId} — {c.name}
-            </span>
-            <button
-              type="button"
-              className="btn btn-sm btn-danger"
-              onClick={() => handleRemoveClinic(c.userId)}
-            >
-              Remove
-            </button>
-          </div>
-        ))}
-
-        <div className="row g-2 mb-3">
-          <div className="col">
-            <input
-              type="number"
-              className="form-control"
-              placeholder="User ID"
-              value={newClinicUserId}
-              onChange={(e) => setNewClinicUserId(e.target.value)}
-            />
-          </div>
-          <div className="col">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Naziv klinike"
-              value={newClinicName}
-              onChange={(e) => setNewClinicName(e.target.value)}
-            />
-          </div>
-          <div className="col-auto">
-            <button
-              type="button"
-              className="btn btn-success"
-              onClick={handleAddClinic}
-            >
-              + Add klinika
-            </button>
-          </div>
-        </div>
+        {UserIds({clinics,setClinics})}
 
         <div className="text-end">
           <button type="submit" className="btn btn-primary">

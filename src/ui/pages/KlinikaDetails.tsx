@@ -3,11 +3,13 @@ import { useParams } from "react-router";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useConfirm } from "../context/confirmContext";
-import { Klinika } from "../types";
+import { ClinicItem, Klinika } from "../types";
+import UserIds from "../components/userIds";
 
 const KlinikaDetails = () => {
     const { id } = useParams();
     const [klinika, setKlinika] = useState<Klinika | null>(null);
+    const [clinics, setClinics] = useState<ClinicItem[]>([]);
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const navigate = useNavigate();
     const {confirm} = useConfirm();  
@@ -19,8 +21,10 @@ const KlinikaDetails = () => {
         try {
             const data: Klinika[] = await window.electronApp.readJsonFile("klinike.json");
             const selected = data.find(k => Number(k.id) === Number(id));
-
             setKlinika(selected || null);
+
+            setClinics(converObject(selected?.klinika || []))
+            
             if (selected) {
                 reset(selected); // popunjavamo formu default vrednostima
             }
@@ -64,6 +68,17 @@ const KlinikaDetails = () => {
         }
     };
 
+type OldFormat = Record<string, string>;
+
+const converObject = (original: OldFormat[]) => original.map((obj) => {
+  const key = Object.keys(obj)[0];
+  return {
+    userId: Number(key),
+    name: obj[key]
+  };
+});
+
+
     if (!klinika) return <div>Učitavanje...</div>;
 
     return (
@@ -103,19 +118,6 @@ const KlinikaDetails = () => {
           </div>
 
           <div className="row mb-3">
-            <label className="col-sm-4 col-form-label">Klinika:</label>
-            <div className="col-sm-8">
-                <input
-                className={`form-control ${errors.klinika ? 'is-invalid' : ''}`}
-                {...register('klinika', { required: 'Klinika je obavezna' })}
-                />
-                {errors.klinika && (
-                <div className="invalid-feedback">{errors.klinika.message}</div>
-                )}
-            </div>
-          </div>
-
-          <div className="row mb-3">
             <label className="col-sm-4 col-form-label">Firm:</label>
             <div className="col-sm-8">
                 <input
@@ -128,6 +130,8 @@ const KlinikaDetails = () => {
                 )}
             </div>
           </div>
+
+          <UserIds clinics={clinics} setClinics={setClinics} isEditing={true}/>
 
           <button type="submit" className="btn btn-success me-2">
             Sačuvaj
@@ -145,6 +149,9 @@ const KlinikaDetails = () => {
       <div className="card p-4">
           <p><strong>Bolnica:</strong> {klinika.bolnica}</p>
           <p><strong>Firm:</strong> {klinika.firm}</p>
+          <div>
+            <UserIds clinics={clinics} setClinics={setClinics} isEditing={false}/>
+          </div>
           <div className="mt-3">
           <button
               className="btn btn-primary me-2"
