@@ -4,578 +4,514 @@
     "naziv": "VALJEVO",
     "bolnica": "ZDRAVSTVENI CENTAR VALJEVO",
     "klinika": [
-      {
-        "694": "OPŠTA"
-      }
+      "OPŠTA"
     ],
-    "firm": 60
+    "firm": 60,
+    "user": [
+      694
+    ]
   },
   {
     "id": 1761158260581,
     "naziv": "S PALANKA",
     "bolnica": "OPŠTA BOLNICA:STEFAN VISOKI",
     "klinika": [
-      {
-        "707": "STEFAN VISOKI"
-      }
+      "STEFAN VISOKI"
     ],
-    "firm": 72
+    "firm": 72,
+    "user": [
+      707
+    ]
   },
   {
     "id": 1761158260582,
     "naziv": "ONKOLOGIJA",
     "bolnica": "INSTITUT ZA ONKOLOGIJU I RADIOLOGIJU SRBIJE",
     "klinika": [
-      {
-        "706": "ONKOLOGIJA"
-      }
+      "ONKOLOGIJA"
     ],
-    "firm": 71
+    "firm": 71,
+    "user": [
+      706
+    ]
   },
   {
     "id": 1761158260583,
     "naziv": "UROLOGIJA UKC",
     "bolnica": "KLINIKA ZA UROLOGIJU",
     "klinika": [
-      {
-        "701": "UROLOGIJA UKC"
-      }
+      "UROLOGIJA UKC"
     ],
-    "firm": 66
+    "firm": 66,
+    "user": [
+      701
+    ]
   },
   {
     "id": 1761158260584,
     "naziv": "REUMATOLOGIJA",
     "bolnica": "REUMATOLOGIJA",
     "klinika": [
-      {
-        "697": "REUMATOLOGIJA"
-      }
+      "REUMATOLOGIJA"
     ],
-    "firm": 63
+    "firm": 63,
+    "user": [
+      697
+    ]
   },
   {
     "id": 1761158260585,
     "naziv": "NEONATOLOGIJA",
     "bolnica": "NEONATOLOGIJA",
     "klinika": [
-      {
-        "695": "NEONATOLOGIJA"
-      }
+      "NEONATOLOGIJA"
     ],
-    "firm": 61
+    "firm": 61,
+    "user": [
+      695
+    ]
   },
   {
     "id": 1761158260586,
     "naziv": "PALMOTIĆEVA",
     "bolnica": "INSTITUT ZA MENTALNO ZDRAVLJE",
     "klinika": [
-      {
-        "705": "PALMOTIĆEVA"
-      }
+      "PALMOTIĆEVA"
     ],
-    "firm": 70
+    "firm": 70,
+    "user": [
+      705
+    ]
   },
   {
     "id": 1761158260587,
     "naziv": "KARDIOHIRURGIJA",
     "bolnica": "HIRURGIJA 2",
     "klinika": [
-      {
-        "660": "KARDIOHIRURGIJA"
-      }
+      "KARDIOHIRURGIJA"
     ],
-    "firm": 45
+    "firm": 45,
+    "user": [
+      660
+    ]
   },
   {
     "id": 1761158260588,
     "naziv": "VASKULARNA",
     "bolnica": "HIRURGIJA 2",
     "klinika": [
-      {
-        "661": "VASKULARNA"
-      }
+      "VASKULARNA"
     ],
-    "firm": 45
+    "firm": 45,
+    "user": [
+      661
+    ]
   },
   {
     "id": 1761158260589,
     "naziv": "PULMOLOGIJA",
     "bolnica": "KLINIKA ZA PULMOLOGIJU",
     "klinika": [
-      {
-        "664": "PULMOLOGIJA"
-      }
+      "PULMOLOGIJA"
     ],
-    "firm": 47
+    "firm": 47,
+    "user": [
+      664
+    ]
   },
   {
     "id": 1761158260590,
     "naziv": "ORTOPEDIJA A",
     "bolnica": "ORTOPEDIJA A",
     "klinika": [
-      {
-        "667": "ORTOPEDIJA UKC"
-      }
+      "ORTOPEDIJA UKC"
     ],
-    "firm": 50
+    "firm": 50,
+    "user": [
+      667
+    ]
   },
   {
     "id": 1761158260591,
     "naziv": "ENDOKRINOLOGIJA",
     "bolnica": "INTERNA B",
     "klinika": [
-      {
-        "678": "ENDOKRINOLOGIJA"
-      }
+      "ENDOKRINOLOGIJA"
     ],
-    "firm": 53
+    "firm": 53,
+    "user": [
+      678
+    ]
   },
   {
     "id": 1761158260592,
     "naziv": "KARDIOLOGIJA",
     "bolnica": "INTERNA B",
     "klinika": [
-      {
-        "679": "KARDIOLOGIJA"
-      }
+      "KARDIOLOGIJA"
     ],
-    "firm": 53
+    "firm": 53,
+    "user": [
+      679
+    ]
   },
   {
     "id": 1761158260593,
     "naziv": "GAK",
     "bolnica": "GINEKOLOGIJA I AKUŠERSTVO",
     "klinika": [
-      {
-        "704": "GAK"
-      }
+      "GAK"
     ],
-    "firm": 69
+    "firm": 69,
+    "user": [
+      704
+    ]
   },
   {
     "id": 1761158260594,
     "naziv": "BANJICA",
     "bolnica": "ORTOPEDIJA BANJICA",
     "klinika": [
-      {
-        "666": "ORTOPEDIJA BANJICA"
-      }
+      "ORTOPEDIJA BANJICA"
     ],
-    "firm": 49
+    "firm": 49,
+    "user": [
+      666
+    ]
   },
   {
     "id": 1761158260595,
     "naziv": "BEŽANIJA",
     "bolnica": "BEŽANIJSKA KOSA",
     "klinika": [
-      {
-        "686": "BEŽANIJSKA KOSA"
-      }
+      "BEŽANIJSKA KOSA"
     ],
-    "firm": 59
+    "firm": 59,
+    "user": [
+      686
+    ]
   },
   {
     "id": 1761158260596,
     "naziv": "KOŽNO",
     "bolnica": "KLINIKA ZA DERMATOVENEROLOGIJU",
     "klinika": [
-      {
-        "683": "KOŽNO"
-      }
+      "KOŽNO"
     ],
-    "firm": 56
+    "firm": 56,
+    "user": [
+      683
+    ]
   },
   {
     "id": 1761158260597,
     "naziv": "PSIHIJATRIJA",
     "bolnica": "KLINIKA ZA PSIHIJATRIJU",
     "klinika": [
-      {
-        "685": "PSIHIJATRIJA"
-      }
+      "PSIHIJATRIJA"
     ],
-    "firm": 58
+    "firm": 58,
+    "user": [
+      685
+    ]
   },
   {
     "id": 1761158260598,
     "naziv": "OČNO",
     "bolnica": "KLINIKA ZA OČNE BOLESTI",
     "klinika": [
-      {
-        "684": "OČNO"
-      }
+      "OČNO"
     ],
-    "firm": 57
+    "firm": 57,
+    "user": [
+      684
+    ]
   },
   {
     "id": 1761158260599,
     "naziv": "ORL I MFH",
     "bolnica": "KLINIKA ZA ORL I MFH",
     "klinika": [
-      {
-        "682": "ORL I MFH"
-      }
+      "ORL I MFH"
     ],
-    "firm": 55
+    "firm": 55,
+    "user": [
+      682
+    ]
   },
   {
     "id": 1761158260600,
     "naziv": "NEFROLOGIJA",
     "bolnica": "KLINIKA ZA NEFROLOGIJU",
     "klinika": [
-      {
-        "696": "NEFROLOGIJA"
-      }
+      "NEFROLOGIJA"
     ],
-    "firm": 62
+    "firm": 62,
+    "user": [
+      696
+    ]
   },
   {
     "id": 1761158260601,
     "naziv": "UROLOGIJA 2",
     "bolnica": "UROLOGIJA 2",
     "klinika": [
-      {
-        "698": "UROLOGIJA 2"
-      }
+      "UROLOGIJA 2"
     ],
-    "firm": 64
+    "firm": 64,
+    "user": [
+      698
+    ]
   },
   {
     "id": 1761158260602,
     "naziv": "NEUROHIRURGIJA",
     "bolnica": "KLINIKA ZA NEUROHIRURGIJU",
     "klinika": [
-      {
-        "699": "NEUROHIRURGIJA"
-      }
+      "NEUROHIRURGIJA"
     ],
-    "firm": 65
+    "firm": 65,
+    "user": [
+      699
+    ]
   },
   {
     "id": 1761158260603,
     "naziv": "PLASTIKA",
     "bolnica": "KLINIKA ZA OPEKOTINE, PLASTIČNU I REKONSTRUKTIVNU HIRURGIJU",
-    "klinika": [
-      {
-        "702": "PLASTIKA"
-      }
-    ],
-    "firm": 67
+    "klinika": "PLASTIKA",
+    "firm": 67,
+    "user": [
+      702
+    ]
   },
   {
     "id": 1761158260604,
     "naziv": "ORTOPEDIJA B",
     "bolnica": "ORTOPEDIJA B",
-    "klinika": [
-      {
-        "703": "ORTOPEDIJA B"
-      }
-    ],
-    "firm": 68
+    "klinika": "ORTOPEDIJA B",
+    "firm": 68,
+    "user": [
+      703
+    ]
   },
   {
     "id": 1761158260605,
     "naziv": "NEUROLOGIJA",
     "bolnica": "KLINIKA ZA NEUROLOGIJU",
-    "klinika": [
-      {
-        "680": "NEUROLOGIJA"
-      }
-    ],
-    "firm": 54
+    "klinika": "NEUROLOGIJA",
+    "firm": 54,
+    "user": [
+      680
+    ]
   },
   {
     "id": 1761158260606,
     "naziv": "BLOK A INTERNA",
     "bolnica": "DRAGIŠA MIŠOVIĆ BLOK A",
     "klinika": [
-      {
-        "670": "INTERNA KLINIKA A"
-      }
+      "INTERNA KLINIKA A"
     ],
-    "firm": 51
+    "firm": 51,
+    "user": [
+      670
+    ]
   },
   {
     "id": 1761158260607,
     "naziv": "BLOK A HIRURGIJA",
     "bolnica": "DRAGIŠA MIŠOVIĆ BLOK A",
     "klinika": [
-      {
-        "671": "HIRURGIJA"
-      }
+      "HIRURGIJA"
     ],
-    "firm": 51
+    "firm": 51,
+    "user": [
+      671
+    ]
   },
   {
     "id": 1761158260608,
     "naziv": "BLOK A ORL",
     "bolnica": "DRAGIŠA MIŠOVIĆ BLOK A",
     "klinika": [
-      {
-        "672": "ORL"
-      }
+      "ORL"
     ],
-    "firm": 51
+    "firm": 51,
+    "user": [
+      672
+    ]
   },
   {
     "id": 1761158260609,
     "naziv": "BLOK A PSIHIJATRIJA",
     "bolnica": "DRAGIŠA MIŠOVIĆ BLOK A",
     "klinika": [
-      {
-        "673": "PSIHIJATRIJA BLOK-A"
-      }
+      "PSIHIJATRIJA BLOK-A"
     ],
-    "firm": 51
+    "firm": 51,
+    "user": [
+      673
+    ]
   },
   {
     "id": 1761158260610,
     "naziv": "BLOK B DEČIJA",
     "bolnica": "DRAGIŠA MIŠOVIĆ BLOK B",
     "klinika": [
-      {
-        "675": "DEČIJA"
-      }
+      "DEČIJA"
     ],
-    "firm": 52
+    "firm": 52,
+    "user": [
+      675
+    ]
   },
   {
     "id": 1761158260611,
     "naziv": "BLOK B GERIJATRIJA",
     "bolnica": "DRAGIŠA MIŠOVIĆ BLOK B",
     "klinika": [
-      {
-        "681": "INTERNA KLINIKA B"
-      }
+      "INTERNA KLINIKA B"
     ],
-    "firm": 52
+    "firm": 52,
+    "user": [
+      681
+    ]
   },
   {
     "id": 1761158260612,
     "naziv": "BLOK B UROLOGIJA",
     "bolnica": "DRAGIŠA MIŠOVIĆ BLOK B",
     "klinika": [
-      {
-        "676": "UROLOGIJA"
-      }
+      "UROLOGIJA"
     ],
-    "firm": 52
+    "firm": 52,
+    "user": [
+      676
+    ]
   },
   {
     "id": 1761158260613,
     "naziv": "BLOK B GINEKOLOGIJA",
     "bolnica": "DRAGIŠA MIŠOVIĆ BLOK B",
     "klinika": [
-      {
-        "677": "GINEKOLOGIJA"
-      }
+      "GINEKOLOGIJA"
     ],
-    "firm": 52
+    "firm": 52,
+    "user": [
+      677
+    ]
   },
   {
     "id": 1761468279711,
     "naziv": "INFEKTIVNA",
     "bolnica": "KLINIKA ZA INFEKTIVNE I TROPSKE BOLESTI",
     "klinika": [
-      {
-        "689": "ZGRADA 1"
-      },
-      {
-        "687": "ZGRADA 2/1"
-      },
-      {
-        "692": "ZGRADA 2/2"
-      },
-      {
-        "693": "ZGRADA 3"
-      }
+      "ZGRADA 1",
+      "ZGRADA 2/1",
+      "ZGRADA 2/2",
+      "ZGRADA 3"
     ],
-    "firm": 48
+    "firm": 48,
+    "user": [
+      689,
+      687,
+      692,
+      693
+    ]
   },
   {
     "id": 1761582452797,
     "naziv": "ZVEZDARA PEDIJATRIJA",
     "bolnica": "KBC ZVEZDARA PEDIJATRIJA",
     "klinika": [
-      {
-        "720": "PEDIJATRIJA KBCZ"
-      }
+      "PEDIJATRIJA KBCZ"
     ],
-    "firm": 77
+    "firm": 77,
+    "user": [
+      720
+    ]
   },
   {
     "id": 1761582593805,
     "naziv": "ZVEZDARA PREŠEVSKA",
     "bolnica": "KBC ZVEZDARA PREŠEVSKA",
     "klinika": [
-      {
-        "721": "PSIHIJATRIJA KBCZ"
-      },
-      {
-        "722": "GINEKOLOGIJA KBCZ"
-      },
-      {
-        "723": "GERIJATRIJA KBCZ"
-      },
-      {
-        "724": "NEUROLOGIJA KBCZ"
-      },
-      {
-        "726": "ORL KBCZ"
-      },
-      {
-        "727": "HEMATOLOGIJA KBCZ"
-      }
+      "PSIHIJATRIJA KBCZ",
+      "GINEKOLOGIJA KBCZ",
+      "GERIJATRIJA KBCZ",
+      "NEUROLOGIJA KBCZ",
+      "ORL KBCZ",
+      "HEMATOLOGIJA KBCZ"
     ],
-    "firm": 78
+    "firm": 78,
+    "user": [
+      721,
+      722,
+      723,
+      724,
+      726,
+      727
+    ]
   },
   {
     "id": 1761582784149,
     "naziv": "ZVEZDARA HIRURGIJA",
     "bolnica": "KBC ZVEZDARA",
     "klinika": [
-      {
-        "714": "HIRURGIJA KBCZ"
-      }
+      "HIRURGIJA KBCZ"
     ],
-    "firm": 76
+    "firm": 76,
+    "user": [
+      714
+    ]
   },
   {
     "id": 1761582827893,
     "naziv": "ZVEZDARA UROLOGIJA",
     "bolnica": "KBC ZVEZDARA",
     "klinika": [
-      {
-        "715": "UROLOGIJA KBCZ"
-      }
+      "UROLOGIJA KBCZ"
     ],
-    "firm": 76
+    "firm": 76,
+    "user": [
+      715
+    ]
   },
   {
     "id": 1761582869205,
     "naziv": "ZVEZDARA OČNO",
     "bolnica": "KBC ZVEZDARA",
     "klinika": [
-      {
-        "725": "OČNO KBCZ"
-      }
+      "OČNO KBCZ"
     ],
-    "firm": 76
+    "firm": 76,
+    "user": [
+      725
+    ]
   },
   {
     "id": 1761583388757,
     "naziv": "ZVEZDARA INTERNA",
     "bolnica": "KBC ZVEZDARA",
     "klinika": [
-      {
-        "716": "PULMO+ENDO KBCZ"
-      },
-      {
-        "717": "GASTRO KBCZ"
-      },
-      {
-        "718": "KARDIOLOGIJA KBCZ"
-      },
-      {
-        "719": "NEFROLOGIJA KBCZ"
-      }
+      "PULMO+ENDO KBCZ",
+      "GASTRO KBCZ",
+      "KARDIOLOGIJA KBCZ",
+      "NEFROLOGIJA KBCZ"
     ],
-    "firm": 76
-  },
-  {
-    "naziv": "asdf",
-    "bolnica": "yxcv",
-    "firm": 1234,
-    "id": 1765374738436,
-    "klinika": [
-      {
-        "4": "asdf"
-      }
+    "firm": 76,
+    "user": [
+      716,
+      717,
+      718,
+      719
     ]
   },
   {
-    "naziv": "asdf",
-    "bolnica": "yxcv",
-    "firm": 7,
-    "id": 1765374752420,
-    "klinika": [
-      {
-        "1": "sdf"
-      }
-    ]
-  },
-  {
-    "naziv": "w",
-    "bolnica": "yxcv",
-    "firm": 234,
-    "id": 1765375369829,
-    "klinika": [
-      {
-        "3234434": "asdf"
-      }
-    ]
-  },
-  {
-    "naziv": "s",
-    "bolnica": "yxcv",
-    "firm": 3,
-    "id": 1765375380196,
-    "klinika": []
-  },
-  {
-    "naziv": "eerer",
-    "bolnica": "yxcv",
-    "firm": 2343,
-    "id": 1765375437532,
-    "klinika": [
-      {
-        "4234": "aewsrfasdasdf"
-      }
-    ]
-  },
-  {
-    "naziv": "qwe",
-    "bolnica": "yxcv",
-    "firm": 333333,
-    "id": 1765375447468,
-    "klinika": [
-      {
-        "234234": "assdf"
-      }
-    ]
-  },
-  {
-    "naziv": "asdfd",
-    "bolnica": "yxcv",
-    "firm": 8,
-    "id": 1765376820693,
-    "klinika": [
-      {
-        "6": "asdf"
-      }
-    ]
-  },
-  {
-    "naziv": "d",
-    "bolnica": "yxcv",
-    "firm": 23433,
-    "id": 1765377752333,
-    "klinika": [
-      {
-        "9": "yxcv"
-      }
-    ]
-  },
-  {
-    "naziv": "uiuizui",
-    "bolnica": "uizuiuizuizuizui",
-    "firm": 567567567567567,
-    "id": 1765377838933,
-    "klinika": [
-      {
-        "324234": "ddddd"
-      }
-    ]
+    "naziv": "nbn",
+    "bolnica": "vbnvb",
+    "firm": 45,
+    "id": 1765362498137,
+    "clinics": []
   }
 ]

@@ -7,11 +7,9 @@ import { useEffect, useState } from "react";
 const AddKlinika = () => {
   const { register, handleSubmit, formState: { errors } } = useForm<Klinika>();
   const navigate = useNavigate();
-
+  const initialErrorObject = {naziv:"",firm:"",userId:"",clinics:""}
   const [allKlinike, setAllKlinike] = useState<Klinika[]>([]);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
-  const [userIds, setUserIds] = useState<number[]>([]);
+  const [errorObject, setErrorObject] = useState<{naziv:string,firm:string,userId:string}>(initialErrorObject);
 
   // ✅ lista klinika {userId, name}
   const [clinics, setClinics] = useState<ClinicItem[]>([]);
@@ -31,16 +29,39 @@ const AddKlinika = () => {
   }, []);
 
   const onSubmit = async (data: Klinika) => {
-    const duplicate = allKlinike.find(k =>
-      k.naziv === data.naziv ||
-      userIds.some(u =>
-        k.clinics.some(obj => Number(Object.keys(obj)[0]) === u)
-      )
-    );
+    setErrorObject(initialErrorObject)
+    for (const k of allKlinike) {
+      if (data.naziv === k.naziv) {
+        setErrorObject(prev => ({
+          ...prev,
+          naziv: "Klinika sa ovim nazivom već postoji u bazi"
+        }));
+        return; // ✔ stops entire onSubmit function
+      }
 
-    if (duplicate) {
-      setErrorMessage("Klinika sa ovim user ID-jem ili nazivom već postoji.");
-      return;
+      if (data.firm === k.firm) {
+        setErrorObject(prev => ({
+          ...prev,
+          firm: "Klinika sa ovim firm-om već postoji u bazi"
+        }));
+        return;
+      }
+
+      if (clinics.some(c => k.klinika.some(obj => Number(Object.keys(obj)[0]) === c.userId))) {
+        setErrorObject(prev => ({
+          ...prev,
+          userId: "Klinika sa ovim user-om već postoji u bazi"
+        }));
+        return;
+      }
+
+      if (clinics.length===0) {
+        setErrorObject(prev => ({
+          ...prev,
+          clinics: "Morate imati minimum jedan user za svaku kliniku"
+        }));
+        return;
+      }
     }
 
     // 👇 transformacija u oblik [{132:"Zgrada"}, ...]
@@ -51,7 +72,7 @@ const AddKlinika = () => {
     const newKlinika: Klinika = {
       ...data,
       id: Date.now(),
-      clinics: klinikeObjekti
+      klinika: klinikeObjekti
     };
 
     const updated = [...allKlinike, newKlinika];
@@ -65,16 +86,11 @@ const AddKlinika = () => {
     }
   };
 
-  const handleRemoveUserId = (u: number) => {
-    setUserIds(prev => prev.filter(id => id !== u));
-  };
-
   const handleAddClinic = () => {
     if (!newClinicUserId || !newClinicName) return;
 
     const exists = clinics.some(c => c.userId === Number(newClinicUserId));
     if (exists) {
-      alert("Ovaj userId već postoji!");
       return;
     }
 
@@ -85,7 +101,6 @@ const AddKlinika = () => {
         name: newClinicName
       }
     ]);
-
     setNewClinicUserId("");
     setNewClinicName("");
   };
@@ -94,15 +109,27 @@ const AddKlinika = () => {
     setClinics(prev => prev.filter(c => c.userId !== userId));
   };
 
+const errorMessages = Object.keys(errorObject)
+  .map((key) => {
+    const k = key as keyof typeof errorObject;
+    const value = errorObject[k];
+
+    if (!value) return null;
+
+    return (
+      <div key={key} className="alert alert-danger" role="alert">
+        {value}
+      </div>
+    );
+  });
+
+
   return (
     <div className="container mt-5">
       <h2 className="mb-4">Dodaj novu kliniku</h2>
-
-      {errorMessage && (
-        <div className="alert alert-danger" role="alert">
-          {errorMessage}
-        </div>
-      )}
+      {
+        errorMessages
+      }
 
       <form onSubmit={handleSubmit(onSubmit)}>
 
@@ -149,19 +176,8 @@ const AddKlinika = () => {
           </div>
         </div>
 
-
-        {/* USER ID LIST */}
-        {userIds.map(u => (
-          <div key={u} className="d-flex align-items-center gap-2 mb-1">
-            <span className="badge bg-secondary">{u}</span>
-            <button type="button" className="btn btn-sm btn-danger" onClick={() => handleRemoveUserId(u)}>
-              Remove
-            </button>
-          </div>
-        ))}
-
         {/* CLINIC OBJECTS */}
-        <h5>Klinike</h5>
+        <h5>UserIds</h5>
 
         {clinics.map((c) => (
           <div key={c.userId} className="d-flex align-items-center gap-2 mb-2">

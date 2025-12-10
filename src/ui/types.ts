@@ -3,7 +3,7 @@ export type Klinika = {
     naziv:string,  
     bolnica: string,
     firm: number,
-    clinics: ClinicMap[]
+    klinika: ClinicMap[]
 }
 
 export type ClinicMap = Record<number, string>;

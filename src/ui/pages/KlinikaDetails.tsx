@@ -129,46 +129,6 @@ const KlinikaDetails = () => {
             </div>
           </div>
 
-          {/* <div className="row mb-3">
-            <label className="col-sm-4 col-form-label">User:</label>
-            <div className="col-sm-8">
-                <input
-                type="number"
-                className={`form-control ${errors.user ? 'is-invalid' : ''}`}
-                {...register('user', { required: 'User je obavezan' })}
-                />
-                {errors.user && (
-                <div className="invalid-feedback">{errors.user.message}</div>
-                )}
-            </div>
-          </div> */}
-
-          <div className="row mb-3">
-            <label className="col-sm-4 col-form-label">Bolnica App:</label>
-            <div className="col-sm-8">
-                <input
-                className={`form-control ${errors.bolnicaApp ? 'is-invalid' : ''}`}
-                {...register('bolnicaApp', { required: 'Bolnica App je obavezna' })}
-                />
-                {errors.bolnicaApp && (
-                <div className="invalid-feedback">{errors.bolnicaApp.message}</div>
-                )}
-            </div>
-          </div>
-
-          <div className="row mb-3">
-            <label className="col-sm-4 col-form-label">Klinika App:</label>
-            <div className="col-sm-8">
-                <input
-                className={`form-control ${errors.klinikaApp ? 'is-invalid' : ''}`}
-                {...register('klinikaApp', { required: 'Klinika App je obavezna' })}
-                />
-                {errors.klinikaApp && (
-                <div className="invalid-feedback">{errors.klinikaApp.message}</div>
-                )}
-            </div>
-          </div>
-
           <button type="submit" className="btn btn-success me-2">
             Sačuvaj
           </button>
@@ -184,11 +144,7 @@ const KlinikaDetails = () => {
     <div className="container mt-4">
       <div className="card p-4">
           <p><strong>Bolnica:</strong> {klinika.bolnica}</p>
-          <p><strong>Klinika:</strong> {klinika.klinika}</p>
-          <p><strong>Bolnica App:</strong> {klinika.bolnicaApp}</p>
-          <p><strong>Klinika App:</strong> {klinika.klinikaApp}</p>
           <p><strong>Firm:</strong> {klinika.firm}</p>
-          <p><strong>User:</strong> {klinika.user.join(",")}</p>
           <div className="mt-3">
           <button
               className="btn btn-primary me-2"
