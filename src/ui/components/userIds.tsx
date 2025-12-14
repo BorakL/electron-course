@@ -19,9 +19,7 @@ const UserIds = (
         if (!newClinicUserId || !newClinicName) return;
 
         const exists = clinics.some(c => c.userId === Number(newClinicUserId));
-        if (exists) {
-        return;
-        }
+        if (exists) {return;}
 
         setClinics(prev => [
         ...prev,

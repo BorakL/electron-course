@@ -46,7 +46,8 @@ const AddKlinika = () => {
         return;
       }
 
-      if (clinics.some(c => k.klinika.some(obj => Number(Object.keys(obj)[0]) === c.userId))) {
+      // if (clinics.some(c => k.klinika.some(obj => Number(Object.keys(obj)[0]) === c.userId))) {
+        if (clinics.some(c => c.userId in k.klinika )) {
         setErrorObject(prev => ({
           ...prev,
           userId: "Klinika sa ovim user-om već postoji u bazi"
@@ -63,15 +64,21 @@ const AddKlinika = () => {
       }
     }
 
-    // 👇 transformacija u oblik [{132:"Zgrada"}, ...]
-    const klinikeObjekti = clinics.map(c => ({
-      [c.userId]: c.name
-    }));
+    // 👇 transformacija u oblik {132:"Zgrada", ...}
+    // [ {userId:number, name:string}, ... ]
+
+    const klinikeObjakat: Record<number,string> = clinics.reduce(
+      (acc, {userId, name}) => {
+        acc[userId] = name;
+        return acc;
+      },
+      {} as Record<number, string>
+    )
 
     const newKlinika: Klinika = {
       ...data,
       id: Date.now(),
-      klinika: klinikeObjekti
+      klinika: klinikeObjakat
     };
 
     const updated = [...allKlinike, newKlinika];

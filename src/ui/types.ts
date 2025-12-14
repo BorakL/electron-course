@@ -3,7 +3,7 @@ export type Klinika = {
     naziv:string,  
     bolnica: string,
     firm: number,
-    klinika: ClinicMap[]
+    klinika: Record<number,string>
 }
 
 export type ClinicMap = Record<number, string>;
@@ -12,6 +12,11 @@ export type ClinicItem = {
   userId: number;
   name: string;
 };
+
+export interface KlinikaItem {
+  userId: number;
+  name: string
+}
 
 export type DownloadFileParams = {
     fileUrl: string,

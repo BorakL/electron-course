@@ -3,7 +3,7 @@ import { useParams } from "react-router";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useConfirm } from "../context/confirmContext";
-import { ClinicItem, Klinika } from "../types";
+import { ClinicItem, Klinika, KlinikaItem } from "../types";
 import UserIds from "../components/userIds";
 
 const KlinikaDetails = () => {
@@ -56,27 +56,48 @@ const KlinikaDetails = () => {
         fetchKlinika(id);
     }, []);
 
-    const onSubmit = async (formData: Klinika) => {
-        try {
-            const data: Klinika[] = await window.electronApp.readJsonFile("klinike.json");
-            const updatedData = data.map(k => (k.id === Number(id) ? formData : k));
-            await window.electronApp.writeJsonFile("klinike.json", updatedData);
-            setKlinika(formData);
-            setIsEditing(false);
-        } catch (error) {
-            console.log("Greška pri snimanju fajla", error);
-        }
+const onSubmit = async (formData: Klinika) => {
+  try {
+    const data: Klinika[] =
+      await window.electronApp.readJsonFile("klinike.json");
+
+    const klinikaObject = clinicsArrayToObject(clinics);
+
+    const finalData: Klinika = {
+      ...formData,
+      klinika: klinikaObject, // 👈 OVO JE POENTA
     };
 
-type OldFormat = Record<string, string>;
+    const updatedData = data.map(k =>
+      k.id === Number(id) ? finalData : k
+    );
 
-const converObject = (original: OldFormat[]) => original.map((obj) => {
-  const key = Object.keys(obj)[0];
-  return {
-    userId: Number(key),
-    name: obj[key]
-  };
-});
+    await window.electronApp.writeJsonFile("klinike.json", updatedData);
+
+    setKlinika(finalData);
+    setIsEditing(false);
+  } catch (error) {
+    console.log("Greška pri snimanju fajla", error);
+  }
+};
+
+
+    function converObject(map: Record<number, string>): KlinikaItem[] {
+      return Object.entries(map).map(([userId, name]) => ({
+        userId: +userId,
+        name,
+      }));
+    };
+
+    function clinicsArrayToObject(
+      clinics: { userId: number; name: string }[]
+    ): Record<number, string> {
+      return clinics.reduce((acc, c) => {
+        acc[c.userId] = c.name;
+        return acc;
+      }, {} as Record<number, string>);
+    }
+
 
 
     if (!klinika) return <div>Učitavanje...</div>;
