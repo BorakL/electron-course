@@ -120,10 +120,11 @@ export async function createFullFolder({ cliniks, url, refererUrl, category, dat
             return logs;
         }
         const klinika = cliniks[currentIndex];
+        const klinikaUser = Object.keys(klinika.klinika);
         const turaID = pronadjiTuruZaKliniku(klinika.id, ture);
         const fileName = `${turaID || ""} ${klinika.naziv?.toUpperCase()} ${suffix ? ` - ${suffix}` : ""}.xlsx`;
         const filePath = path.join(saveFolder, fileName);
-        const fileUrl = `${url}?kategorija=${category}&date=${date}&firm=${klinika.firm}&user[]=${klinika.user.join("&user[]=")}`;
+        const fileUrl = `${url}?kategorija=${category}&date=${date}&firm=${klinika.firm}&user[]=${klinikaUser.join("&user[]=")}`;
         console.log(`📥 Preuzimam: ${fileUrl} -> ${filePath} (Pokušaji preostali: ${attemptsLeft})`);
         try {
             // await downloadFile(fileUrl, filePath, refererUrl, klinika.firm, klinika.user, date, session);
@@ -132,7 +133,7 @@ export async function createFullFolder({ cliniks, url, refererUrl, category, dat
                 filePath,
                 refererUrl,
                 firm: klinika.firm,
-                user: klinika.user,
+                user: klinikaUser.map(Number),
                 date,
                 session
             });

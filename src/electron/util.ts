@@ -167,10 +167,11 @@ export async function loginAndGetSession(username: string, password: string) {
         }
 
         const klinika = cliniks[currentIndex];
+        const klinikaUser:string[] = Object.keys(klinika.klinika);
         const turaID = pronadjiTuruZaKliniku(klinika.id,ture)
         const fileName = `${turaID || ""} ${klinika.naziv?.toUpperCase()} ${suffix ? ` - ${suffix}` : ""}.xlsx`;
         const filePath = path.join(saveFolder, fileName);
-        const fileUrl = `${url}?kategorija=${category}&date=${date}&firm=${klinika.firm}&user[]=${klinika.user.join("&user[]=")}`;
+        const fileUrl = `${url}?kategorija=${category}&date=${date}&firm=${klinika.firm}&user[]=${klinikaUser.join("&user[]=")}`;
 
         console.log(`📥 Preuzimam: ${fileUrl} -> ${filePath} (Pokušaji preostali: ${attemptsLeft})`);
 
@@ -181,7 +182,7 @@ export async function loginAndGetSession(username: string, password: string) {
                 filePath,
                 refererUrl,
                 firm: klinika.firm,
-                user: klinika.user,
+                user: klinikaUser.map(Number),
                 date,
                 session
             })
