@@ -384,3 +384,79 @@ export async function getClinicsWithSpecMeals(filePath: string, dietFilters:Diet
   }
   return [...new Set(specDietsClinics)];
 }
+
+
+
+
+
+export async function getClinicsWithSpecMealsAllDay(filePaths: string[]): Promise<Record<string,string[]>> {
+  const result:Record<string,string[]> = {};
+
+    let i = 1;
+  for (const filePath of filePaths) {
+    const workbook = new ExcelJS.Workbook();
+    try{
+      await workbook.xlsx.readFile(filePath);
+      console.log("Opened:", filePath);
+    }catch(error){
+      console.error("Greška prilikom čitanja Excel fajla", error);
+      throw new Error(`Ne mogu da otvorim fajl: ${filePath}`)
+    }
+    // const FIRST_CLINIC_ROW = 2;
+    const FIRST_CLINIC_COL = 3;
+    const DIET_COL = 2;          // B
+    const FIRST_DIET_ROW = 4; 
+    const CLINIC_ROW = 2;
+
+    let col = FIRST_CLINIC_COL;
+    const sheet = workbook.worksheets[0];
+    let lastClinicCol:number;
+
+    // Pronalazimo zadnju kolonu klinke (lastClinicCol)
+    while (true) {
+      const cell = sheet.getRow(CLINIC_ROW).getCell(col).value;
+
+      if (!cell || cell.toString().trim() === "" || cell.toString().trim() === "0") {
+        lastClinicCol = col;
+        break; // kraj klinika
+      }
+      col++;
+    }
+    console.log("lastClinicCol", lastClinicCol)
+    
+    // Pronalazimo red za ukupne iznose 
+    let totalAmountsRow: number;
+    let row = FIRST_DIET_ROW
+    while (true) {
+      const cell = sheet.getCell(row, DIET_COL).value;
+      if (
+        cell === null ||
+        cell === undefined ||
+        cell.toString().trim() === "" ||
+        cell.toString().trim() === "0"
+      ) {
+        totalAmountsRow = row;
+        break;
+      }
+      row++;
+    }
+    console.log("totalAmountsRow", totalAmountsRow)
+  
+    const clinicNames:string[] = [];
+    for(let i = FIRST_CLINIC_COL; i<=lastClinicCol; i++){
+      const cell = sheet.getRow(totalAmountsRow).getCell(i).value;
+      if(cell && Number(cell)>0){
+        const clinicName = sheet.getRow(CLINIC_ROW).getCell(i).value;
+        if(clinicName && clinicName!==""){
+          clinicNames.push(clinicName.toString())
+        }
+      }
+    }
+    console.log("clinicNames", clinicNames)  
+    if(i && clinicNames){
+      result[i.toString()] = clinicNames
+    }
+    i++;
+  }
+  return result
+}

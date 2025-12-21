@@ -27,8 +27,10 @@ electron_2.default.contextBridge.exposeInMainWorld("electronApp", {
     processDietFiles: (dietFilters, tableParams, folderPath) => electron_1.ipcRenderer.invoke('processDietFiles', dietFilters, tableParams, folderPath),
     selectFolder: () => electron_1.ipcRenderer.invoke('selectFolder'),
     selectFile: () => electron_1.ipcRenderer.invoke('selectFile'),
+    selectFiles: () => electron_1.ipcRenderer.invoke('selectFiles'),
     printDostavnaTura: (folderPath, dostavneTure, klinika, turaId) => electron_1.ipcRenderer.invoke('printDostavnaTura', folderPath, dostavneTure, klinika, turaId),
     loginAndGetSession: (username, password) => electron_1.ipcRenderer.invoke("loginAndGetSession", username, password),
     mergeExcels: (folderPath, outputPath) => electron_1.ipcRenderer.invoke('mergeExcels', folderPath, outputPath),
-    getClinicsWithSpecMeals: (filePath, dietFilters) => electron_1.ipcRenderer.invoke('getClinicsWithSpecMeals', filePath, dietFilters)
+    getClinicsWithSpecMeals: (filePath, dietFilters) => electron_1.ipcRenderer.invoke('getClinicsWithSpecMeals', filePath, dietFilters),
+    getClinicsWithSpecMealsAllDay: (filePaths) => electron_1.ipcRenderer.invoke('getClinicsWithSpecMealsAllDay', filePaths)
 });

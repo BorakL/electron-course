@@ -1,10 +1,10 @@
 import {app, BrowserWindow, ipcMain} from 'electron';
 import path from 'path';
-import {createFullFolder, getClinicsWithSpecMeals, isDev, loginAndGetSession, printDostavnaTura} from './util.js' 
+import {createFullFolder, getClinicsWithSpecMeals, getClinicsWithSpecMealsAllDay, isDev, loginAndGetSession, printDostavnaTura} from './util.js' 
 // import { pollResources } from './resourceManager.js';
 import { getPreloadPath } from './pathResolver.js'; 
 import dotenv from 'dotenv';  
-import { appendJsonItem, deleteJsonItemById, dodajKlinikuUNerasporedjene, dodajKlinikuUTuru, dodajNovuTuru, getFilePath, mergeExcels, obrisiTuru, ocistiNevazecuKlinikuIzTura, readJsonFile, selectFile, selectFolder, ukloniKlinikuIzNerasporedjenih, ukloniKlinikuIzTure, updateJsonItemById, writeJsonFile } from './fsHelpers/jsonUtils.js';
+import { appendJsonItem, deleteJsonItemById, dodajKlinikuUNerasporedjene, dodajKlinikuUTuru, dodajNovuTuru, getFilePath, mergeExcels, obrisiTuru, ocistiNevazecuKlinikuIzTura, readJsonFile, selectFile, selectFiles, selectFolder, ukloniKlinikuIzNerasporedjenih, ukloniKlinikuIzTure, updateJsonItemById, writeJsonFile } from './fsHelpers/jsonUtils.js';
 import processDietFiles, { DietFilter, TableParams } from './xlsx/processDietFiles.js';
 import { DostavnaTura, Klinika, Logs } from './types/types.js';
 
@@ -78,6 +78,9 @@ app.on("ready", ()=>{
     ipcMain.handle('selectFile', () => {
         return selectFile();
     })
+    ipcMain.handle('selectFiles', () => {
+        return selectFiles();
+    })
     ipcMain.handle('printDostavnaTura', (event, folderPath:string, dostavneTure:DostavnaTura[], klinika:Klinika[], turaId:number) => {
         return printDostavnaTura(folderPath,dostavneTure,klinika,turaId)
     })
@@ -89,5 +92,8 @@ app.on("ready", ()=>{
     })
     ipcMain.handle('getClinicsWithSpecMeals', async(event, filePath:string, dietFilters:DietFilter[]) => {
         return getClinicsWithSpecMeals(filePath, dietFilters)
+    })
+    ipcMain.handle('getClinicsWithSpecMealsAllDay', async(event, filePaths:string[]) => {
+        return getClinicsWithSpecMealsAllDay(filePaths)
     })
 })

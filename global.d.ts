@@ -42,11 +42,13 @@ declare global {
             processDietFiles: (dietFilters: DietFilter[], tableParams: TableParams, folterPath:string) => Promise<void>;
             selectFolder: () => Promise<null | string>;
             selectFile: () => Promise<null | string>;
+            selectFiles: () => Promise<null | string[]>;
             printDostavnaTura: (folderPath:string, dostavneTure:DostavnaTura[], klinike:Klinika[], turaId:nuber) => Promise<void>
             loginAndGetSession: (username:string, password:string) => Promise<string | null>
             addLicensePlate: (folderPath:string, tableParams:TableParams)=> Promise<void>
             mergeExcels(folderPath:string, outputPath:string): Promise<void>
-            getClinicsWithSpecMeals(filePath: string, dietFilters:DietFilter[]): Promise<string[]>
+            getClinicsWithSpecMeals(filePath: string, dietFilters:DietFilter[]): Promise<string[]>;
+            getClinicsWithSpecMealsAllDay(filePaths: string[]): Promise<Record<string,string[]>>;
           }
     }
 }

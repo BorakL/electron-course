@@ -58,8 +58,7 @@ const KlinikaDetails = () => {
 
 const onSubmit = async (formData: Klinika) => {
   try {
-    const data: Klinika[] =
-      await window.electronApp.readJsonFile("klinike.json");
+    const data: Klinika[] = await window.electronApp.readJsonFile("klinike.json");
 
     const klinikaObject = clinicsArrayToObject(clinics);
 

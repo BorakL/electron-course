@@ -1,10 +1,10 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import path from 'path';
-import { createFullFolder, getClinicsWithSpecMeals, isDev, loginAndGetSession, printDostavnaTura } from './util.js';
+import { createFullFolder, getClinicsWithSpecMeals, getClinicsWithSpecMealsAllDay, isDev, loginAndGetSession, printDostavnaTura } from './util.js';
 // import { pollResources } from './resourceManager.js';
 import { getPreloadPath } from './pathResolver.js';
 import dotenv from 'dotenv';
-import { appendJsonItem, deleteJsonItemById, dodajKlinikuUNerasporedjene, dodajKlinikuUTuru, dodajNovuTuru, getFilePath, mergeExcels, obrisiTuru, ocistiNevazecuKlinikuIzTura, readJsonFile, selectFile, selectFolder, ukloniKlinikuIzNerasporedjenih, ukloniKlinikuIzTure, updateJsonItemById, writeJsonFile } from './fsHelpers/jsonUtils.js';
+import { appendJsonItem, deleteJsonItemById, dodajKlinikuUNerasporedjene, dodajKlinikuUTuru, dodajNovuTuru, getFilePath, mergeExcels, obrisiTuru, ocistiNevazecuKlinikuIzTura, readJsonFile, selectFile, selectFiles, selectFolder, ukloniKlinikuIzNerasporedjenih, ukloniKlinikuIzTure, updateJsonItemById, writeJsonFile } from './fsHelpers/jsonUtils.js';
 import processDietFiles from './xlsx/processDietFiles.js';
 // Definiši __dirname za ES module 
 dotenv.config({ path: path.join(process.cwd(), '.env.electron') });
@@ -73,6 +73,9 @@ app.on("ready", () => {
     ipcMain.handle('selectFile', () => {
         return selectFile();
     });
+    ipcMain.handle('selectFiles', () => {
+        return selectFiles();
+    });
     ipcMain.handle('printDostavnaTura', (event, folderPath, dostavneTure, klinika, turaId) => {
         return printDostavnaTura(folderPath, dostavneTure, klinika, turaId);
     });
@@ -84,5 +87,8 @@ app.on("ready", () => {
     });
     ipcMain.handle('getClinicsWithSpecMeals', async (event, filePath, dietFilters) => {
         return getClinicsWithSpecMeals(filePath, dietFilters);
+    });
+    ipcMain.handle('getClinicsWithSpecMealsAllDay', async (event, filePaths) => {
+        return getClinicsWithSpecMealsAllDay(filePaths);
     });
 });

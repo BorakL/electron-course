@@ -223,6 +223,20 @@ export async function selectFile(): Promise<null | string> {
 }
 
 
+export async function selectFiles(): Promise<null | string[]> {
+  try{
+    const result = await dialog.showOpenDialog({
+      properties: ['openFile', "multiSelections"],
+      filters: [{name:"Excel files", extensions: ["xlsx","xls"]}]
+    })
+    return result.canceled ? null : result.filePaths;
+  }catch(error){
+    console.log("Greška pri selektovanju fajla", error);
+    return null;
+  }
+}
+
+
 //Merdzuj sve excel fajlove iz jednog foldera u jedan excel fajl
 import fs from "fs";
 import {

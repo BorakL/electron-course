@@ -118,6 +118,8 @@ electron.contextBridge.exposeInMainWorld("electronApp", {
 
     selectFile: (): Promise<null | string> => ipcRenderer.invoke('selectFile'),
 
+    selectFiles: (): Promise<null | string[]> => ipcRenderer.invoke('selectFiles'),
+
     printDostavnaTura: (
         folderPath: string,
         dostavneTure: DostavnaTura[],
@@ -136,5 +138,9 @@ electron.contextBridge.exposeInMainWorld("electronApp", {
     getClinicsWithSpecMeals: (
         filePath: string,
         dietFilters: DietFilter[]
-    ): Promise<string[]> => ipcRenderer.invoke('getClinicsWithSpecMeals', filePath, dietFilters)
+    ): Promise<string[]> => ipcRenderer.invoke('getClinicsWithSpecMeals', filePath, dietFilters),
+
+    getClinicsWithSpecMealsAllDay: (
+        filePaths: string[]
+    ): Promise<Record<string,string[]>> => ipcRenderer.invoke('getClinicsWithSpecMealsAllDay', filePaths)
 })
