@@ -48,7 +48,7 @@ declare global {
             addLicensePlate: (folderPath:string, tableParams:TableParams)=> Promise<void>
             mergeExcels(folderPath:string, outputPath:string): Promise<void>
             getClinicsWithSpecMeals(filePath: string, dietFilters:DietFilter[]): Promise<string[]>;
-            getClinicsWithSpecMealsAllDay(filePaths: string[]): Promise<Record<string,string[]>>;
+            getClinicsWithOrderedProducts(filePaths: string[]): Promise<Record<string,string[]>>;
           }
     }
 }

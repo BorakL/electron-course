@@ -301,9 +301,12 @@ export async function getClinicsWithSpecMeals(filePath, dietFilters) {
     }
     return [...new Set(specDietsClinics)];
 }
-export async function getClinicsWithSpecMealsAllDay(filePaths) {
-    const result = {};
-    let i = 1;
+export async function getClinicsWithOrderedProducts(filePaths) {
+    const result = {
+        "1": { date: "", clinics: [] },
+        "2": { date: "", clinics: [] },
+        "3": { date: "", clinics: [] }
+    };
     for (const filePath of filePaths) {
         const workbook = new ExcelJS.Workbook();
         try {
@@ -319,6 +322,7 @@ export async function getClinicsWithSpecMealsAllDay(filePaths) {
         const DIET_COL = 2; // B
         const FIRST_DIET_ROW = 4;
         const CLINIC_ROW = 2;
+        const DATE_CELL = "B3";
         let col = FIRST_CLINIC_COL;
         const sheet = workbook.worksheets[0];
         let lastClinicCol;
@@ -358,10 +362,45 @@ export async function getClinicsWithSpecMealsAllDay(filePaths) {
             }
         }
         console.log("clinicNames", clinicNames);
-        if (i && clinicNames) {
-            result[i.toString()] = clinicNames;
+        const dateCell = sheet.getCell(DATE_CELL)?.toString();
+        let dateMeal;
+        if (dateCell && dateCell !== "") {
+            dateMeal = parseDateAndMeal(dateCell);
         }
-        i++;
+        else {
+            throw new Error("Nema informacije o datumu i obroku");
+        }
+        if (dateMeal && clinicNames) {
+            if (dateMeal.meal === "Doručak") {
+                result["1"] = {
+                    date: dateMeal.date,
+                    clinics: clinicNames
+                };
+            }
+            else if (dateMeal.meal === "Ručak") {
+                result["2"] = {
+                    date: dateMeal.date,
+                    clinics: clinicNames
+                };
+            }
+            else if (dateMeal.meal === "Večera") {
+                result["3"] = {
+                    date: dateMeal.date,
+                    clinics: clinicNames
+                };
+            }
+        }
     }
     return result;
+}
+export function parseDateAndMeal(input) {
+    const regex = /(\d{2}[./-]\d{2}[./-]\d{4})\s*-\s*(Doručak|Ručak|Večera)/i;
+    const match = input.match(regex);
+    if (!match)
+        return null;
+    const [, date, meal] = match;
+    return {
+        date,
+        meal: meal
+    };
 }

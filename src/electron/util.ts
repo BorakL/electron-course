@@ -386,13 +386,23 @@ export async function getClinicsWithSpecMeals(filePath: string, dietFilters:Diet
 }
 
 
+type ClinicsWithOrderedProductsItem = {
+  date: string,
+  clinics: string[]
+}
+
+type RouteKey = "1" | "2" | "3";
+type GetClinicsWithOrderedProducts = Record<RouteKey, ClinicsWithOrderedProductsItem>
 
 
+export async function getClinicsWithOrderedProducts(filePaths: string[]): Promise<GetClinicsWithOrderedProducts> {
 
-export async function getClinicsWithSpecMealsAllDay(filePaths: string[]): Promise<Record<string,string[]>> {
-  const result:Record<string,string[]> = {};
+  const result: GetClinicsWithOrderedProducts = {
+    "1": { date: "", clinics: [] },
+    "2": { date: "", clinics: [] },
+    "3": { date: "", clinics: [] }
+  };
 
-    let i = 1;
   for (const filePath of filePaths) {
     const workbook = new ExcelJS.Workbook();
     try{
@@ -407,6 +417,7 @@ export async function getClinicsWithSpecMealsAllDay(filePaths: string[]): Promis
     const DIET_COL = 2;          // B
     const FIRST_DIET_ROW = 4; 
     const CLINIC_ROW = 2;
+    const DATE_CELL = "B3";
 
     let col = FIRST_CLINIC_COL;
     const sheet = workbook.worksheets[0];
@@ -452,11 +463,60 @@ export async function getClinicsWithSpecMealsAllDay(filePaths: string[]): Promis
         }
       }
     }
-    console.log("clinicNames", clinicNames)  
-    if(i && clinicNames){
-      result[i.toString()] = clinicNames
+    console.log("clinicNames", clinicNames)
+
+    const dateCell = sheet.getCell(DATE_CELL)?.toString();
+    let dateMeal:ParsedDateMeal | null | undefined;
+
+    if(dateCell && dateCell!==""){
+      dateMeal = parseDateAndMeal(dateCell)
+    }else{
+      throw new Error("Nema informacije o datumu i obroku");
     }
-    i++;
+    
+
+    if(dateMeal && clinicNames){
+      if(dateMeal.meal==="Doručak"){
+        result["1"] = {
+          date: dateMeal.date,
+          clinics: clinicNames
+        }  
+      }else if(dateMeal.meal==="Ručak"){
+        result["2"] = {
+          date: dateMeal.date,
+          clinics: clinicNames
+        } 
+      }else if(dateMeal.meal==="Večera"){
+        result["3"] = {
+          date: dateMeal.date,
+          clinics: clinicNames
+        } 
+      }
+    }
   }
+
   return result
+}
+
+
+type MealTitle = "Doručak" | "Ručak" | "Večera";
+
+type ParsedDateMeal = {
+  date: string;
+  meal: MealTitle;
+};
+
+export function parseDateAndMeal(input: string): ParsedDateMeal | null {
+  const regex = /(\d{2}[./-]\d{2}[./-]\d{4})\s*-\s*(Doručak|Ručak|Večera)/i;
+
+  const match = input.match(regex);
+
+  if (!match) return null;
+
+  const [, date, meal] = match;
+
+  return {
+    date,
+    meal: meal as MealTitle
+  };
 }

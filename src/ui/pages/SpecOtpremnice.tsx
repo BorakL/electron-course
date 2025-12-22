@@ -70,8 +70,8 @@ const SpecOtpremnice = ()=> {
 
     const handleDownloadSpecDiets = async () => {
         try{
-            const clinicsWithSpecMeals = await window.electronApp.getClinicsWithSpecMealsAllDay(filePaths);
-            console.log("clinicsWithSpecMeals", clinicsWithSpecMeals)
+            const clinicsWithOrderedProducts = await window.electronApp.getClinicsWithOrderedProducts(filePaths);
+            console.log("clinicsWithSpecMeals", clinicsWithOrderedProducts)
         }catch(error){
             console.error("Došlo je do greške", error)
         }

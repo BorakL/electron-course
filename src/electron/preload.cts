@@ -140,7 +140,7 @@ electron.contextBridge.exposeInMainWorld("electronApp", {
         dietFilters: DietFilter[]
     ): Promise<string[]> => ipcRenderer.invoke('getClinicsWithSpecMeals', filePath, dietFilters),
 
-    getClinicsWithSpecMealsAllDay: (
+    getClinicsWithOrderedProducts: (
         filePaths: string[]
-    ): Promise<Record<string,string[]>> => ipcRenderer.invoke('getClinicsWithSpecMealsAllDay', filePaths)
+    ): Promise<Record<string,string[]>> => ipcRenderer.invoke('getClinicsWithOrderedProducts', filePaths)
 })
