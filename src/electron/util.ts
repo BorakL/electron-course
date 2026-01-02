@@ -388,7 +388,8 @@ export async function getClinicsWithSpecMeals(filePath: string, dietFilters:Diet
 
 type ClinicsWithOrderedProductsItem = {
   date: string,
-  clinics: string[]
+  clinics: string[],
+  clinicsObj?: Klinika[] | undefined
 }
 
 type RouteKey = "1" | "2" | "3";

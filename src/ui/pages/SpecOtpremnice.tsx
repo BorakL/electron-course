@@ -52,6 +52,7 @@
 
 
 import { useState } from "react";
+import { turnUsersToClinics } from "../util";
 
 const SpecOtpremnice = ()=> {
     const[filePaths, setFilePaths] = useState<string[]>([]);
@@ -71,7 +72,9 @@ const SpecOtpremnice = ()=> {
     const handleDownloadSpecDiets = async () => {
         try{
             const clinicsWithOrderedProducts = await window.electronApp.getClinicsWithOrderedProducts(filePaths);
-            console.log("clinicsWithSpecMeals", clinicsWithOrderedProducts)
+            const clinicsData = await window.electronApp.readJsonFile("klinike.json");
+            const specMealsAllDay = turnUsersToClinics(clinicsWithOrderedProducts, clinicsData)
+            console.log("specMealsAllDayyyyyyyyyy", specMealsAllDay)
         }catch(error){
             console.error("Došlo je do greške", error)
         }

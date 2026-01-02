@@ -1,4 +1,4 @@
-import { DostavnaTura, Klinika } from "./src/ui/types";
+import { DostavnaTura, GetClinicsWithOrderedProducts, Klinika } from "./src/ui/types";
 
 export {};
 
@@ -48,7 +48,7 @@ declare global {
             addLicensePlate: (folderPath:string, tableParams:TableParams)=> Promise<void>
             mergeExcels(folderPath:string, outputPath:string): Promise<void>
             getClinicsWithSpecMeals(filePath: string, dietFilters:DietFilter[]): Promise<string[]>;
-            getClinicsWithOrderedProducts(filePaths: string[]): Promise<Record<string,string[]>>;
+            getClinicsWithOrderedProducts(filePaths: string[]): Promise<GetClinicsWithOrderedProducts>;
           }
     }
 }

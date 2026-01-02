@@ -1,6 +1,6 @@
 import { ipcRenderer } from "electron"; 
 // @ts-ignore
-import  { DostavnaTura, GetClinicsWithMealsParams, Klinika } from "./types/types.js";   
+import  { DostavnaTura, GetClinicsWithMealsParams, Klinika, RouteKey } from "./types/types.js";   
 // import { dowloadMoreFiles } from "./util";
 import electron from 'electron';
 // import { DietFilter, TableParams } from "./xlsx/processDietFiles.js";
@@ -142,5 +142,5 @@ electron.contextBridge.exposeInMainWorld("electronApp", {
 
     getClinicsWithOrderedProducts: (
         filePaths: string[]
-    ): Promise<Record<string,string[]>> => ipcRenderer.invoke('getClinicsWithOrderedProducts', filePaths)
+    ): Promise<Record<RouteKey,string[]>> => ipcRenderer.invoke('getClinicsWithOrderedProducts', filePaths)
 })

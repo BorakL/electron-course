@@ -44,3 +44,12 @@ export type VanRfzoForm = {
   date: string,
   clinics: Klinika[]
 }
+
+export type ClinicsWithOrderedProductsItem = {
+  date: string,
+  clinics: string[],
+  clinicsObj?: Klinika[] | undefined
+}
+
+export type RouteKey = "1" | "2" | "3";
+export type GetClinicsWithOrderedProducts = Record<RouteKey, ClinicsWithOrderedProductsItem>
