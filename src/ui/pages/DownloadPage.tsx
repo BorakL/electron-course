@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSession } from '../context/sessionContext';
 import { useNavigate } from 'react-router';
-import { DostavnaTura, DownloadShippingDocsParams } from '../types';
+import { DostavnaTura, DownloadShippingDocsParams, DownloadSpecShippingDocsParams } from '../types';
 import ConfirmModal from '../components/confirmModal';
 
 const DownloadPage = ()=>{
@@ -30,6 +30,8 @@ const DownloadPage = ()=>{
       const[klinike,setKlinike] = useState([]);
       const[klinikeVanRfzo,setKlinikeVanRfzo] = useState([]);
       const[klinikeVanRfzoDate, setKlinikeVanRfzoDate] = useState<string | null>(null);
+      const[klinikeProizvodi, setKlinikeProizvodi] = useState([]);
+      const[klinikeProizvodiDate, setKlinikeProizvodiDate] = useState<string | null>(null);
       const[dostavneTure,setDostavneTure] = useState<DostavnaTura[]|null>(null);
       const[showMessage,setShowMessage] = useState<boolean>(false);
       const { register, handleSubmit, formState, watch, setValue } = form;
@@ -70,10 +72,34 @@ const DownloadPage = ()=>{
         }
         fetchData();
       },[])
+
+      const category = form.watch("category");
+
+      useEffect(() => {
+        const fetchData = async ()=>{
+          try{
+            if(category){
+              const categoryIndex = category.toString();
+              const proizvodiKlinikeData = await window.electronApp.readJsonFile("klinikeProizvodi.json");
+              if(proizvodiKlinikeData[categoryIndex]?.date){
+                setKlinikeProizvodiDate(proizvodiKlinikeData[categoryIndex].date)
+              }
+              if(proizvodiKlinikeData[categoryIndex]?.clinicsObj){
+                setKlinikeProizvodi(proizvodiKlinikeData[categoryIndex].clinicsObj)
+              }
+              console.log("++++++++++++++++++++++")
+              console.log("category", categoryIndex);
+              console.log("klinikeProizvodi", klinikeProizvodi);
+              console.log("klnikeProizvodiDate", klinikeProizvodiDate);
+            }
+          }catch(error){
+            console.log(error)
+          }
+        }
+        fetchData();
+      }, [category]);
     
       const downloadShippingDocs = async ({cliniks, url, refererUrl, suffix}:DownloadShippingDocsParams) => {
-        // const refererUrl = "https://prochef.rs/hospital/otpremnice.php";
-        // const url = "https://prochef.rs/hospital/create_pdf_invoice_otpremnica_v1.php";
         const formattedDate = formatDate(watchDate); // Formatiran datum pre slanja
     
         try {
@@ -96,17 +122,32 @@ const DownloadPage = ()=>{
         }
       };
 
-    const downloadShippingDocsVrfzo = ()=>{
+    // const downloadShippingDocsVrfzo = ()=>{
+    //   const formattedDate = formatDate(watchDate); // Formatiran datum pre slanja
+    //   const klinikeVanRfzoFormattedDate = formatDate(klinikeVanRfzoDate)
+    //   if(formattedDate!==klinikeVanRfzoFormattedDate){
+    //     setShowMessage(true);
+    //   }else{
+    //     downloadShippingDocs({
+    //         cliniks: klinikeVanRfzo,
+    //         url: "https://prochef.rs/hospital/create_pdf_invoice_otpremnica_van_rfzo_v1.php",
+    //         refererUrl: "https://prochef.rs/hospital/otpremnice_van_rfzo.php",
+    //         suffix: "vanRfzo"
+    //     })
+    //   }
+    // }
+
+    const downloadSpecShippingDocs = ({klinike, url, refererUrl, suffix}:DownloadSpecShippingDocsParams ) => {
       const formattedDate = formatDate(watchDate); // Formatiran datum pre slanja
       const klinikeVanRfzoFormattedDate = formatDate(klinikeVanRfzoDate)
       if(formattedDate!==klinikeVanRfzoFormattedDate){
         setShowMessage(true);
       }else{
         downloadShippingDocs({
-            cliniks: klinikeVanRfzo,
-            url: "https://prochef.rs/hospital/create_pdf_invoice_otpremnica_van_rfzo_v1.php",
-            refererUrl: "https://prochef.rs/hospital/otpremnice_van_rfzo.php",
-            suffix: "vanRfzo"
+            cliniks: klinike,
+            url: url,
+            refererUrl: refererUrl,
+            suffix: suffix
         })
       }
     }
@@ -179,12 +220,18 @@ const DownloadPage = ()=>{
               Preuzmi otpremnice
             </button>
           </div>
+
           <div className="mb-3">
             <button 
               type="button" 
               className="btn btn-primary" 
               disabled={loading}
-              onClick={handleSubmit(() => downloadShippingDocsVrfzo())}
+              onClick={handleSubmit(() => downloadSpecShippingDocs({
+                klinike: klinikeVanRfzo,
+                url: "https://prochef.rs/hospital/create_pdf_invoice_otpremnica_van_rfzo_v1.php",
+                refererUrl: "https://prochef.rs/hospital/otpremnice_van_rfzo.php",
+                suffix: "vanRfzo"
+              }))}
             >
               Preuzmi van rfzo otpremnice
             </button>
@@ -195,9 +242,14 @@ const DownloadPage = ()=>{
               type="button" 
               className="btn btn-primary" 
               disabled={loading}
-              onClick={()=>navigate("/SpecOtpremnice")}
+              onClick={handleSubmit(() => downloadSpecShippingDocs({
+                klinike: klinikeProizvodi,
+                url: "https://prochef.rs/hospital/create_pdf_invoice_otpremnica_van_rfzo_v1.php",
+                refererUrl: "https://prochef.rs/hospital/otpremnice_van_rfzo.php",
+                suffix: "proizvodi" 
+              }))}
             >
-              Preuzmi specijalne otpremnice
+              Preuzmi otpremnice za proizvode
             </button>
           </div>
 

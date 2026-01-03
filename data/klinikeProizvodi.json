@@ -1,0 +1,45 @@
+{
+  "1": {
+    "date": "",
+    "clinics": [],
+    "clinicsObj": []
+  },
+  "2": {
+    "date": "",
+    "clinics": [],
+    "clinicsObj": []
+  },
+  "3": {
+    "date": "02.01.2026",
+    "clinics": [
+      "UROLOGIJA UKC",
+      "ZGRADA 1",
+      "ZGRADA 3",
+      "ZGRADA 2/1",
+      "ZGRADA 2/2"
+    ],
+    "clinicsObj": [
+      {
+        "id": 1761158260583,
+        "naziv": "UROLOGIJA UKC",
+        "bolnica": "KLINIKA ZA UROLOGIJU",
+        "klinika": {
+          "701": "UROLOGIJA UKC"
+        },
+        "firm": 66
+      },
+      {
+        "id": 1761468279711,
+        "naziv": "INFEKTIVNA",
+        "bolnica": "KLINIKA ZA INFEKTIVNE I TROPSKE BOLESTI",
+        "klinika": {
+          "687": "ZGRADA 2/1",
+          "689": "ZGRADA 1",
+          "692": "ZGRADA 2/2",
+          "693": "ZGRADA 3"
+        },
+        "firm": 48
+      }
+    ]
+  }
+}

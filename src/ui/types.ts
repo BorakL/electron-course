@@ -53,3 +53,10 @@ export type ClinicsWithOrderedProductsItem = {
 
 export type RouteKey = "1" | "2" | "3";
 export type GetClinicsWithOrderedProducts = Record<RouteKey, ClinicsWithOrderedProductsItem>
+
+export type DownloadSpecShippingDocsParams = {
+  klinike: Klinika[], 
+  url: string, 
+  refererUrl: string, 
+  suffix: string
+}
