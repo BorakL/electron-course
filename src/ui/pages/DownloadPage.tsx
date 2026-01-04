@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSession } from '../context/sessionContext';
 import { useNavigate } from 'react-router';
-import { DostavnaTura, DownloadShippingDocsParams, DownloadSpecShippingDocsParams } from '../types';
+import { DostavnaTura, DownloadShippingDocsParams, DownloadSpecShippingDocsParams, PendingAction } from '../types';
 import ConfirmModal from '../components/confirmModal';
 
 const DownloadPage = ()=>{
@@ -34,6 +34,7 @@ const DownloadPage = ()=>{
       const[klinikeProizvodiDate, setKlinikeProizvodiDate] = useState<string | null>(null);
       const[dostavneTure,setDostavneTure] = useState<DostavnaTura[]|null>(null);
       const[showMessage,setShowMessage] = useState<boolean>(false);
+      const[pendingAction, setPendingAction] = useState<PendingAction>(null);
       const { register, handleSubmit, formState, watch, setValue } = form;
       const { errors } = formState;
       const {session} = useSession();
@@ -99,9 +100,9 @@ const DownloadPage = ()=>{
         fetchData();
       }, [category]);
     
+
       const downloadShippingDocs = async ({cliniks, url, refererUrl, suffix}:DownloadShippingDocsParams) => {
         const formattedDate = formatDate(watchDate); // Formatiran datum pre slanja
-    
         try {
           setLoading(true);
           const logs = await window.electronApp.createFullFolder({
@@ -110,7 +111,7 @@ const DownloadPage = ()=>{
             refererUrl,
             category: form.getValues("category"),
             date: formattedDate, // Slanje formatiranog datuma
-            session: session,
+            session,
             groupId: form.getValues("groupId"),
             suffix
           });
@@ -145,12 +146,25 @@ const DownloadPage = ()=>{
       }else{
         downloadShippingDocs({
             cliniks: klinike,
-            url: url,
-            refererUrl: refererUrl,
-            suffix: suffix
+            url,
+            refererUrl,
+            suffix
         })
       }
     }
+
+    const confirmIfDateMismatch = (action: () => void) => {
+      //Treba da se prepravi vremenski format u klinikeProizvodi
+      const formattedDate = formatDate(watchDate);
+      const klinikeVanRfzoFormattedDate = formatDate(klinikeVanRfzoDate);
+      if (formattedDate !== klinikeVanRfzoFormattedDate) {
+        setPendingAction(() => action); // 👈 store action
+        setShowMessage(true);
+      } else {
+        action(); // 👈 execute immediately
+      }
+    };
+
 
     return(
       <div className=" container-fluid mt-4">
@@ -222,32 +236,40 @@ const DownloadPage = ()=>{
           </div>
 
           <div className="mb-3">
-            <button 
-              type="button" 
-              className="btn btn-primary" 
+            <button
+              type="button"
+              className="btn btn-primary"
               disabled={loading}
-              onClick={handleSubmit(() => downloadSpecShippingDocs({
-                klinike: klinikeVanRfzo,
-                url: "https://prochef.rs/hospital/create_pdf_invoice_otpremnica_van_rfzo_v1.php",
-                refererUrl: "https://prochef.rs/hospital/otpremnice_van_rfzo.php",
-                suffix: "vanRfzo"
-              }))}
+              onClick={handleSubmit(() =>
+                confirmIfDateMismatch(() =>
+                  downloadSpecShippingDocs({
+                    klinike: klinikeVanRfzo,
+                    url: "https://prochef.rs/hospital/create_pdf_invoice_otpremnica_van_rfzo_v1.php",
+                    refererUrl: "https://prochef.rs/hospital/otpremnice_van_rfzo.php",
+                    suffix: "vanRfzo",
+                  })
+                )
+              )}
             >
               Preuzmi van rfzo otpremnice
             </button>
           </div>
 
           <div className="mb-3">
-            <button 
-              type="button" 
-              className="btn btn-primary" 
+            <button
+              type="button"
+              className="btn btn-primary"
               disabled={loading}
-              onClick={handleSubmit(() => downloadSpecShippingDocs({
-                klinike: klinikeProizvodi,
-                url: "https://prochef.rs/hospital/create_pdf_invoice_otpremnica_van_rfzo_v1.php",
-                refererUrl: "https://prochef.rs/hospital/otpremnice_van_rfzo.php",
-                suffix: "proizvodi" 
-              }))}
+              onClick={handleSubmit(() =>
+                confirmIfDateMismatch(() =>
+                  downloadSpecShippingDocs({
+                    klinike: klinikeProizvodi,
+                    url: "https://prochef.rs/hospital/create_pdf_invoice_otpremnica_van_rfzo_v1.php",
+                    refererUrl: "https://prochef.rs/hospital/otpremnice_van_rfzo.php",
+                    suffix: "proizvodi",
+                  })
+                )
+              )}
             >
               Preuzmi otpremnice za proizvode
             </button>
@@ -300,16 +322,19 @@ const DownloadPage = ()=>{
 
         <ConfirmModal
           show={showMessage}
-          onClose={()=>setShowMessage(false)}
-          onConfirm={() => downloadShippingDocs({
-            cliniks: klinikeVanRfzo,
-            url: "https://prochef.rs/hospital/create_pdf_invoice_otpremnica_van_rfzo_v1.php",
-            refererUrl: "https://prochef.rs/hospital/otpremnice_van_rfzo.php",
-            suffix: "vanRfzo"
-          })}
+          onClose={() => {
+            setShowMessage(false);
+            setPendingAction(null);
+          }}
+          onConfirm={() => {
+            pendingAction?.();
+            setShowMessage(false);
+            setPendingAction(null);
+          }}
           inform={true}
-          message="Datum za dijete van rfzo-a se ne poklapa sa odabranim datumom za preuzimanje otpremnica van rfzo-a! Da li ste sigurni da želite da nastavite?"
+          message="Datum za dijete van rfzo-a se ne poklapa sa odabranim datumom! Da li želite da nastavite?"
         />
+
       </div>
     )
 }

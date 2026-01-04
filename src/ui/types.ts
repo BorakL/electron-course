@@ -60,3 +60,5 @@ export type DownloadSpecShippingDocsParams = {
   refererUrl: string, 
   suffix: string
 }
+
+export type PendingAction = (() => void) | null;
