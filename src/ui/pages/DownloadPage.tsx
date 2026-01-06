@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSession } from '../context/sessionContext';
 import { useNavigate } from 'react-router';
-import { DostavnaTura, DownloadShippingDocsParams, DownloadSpecShippingDocsParams, PendingAction } from '../types';
+import { DostavnaTura, DownloadShippingDocsParams, PendingAction } from '../types';
 import ConfirmModal from '../components/confirmModal';
 
 const DownloadPage = ()=>{
@@ -34,6 +34,7 @@ const DownloadPage = ()=>{
       const[klinikeProizvodiDate, setKlinikeProizvodiDate] = useState<string | null>(null);
       const[dostavneTure,setDostavneTure] = useState<DostavnaTura[]|null>(null);
       const[showMessage,setShowMessage] = useState<boolean>(false);
+      const[modalMessage,setModalMessage] = useState<string>("");
       const[pendingAction, setPendingAction] = useState<PendingAction>(null);
       const { register, handleSubmit, formState, watch, setValue } = form;
       const { errors } = formState;
@@ -88,10 +89,6 @@ const DownloadPage = ()=>{
               if(proizvodiKlinikeData[categoryIndex]?.clinicsObj){
                 setKlinikeProizvodi(proizvodiKlinikeData[categoryIndex].clinicsObj)
               }
-              console.log("++++++++++++++++++++++")
-              console.log("category", categoryIndex);
-              console.log("klinikeProizvodi", klinikeProizvodi);
-              console.log("klnikeProizvodiDate", klinikeProizvodiDate);
             }
           }catch(error){
             console.log(error)
@@ -125,7 +122,7 @@ const DownloadPage = ()=>{
 
     // const downloadShippingDocsVrfzo = ()=>{
     //   const formattedDate = formatDate(watchDate); // Formatiran datum pre slanja
-    //   const klinikeVanRfzoFormattedDate = formatDate(klinikeVanRfzoDate)
+    //   const klinikeVanRfzoFormattedDate = klinikeVanRfzoDate?.replace("-",".");
     //   if(formattedDate!==klinikeVanRfzoFormattedDate){
     //     setShowMessage(true);
     //   }else{
@@ -138,30 +135,43 @@ const DownloadPage = ()=>{
     //   }
     // }
 
-    const downloadSpecShippingDocs = ({klinike, url, refererUrl, suffix}:DownloadSpecShippingDocsParams ) => {
-      const formattedDate = formatDate(watchDate); // Formatiran datum pre slanja
-      const klinikeVanRfzoFormattedDate = formatDate(klinikeVanRfzoDate)
-      if(formattedDate!==klinikeVanRfzoFormattedDate){
-        setShowMessage(true);
-      }else{
-        downloadShippingDocs({
-            cliniks: klinike,
-            url,
-            refererUrl,
-            suffix
-        })
-      }
-    }
 
-    const confirmIfDateMismatch = (action: () => void) => {
+
+    // const downloadSpecShippingDocs = ({klinike, url, refererUrl, suffix}:DownloadSpecShippingDocsParams ) => {
+    //   const formattedDate = formatDate(watchDate); // Formatiran datum pre slanja
+    //   const klinikeProizvodiFormattedDate = klinikeProizvodiDate?.replace("-",".");
+    //   if(formattedDate!==klinikeProizvodiFormattedDate){
+    //     setShowMessage(true);
+    //   }else{
+    //     downloadShippingDocs({
+    //         cliniks: klinike,
+    //         url,
+    //         refererUrl,
+    //         suffix
+    //     })
+    //   }
+    // }
+
+    const confirmIfDateMismatch = (buttonTitle:string, action: () => void) => {
       //Treba da se prepravi vremenski format u klinikeProizvodi
       const formattedDate = formatDate(watchDate);
-      const klinikeVanRfzoFormattedDate = formatDate(klinikeVanRfzoDate);
-      if (formattedDate !== klinikeVanRfzoFormattedDate) {
-        setPendingAction(() => action); // 👈 store action
-        setShowMessage(true);
-      } else {
-        action(); // 👈 execute immediately
+      if(buttonTitle==="vanRfzo"){
+        if(formattedDate!==klinikeVanRfzoDate){
+          setPendingAction(()=>action);
+          setShowMessage(true)
+          setModalMessage("Datum za dijete van rfzo-a se ne poklapa sa odabranim datumom! Da li želite da nastavite?")
+        }else{
+          action();
+        }
+      }else if(buttonTitle==="proizvodi"){
+        const klinikeProizvodiFormattedDate = klinikeProizvodiDate?.replace("-",".");
+        if(formattedDate!==klinikeProizvodiFormattedDate){
+          setPendingAction(()=>action);
+          setShowMessage(true)
+          setModalMessage("Datum za otpremnice proizvode se ne poklapa sa odabranim datumom! Da li želite da nastavite?")
+        }else{
+          action();
+        }
       }
     };
 
@@ -241,9 +251,9 @@ const DownloadPage = ()=>{
               className="btn btn-primary"
               disabled={loading}
               onClick={handleSubmit(() =>
-                confirmIfDateMismatch(() =>
-                  downloadSpecShippingDocs({
-                    klinike: klinikeVanRfzo,
+                confirmIfDateMismatch("vanRfzo",() =>
+                  downloadShippingDocs({
+                    cliniks: klinikeVanRfzo,
                     url: "https://prochef.rs/hospital/create_pdf_invoice_otpremnica_van_rfzo_v1.php",
                     refererUrl: "https://prochef.rs/hospital/otpremnice_van_rfzo.php",
                     suffix: "vanRfzo",
@@ -261,9 +271,9 @@ const DownloadPage = ()=>{
               className="btn btn-primary"
               disabled={loading}
               onClick={handleSubmit(() =>
-                confirmIfDateMismatch(() =>
-                  downloadSpecShippingDocs({
-                    klinike: klinikeProizvodi,
+                confirmIfDateMismatch("proizvodi",() =>
+                  downloadShippingDocs({
+                    cliniks: klinikeProizvodi,
                     url: "https://prochef.rs/hospital/create_pdf_invoice_otpremnica_van_rfzo_v1.php",
                     refererUrl: "https://prochef.rs/hospital/otpremnice_van_rfzo.php",
                     suffix: "proizvodi",
@@ -332,7 +342,7 @@ const DownloadPage = ()=>{
             setPendingAction(null);
           }}
           inform={true}
-          message="Datum za dijete van rfzo-a se ne poklapa sa odabranim datumom! Da li želite da nastavite?"
+          message={modalMessage}
         />
 
       </div>

@@ -1,44 +1,198 @@
 {
   "1": {
-    "date": "",
-    "clinics": [],
-    "clinicsObj": []
-  },
-  "2": {
-    "date": "",
-    "clinics": [],
-    "clinicsObj": []
-  },
-  "3": {
-    "date": "02.01.2026",
+    "date": "06.01.2026",
     "clinics": [
-      "UROLOGIJA UKC",
-      "ZGRADA 1",
-      "ZGRADA 3",
-      "ZGRADA 2/1",
-      "ZGRADA 2/2"
+      "OPŠTA",
+      "STEFAN VISOKI",
+      "PALMOTIĆEVA"
     ],
     "clinicsObj": [
       {
-        "id": 1761158260583,
-        "naziv": "UROLOGIJA UKC",
-        "bolnica": "KLINIKA ZA UROLOGIJU",
+        "id": 1761158260580,
+        "naziv": "VALJEVO",
+        "bolnica": "ZDRAVSTVENI CENTAR VALJEVO",
         "klinika": {
-          "701": "UROLOGIJA UKC"
+          "694": "OPŠTA"
         },
-        "firm": 66
+        "firm": 60
       },
       {
-        "id": 1761468279711,
-        "naziv": "INFEKTIVNA",
-        "bolnica": "KLINIKA ZA INFEKTIVNE I TROPSKE BOLESTI",
+        "id": 1761158260581,
+        "naziv": "S PALANKA",
+        "bolnica": "OPŠTA BOLNICA:STEFAN VISOKI",
         "klinika": {
-          "687": "ZGRADA 2/1",
-          "689": "ZGRADA 1",
-          "692": "ZGRADA 2/2",
-          "693": "ZGRADA 3"
+          "707": "STEFAN VISOKI"
         },
-        "firm": 48
+        "firm": 72
+      },
+      {
+        "id": 1761158260586,
+        "naziv": "PALMOTIĆEVA",
+        "bolnica": "INSTITUT ZA MENTALNO ZDRAVLJE",
+        "klinika": {
+          "705": "PALMOTIĆEVA"
+        },
+        "firm": 70
+      }
+    ]
+  },
+  "2": {
+    "date": "06.01.2026",
+    "clinics": [
+      "PSIHIJATRIJA KBCZ",
+      "GINEKOLOGIJA KBCZ",
+      "GERIJATRIJA KBCZ",
+      "NEUROLOGIJA KBCZ",
+      "ORL KBCZ",
+      "HEMATOLOGIJA KBCZ",
+      "HIRURGIJA KBCZ",
+      "UROLOGIJA KBCZ",
+      "PULMO+ENDO KBCZ",
+      "GASTRO KBCZ",
+      "KARDIOLOGIJA KBCZ",
+      "NEFROLOGIJA KBCZ",
+      "OČNO KBCZ"
+    ],
+    "clinicsObj": [
+      {
+        "id": 1761582593805,
+        "naziv": "ZVEZDARA PREŠEVSKA",
+        "bolnica": "KBC ZVEZDARA PREŠEVSKA",
+        "klinika": {
+          "721": "PSIHIJATRIJA KBCZ",
+          "722": "GINEKOLOGIJA KBCZ",
+          "723": "GERIJATRIJA KBCZ",
+          "724": "NEUROLOGIJA KBCZ",
+          "726": "ORL KBCZ",
+          "727": "HEMATOLOGIJA KBCZ"
+        },
+        "firm": 78
+      },
+      {
+        "id": 1761582784149,
+        "naziv": "ZVEZDARA HIRURGIJA",
+        "bolnica": "KBC ZVEZDARA",
+        "klinika": {
+          "714": "HIRURGIJA KBCZ"
+        },
+        "firm": 76
+      },
+      {
+        "id": 1761582827893,
+        "naziv": "ZVEZDARA UROLOGIJA",
+        "bolnica": "KBC ZVEZDARA",
+        "klinika": {
+          "715": "UROLOGIJA KBCZ"
+        },
+        "firm": 76
+      },
+      {
+        "id": 1761583388757,
+        "naziv": "ZVEZDARA INTERNA",
+        "bolnica": "KBC ZVEZDARA",
+        "klinika": {
+          "716": "PULMO+ENDO KBCZ",
+          "717": "GASTRO KBCZ",
+          "718": "KARDIOLOGIJA KBCZ",
+          "719": "NEFROLOGIJA KBCZ"
+        },
+        "firm": 76
+      },
+      {
+        "id": 1761582869205,
+        "naziv": "ZVEZDARA OČNO",
+        "bolnica": "KBC ZVEZDARA",
+        "klinika": {
+          "725": "OČNO KBCZ"
+        },
+        "firm": 76
+      }
+    ]
+  },
+  "3": {
+    "date": "06.01.2026",
+    "clinics": [
+      "INTERNA KLINIKA A",
+      "HIRURGIJA",
+      "ORL",
+      "PSIHIJATRIJA BLOK-A",
+      "DEČIJA",
+      "UROLOGIJA",
+      "GINEKOLOGIJA",
+      "INTERNA KLINIKA B"
+    ],
+    "clinicsObj": [
+      {
+        "id": 1761158260606,
+        "naziv": "BLOK A INTERNA",
+        "bolnica": "DRAGIŠA MIŠOVIĆ BLOK A",
+        "klinika": {
+          "670": "INTERNA KLINIKA A"
+        },
+        "firm": 51
+      },
+      {
+        "id": 1761158260607,
+        "naziv": "BLOK A HIRURGIJA",
+        "bolnica": "DRAGIŠA MIŠOVIĆ BLOK A",
+        "klinika": {
+          "671": "HIRURGIJA"
+        },
+        "firm": 51
+      },
+      {
+        "id": 1761158260608,
+        "naziv": "BLOK A ORL",
+        "bolnica": "DRAGIŠA MIŠOVIĆ BLOK A",
+        "klinika": {
+          "672": "ORL"
+        },
+        "firm": 51
+      },
+      {
+        "id": 1761158260609,
+        "naziv": "BLOK A PSIHIJATRIJA",
+        "bolnica": "DRAGIŠA MIŠOVIĆ BLOK A",
+        "klinika": {
+          "673": "PSIHIJATRIJA BLOK-A"
+        },
+        "firm": 51
+      },
+      {
+        "id": 1761158260610,
+        "naziv": "BLOK B DEČIJA",
+        "bolnica": "DRAGIŠA MIŠOVIĆ BLOK B",
+        "klinika": {
+          "675": "DEČIJA"
+        },
+        "firm": 52
+      },
+      {
+        "id": 1761158260612,
+        "naziv": "BLOK B UROLOGIJA",
+        "bolnica": "DRAGIŠA MIŠOVIĆ BLOK B",
+        "klinika": {
+          "676": "UROLOGIJA"
+        },
+        "firm": 52
+      },
+      {
+        "id": 1761158260613,
+        "naziv": "BLOK B GINEKOLOGIJA",
+        "bolnica": "DRAGIŠA MIŠOVIĆ BLOK B",
+        "klinika": {
+          "677": "GINEKOLOGIJA"
+        },
+        "firm": 52
+      },
+      {
+        "id": 1761158260611,
+        "naziv": "BLOK B GERIJATRIJA",
+        "bolnica": "DRAGIŠA MIŠOVIĆ BLOK B",
+        "klinika": {
+          "681": "INTERNA KLINIKA B"
+        },
+        "firm": 52
       }
     ]
   }
