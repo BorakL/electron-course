@@ -112,52 +112,12 @@
   "3": {
     "date": "06.01.2026",
     "clinics": [
-      "INTERNA KLINIKA A",
-      "HIRURGIJA",
-      "ORL",
-      "PSIHIJATRIJA BLOK-A",
       "DEČIJA",
       "UROLOGIJA",
       "GINEKOLOGIJA",
       "INTERNA KLINIKA B"
     ],
     "clinicsObj": [
-      {
-        "id": 1761158260606,
-        "naziv": "BLOK A INTERNA",
-        "bolnica": "DRAGIŠA MIŠOVIĆ BLOK A",
-        "klinika": {
-          "670": "INTERNA KLINIKA A"
-        },
-        "firm": 51
-      },
-      {
-        "id": 1761158260607,
-        "naziv": "BLOK A HIRURGIJA",
-        "bolnica": "DRAGIŠA MIŠOVIĆ BLOK A",
-        "klinika": {
-          "671": "HIRURGIJA"
-        },
-        "firm": 51
-      },
-      {
-        "id": 1761158260608,
-        "naziv": "BLOK A ORL",
-        "bolnica": "DRAGIŠA MIŠOVIĆ BLOK A",
-        "klinika": {
-          "672": "ORL"
-        },
-        "firm": 51
-      },
-      {
-        "id": 1761158260609,
-        "naziv": "BLOK A PSIHIJATRIJA",
-        "bolnica": "DRAGIŠA MIŠOVIĆ BLOK A",
-        "klinika": {
-          "673": "PSIHIJATRIJA BLOK-A"
-        },
-        "firm": 51
-      },
       {
         "id": 1761158260610,
         "naziv": "BLOK B DEČIJA",

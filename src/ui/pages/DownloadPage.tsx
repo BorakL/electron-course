@@ -120,58 +120,17 @@ const DownloadPage = ()=>{
         }
       };
 
-    // const downloadShippingDocsVrfzo = ()=>{
-    //   const formattedDate = formatDate(watchDate); // Formatiran datum pre slanja
-    //   const klinikeVanRfzoFormattedDate = klinikeVanRfzoDate?.replace("-",".");
-    //   if(formattedDate!==klinikeVanRfzoFormattedDate){
-    //     setShowMessage(true);
-    //   }else{
-    //     downloadShippingDocs({
-    //         cliniks: klinikeVanRfzo,
-    //         url: "https://prochef.rs/hospital/create_pdf_invoice_otpremnica_van_rfzo_v1.php",
-    //         refererUrl: "https://prochef.rs/hospital/otpremnice_van_rfzo.php",
-    //         suffix: "vanRfzo"
-    //     })
-    //   }
-    // }
-
-
-
-    // const downloadSpecShippingDocs = ({klinike, url, refererUrl, suffix}:DownloadSpecShippingDocsParams ) => {
-    //   const formattedDate = formatDate(watchDate); // Formatiran datum pre slanja
-    //   const klinikeProizvodiFormattedDate = klinikeProizvodiDate?.replace("-",".");
-    //   if(formattedDate!==klinikeProizvodiFormattedDate){
-    //     setShowMessage(true);
-    //   }else{
-    //     downloadShippingDocs({
-    //         cliniks: klinike,
-    //         url,
-    //         refererUrl,
-    //         suffix
-    //     })
-    //   }
-    // }
-
     const confirmIfDateMismatch = (buttonTitle:string, action: () => void) => {
       //Treba da se prepravi vremenski format u klinikeProizvodi
       const formattedDate = formatDate(watchDate);
-      if(buttonTitle==="vanRfzo"){
-        if(formattedDate!==klinikeVanRfzoDate){
-          setPendingAction(()=>action);
-          setShowMessage(true)
-          setModalMessage("Datum za dijete van rfzo-a se ne poklapa sa odabranim datumom! Da li želite da nastavite?")
-        }else{
-          action();
-        }
-      }else if(buttonTitle==="proizvodi"){
-        const klinikeProizvodiFormattedDate = klinikeProizvodiDate?.replace("-",".");
-        if(formattedDate!==klinikeProizvodiFormattedDate){
-          setPendingAction(()=>action);
-          setShowMessage(true)
-          setModalMessage("Datum za otpremnice proizvode se ne poklapa sa odabranim datumom! Da li želite da nastavite?")
-        }else{
-          action();
-        }
+      const documentDate = buttonTitle==="vanRfzo" ? klinikeVanRfzoDate : klinikeProizvodiDate?.replace("-",".");
+      const message = buttonTitle==="vanRfzo" ? "Datum za dijete van rfzo-a se ne poklapa sa odabranim datumom! Da li želite da nastavite?" : "Datum otpremnica za proizvode se ne poklapa sa odabranim datumom! Da li želite da nastavite?"
+      if(formattedDate!==documentDate){
+        setPendingAction(()=>action);
+        setShowMessage(true)
+        setModalMessage(message)
+      }else{
+        action();
       }
     };
 
