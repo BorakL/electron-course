@@ -15,6 +15,7 @@ import LoginPage from './pages/LoginPage';
 import { useSession } from './context/sessionContext';
 import VanRfzo from './pages/VanRfzo';
 import SpecOtpremnice from './pages/SpecOtpremnice';
+import SettingsPage from './pages/settingsPage';
 // import { useAppDispatch, useAppSelector } from './redux/hooks';
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
             <Route path="/filteri" element={<IzdvajanjeDijeta/>}/>
             <Route path="/vanRfzo" element={<VanRfzo/>}/>
             <Route path="/specOtpremnice" element={<SpecOtpremnice/>}/>
+            <Route path="/settings" element={<SettingsPage/>}/>
             <Route path="*" element={<Navigate to="/download" />} />
           </Route> 
         </Routes>
