@@ -1,27 +1,29 @@
 {
-    "urls": {
-        "LOGIN_URL": "https://www.prochef.rs/hospital/admin_login.php",
-        "URL_OTPREMNICE": "https://prochef.rs/hospital/create_pdf_invoice_otpremnica_v1.php",
-        "REFERER_URL_OTPREMNICE": "https://prochef.rs/hospital/otpremnice.php",
-        "URL_VAN_RFZO": "https://prochef.rs/hospital/create_pdf_invoice_otpremnica_van_rfzo_v1.php",
-        "URL_PROIZVODI": "https://prochef.rs/hospital/create_pdf_invoice_otpremnica_van_rfzo_v1.php",
-        "REFERER_URL_PROIZVODI": "https://prochef.rs/hospital/otpremnice_van_rfzo.php"
-    },
-    "listaZaPakovanje": {
-        "FIRST_CLINIC_ROW":2,
-        "FIRST_CLINIC_COL":3,
-        "DIET_COL":2,         
-        "FIRST_DIET_ROW":4, 
-        "CLINIC_ROW":2,
-        "DATE_CELL":"B3"
-    },
-    "otpremnica": {
-        "DIET_COLUMN": "A",
-        "QUANTITY_COLUMN": "C",
-        "FIRST_DIET_ROW":12,
-        "LAST_ROW_TITLE":"UKUPNO:",
-        "COL_WIDTH":1.11,
-        "COL_HEIGHT":1.25,
-        "MERGER":["A1:C1"]
-    }
+  "urls": {
+    "LOGIN_URL": "https://www.prochef.rs/hospital/admin_login.php",
+    "URL_OTPREMNICE": "https://prochef.rs/hospital/create_pdf_invoice_otpremnica_v1.php",
+    "REFERER_URL_OTPREMNICE": "https://prochef.rs/hospital/otpremnice.php",
+    "URL_VAN_RFZO": "https://prochef.rs/hospital/create_pdf_invoice_otpremnica_van_rfzo_v1.php",
+    "URL_PROIZVODI": "https://prochef.rs/hospital/create_pdf_invoice_otpremnica_van_rfzo_v1.php",
+    "REFERER_URL_PROIZVODI": "https://prochef.rs/hospital/otpremnice_van_rfzo.php"
+  },
+  "listaZaPakovanje": {
+    "FIRST_CLINIC_ROW": 2,
+    "FIRST_CLINIC_COL": 3,
+    "DIET_COL": 2,
+    "FIRST_DIET_ROW": 4,
+    "CLINIC_ROW": 2,
+    "DATE_CELL": "B3"
+  },
+  "otpremnica": {
+    "DIET_COLUMN": "A",
+    "QUANTITY_COLUMN": "C",
+    "FIRST_DIET_ROW": 12,
+    "LAST_ROW_TITLE": "UKUPNO:",
+    "COL_WIDTH": 1.11,
+    "COL_HEIGHT": 1.25,
+    "MERGER": [
+      "A1:C1"
+    ]
+  }
 }

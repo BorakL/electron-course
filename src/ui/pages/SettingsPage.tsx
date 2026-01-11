@@ -7,12 +7,15 @@ export default function SettingsForm() {
     register,
     handleSubmit,
     reset,
+    watch,
+    setValue,
     formState: { isDirty, isValid }
   } = useForm<Settings>({
     mode: "onChange"
   });
 
   const [settings, setSettings] = useState<Settings | null>(null);
+  const mergers = watch("otpremnica.MERGER") ?? [];
 
 
   useEffect(() => {
@@ -111,6 +114,54 @@ export default function SettingsForm() {
           valueAsNumber: true
         })}
       />
+
+      {/* MERGER */}
+      <h5 className="mt-4">Mergers</h5>
+
+      {mergers.map((value, index) => (
+        <div key={index} className="d-flex mb-2">
+          <input
+            className="form-control"
+            value={value}
+            onChange={e => {
+              const next = [...mergers];
+              next[index] = e.target.value;
+              setValue("otpremnica.MERGER", next, {
+                shouldDirty: true,
+                shouldValidate: true
+              });
+            }}
+          />
+
+          <button
+            type="button"
+            className="btn btn-danger ms-2"
+            onClick={() => {
+              const next = mergers.filter((_, i) => i !== index);
+              setValue("otpremnica.MERGER", next, {
+                shouldDirty: true,
+                shouldValidate: true
+              });
+            }}
+          >
+            ✕
+          </button>
+        </div>
+      ))}
+      
+      <button
+        type="button"
+        className="btn btn-secondary mb-3"
+        onClick={() =>
+          setValue("otpremnica.MERGER", [...mergers, "A1:C1"], {
+            shouldDirty: true,
+            shouldValidate: true
+          })
+        }
+      >
+        Add merger
+      </button>
+
 
       <div>
         <button
