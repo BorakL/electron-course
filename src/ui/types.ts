@@ -62,3 +62,31 @@ export type DownloadSpecShippingDocsParams = {
 }
 
 export type PendingAction = (() => void) | null;
+
+export type Settings = {
+  urls: {
+    LOGIN_URL: string;
+    URL_OTPREMNICE: string;
+    REFERER_URL_OTPREMNICE: string;
+    URL_VAN_RFZO: string;
+    URL_PROIZVODI: string;
+    REFERER_URL_PROIZVODI: string;
+  };
+  listaZaPakovanje: {
+    FIRST_CLINIC_ROW: number;
+    FIRST_CLINIC_COL: number;
+    DIET_COL: number;
+    FIRST_DIET_ROW: number;
+    CLINIC_ROW: number;
+    DATE_CELL: string;
+  };
+  otpremnica: {
+    DIET_COLUMN: string;
+    QUANTITY_COLUMN: string;
+    FIRST_DIET_ROW: number;
+    LAST_ROW_TITLE: string;
+    COL_WIDTH: number;
+    COL_HEIGHT: number;
+    MERGER: string[];
+  };
+}
