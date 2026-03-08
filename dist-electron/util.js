@@ -404,3 +404,16 @@ export function parseDateAndMeal(input) {
         meal: meal
     };
 }
+export async function fillABsoftForm() {
+    try {
+        const { data } = await axios.post("http://127.0.0.1:5064/setValue", {
+            data: "proba"
+        }, {
+            headers: { 'Content-Type': 'application/json' }
+        });
+        console.log("data", data);
+    }
+    catch (error) {
+        console.log("error", error);
+    }
+}

@@ -32,5 +32,6 @@ electron_2.default.contextBridge.exposeInMainWorld("electronApp", {
     loginAndGetSession: (username, password) => electron_1.ipcRenderer.invoke("loginAndGetSession", username, password),
     mergeExcels: (folderPath, outputPath) => electron_1.ipcRenderer.invoke('mergeExcels', folderPath, outputPath),
     getClinicsWithSpecMeals: (filePath, dietFilters) => electron_1.ipcRenderer.invoke('getClinicsWithSpecMeals', filePath, dietFilters),
-    getClinicsWithOrderedProducts: (filePaths) => electron_1.ipcRenderer.invoke('getClinicsWithOrderedProducts', filePaths)
+    getClinicsWithOrderedProducts: (filePaths) => electron_1.ipcRenderer.invoke('getClinicsWithOrderedProducts', filePaths),
+    fillABsoftForm: () => electron_1.ipcRenderer.invoke('fillABsoftForm')
 });

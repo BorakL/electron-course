@@ -16,6 +16,7 @@ import { useSession } from './context/sessionContext';
 import VanRfzo from './pages/VanRfzo';
 import SpecOtpremnice from './pages/SpecOtpremnice';
 import SettingsPage from './pages/settingsPage';
+import AutomationForm from './pages/AutomationForm';
 // import { useAppDispatch, useAppSelector } from './redux/hooks';
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
             <Route path="/vanRfzo" element={<VanRfzo/>}/>
             <Route path="/specOtpremnice" element={<SpecOtpremnice/>}/>
             <Route path="/settings" element={<SettingsPage/>}/>
+            <Route path="/fillForm" element={<AutomationForm/>}/>
             <Route path="*" element={<Navigate to="/download" />} />
           </Route> 
         </Routes>

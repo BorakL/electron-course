@@ -29,6 +29,7 @@ const Layout = () => {
           <div className={`collapse navbar-collapse ${expanded ? 'show' : ''}`} id="navbarNav">
             <ul className="navbar-nav">
               {[
+                { to: '/fillForm', label: 'Popuni formu'},
                 { to: '/download', label: 'Download' },
                 { to: '/editPage', label: 'Izdvajanje dijeta' },
                 { to: '/print', label: 'Štampanje' },
