@@ -3,6 +3,7 @@ import { ipcRenderer } from "electron";
 import  { DostavnaTura, GetClinicsWithMealsParams, Klinika, RouteKey } from "./types/types.js";   
 // import { dowloadMoreFiles } from "./util";
 import electron from 'electron';
+import { fillABsoftForm } from "./util.js";
 // import { DietFilter, TableParams } from "./xlsx/processDietFiles.js";
 export interface DietFilter {
   title: string;
@@ -142,5 +143,7 @@ electron.contextBridge.exposeInMainWorld("electronApp", {
 
     getClinicsWithOrderedProducts: (
         filePaths: string[]
-    ): Promise<Record<RouteKey,string[]>> => ipcRenderer.invoke('getClinicsWithOrderedProducts', filePaths)
+    ): Promise<Record<RouteKey,string[]>> => ipcRenderer.invoke('getClinicsWithOrderedProducts', filePaths),
+
+    fillABsoftForm: (): Promise<void> => ipcRenderer.invoke('fillABsoftForm')
 })

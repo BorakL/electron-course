@@ -1,6 +1,6 @@
 import {app, BrowserWindow, ipcMain} from 'electron';
 import path from 'path';
-import {createFullFolder, getClinicsWithSpecMeals, getClinicsWithOrderedProducts, isDev, loginAndGetSession, printDostavnaTura} from './util.js' 
+import {createFullFolder, getClinicsWithSpecMeals, getClinicsWithOrderedProducts, isDev, loginAndGetSession, printDostavnaTura, fillABsoftForm} from './util.js' 
 // import { pollResources } from './resourceManager.js';
 import { getPreloadPath } from './pathResolver.js'; 
 import dotenv from 'dotenv';  
@@ -95,5 +95,8 @@ app.on("ready", ()=>{
     })
     ipcMain.handle('getClinicsWithOrderedProducts', async(event, filePaths:string[]) => {
         return getClinicsWithOrderedProducts(filePaths)
+    })
+    ipcMain.handle('fillABsoftForm', async() => {
+        return fillABsoftForm()
     })
 })

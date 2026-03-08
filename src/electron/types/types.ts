@@ -133,3 +133,11 @@ export type ClinicsWithOrderedProductsItem = {
 
 export type RouteKey = "1" | "2" | "3";
 export type GetClinicsWithOrderedProducts = Record<RouteKey, ClinicsWithOrderedProductsItem>
+
+export type ABsoftFormData = {
+  type: string,
+  name: string,
+  value: string,
+  ordinal?: number,
+  delayAfter?: number
+}

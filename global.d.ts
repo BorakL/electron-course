@@ -49,6 +49,7 @@ declare global {
             mergeExcels(folderPath:string, outputPath:string): Promise<void>
             getClinicsWithSpecMeals(filePath: string, dietFilters:DietFilter[]): Promise<string[]>;
             getClinicsWithOrderedProducts(filePaths: string[]): Promise<GetClinicsWithOrderedProducts>;
+            fillABsoftForm():Promise<void>
           }
     }
 }
