@@ -406,7 +406,7 @@ export function parseDateAndMeal(input) {
 }
 export async function fillABsoftForm() {
     try {
-        const { data } = await axios.post("http://127.0.0.1:5064/setValue", {
+        const { data } = await axios.post("http://127.0.0.1:5064/test", {
             data: "proba"
         }, {
             headers: { 'Content-Type': 'application/json' }
