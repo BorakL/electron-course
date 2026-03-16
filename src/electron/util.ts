@@ -525,9 +525,37 @@ export function parseDateAndMeal(input: string): ParsedDateMeal | null {
 
 export async function fillABsoftForm(): Promise<void> {
   try{
-    const {data} = await axios.post("http://127.0.0.1:5064/test", {
-      data: "proba"
-    },{
+    const {data} = await axios.post("http://127.0.0.1:5064/fillForm", 
+    {
+      "windowTitle": "Mini Form App",
+      "fields": [
+        {
+          "type": "TextBox",
+          "ordinal": 0,
+          "value": "Luka"
+        },
+        {
+          "type": "TextBox",
+          "ordinal": 1,
+          "value": "33"
+        },
+        {
+          "type": "ComboBox",
+          "name": "CountryComboBox",
+          "value": "Canada"
+        },
+        {
+          "type": "RadioButton",
+          "name": "MaleRadio"
+        },
+        {
+          "type": "Checkbox",
+          "name": "SubscribeCheckBox",
+          "value": "true"
+        }
+      ]
+    },
+    {
       headers:{ 'Content-Type': 'application/json' }
     })
     console.log("data",data)
