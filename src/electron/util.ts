@@ -527,32 +527,38 @@ export async function fillABsoftForm(): Promise<void> {
   try{
     const {data} = await axios.post("http://127.0.0.1:5064/fillForm", 
     {
-      "windowTitle": "Mini Form App",
+      "windowTitle": "Fields for Basic",
       "fields": [
-        {
-          "type": "TextBox",
-          "ordinal": 0,
-          "value": "Luka"
-        },
-        {
-          "type": "TextBox",
-          "ordinal": 1,
-          "value": "33"
-        },
+        // {
+        //   "type": "TextBox",
+        //   "ordinal": 0,
+        //   "value": "Luka"
+        // },
         {
           "type": "ComboBox",
-          "name": "CountryComboBox",
-          "value": "Canada"
-        },
-        {
-          "type": "RadioButton",
-          "name": "MaleRadio"
-        },
-        {
-          "type": "Checkbox",
-          "name": "SubscribeCheckBox",
-          "value": "true"
+          "ordinal": 0,
+          "value": "Calibri",
+          "mode": "keyboard"
         }
+        // {
+        //   "type": "TextBox",
+        //   "ordinal": 1,
+        //   "value": "33"
+        // },
+        // {
+        //   "type": "ComboBox",
+        //   "name": "CountryComboBox",
+        //   "value": "Canada"
+        // },
+        // {
+        //   "type": "RadioButton",
+        //   "name": "MaleRadio"
+        // },
+        // {
+        //   "type": "Checkbox",
+        //   "name": "SubscribeCheckBox",
+        //   "value": "true"
+        // }
       ]
     },
     {
