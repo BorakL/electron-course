@@ -529,16 +529,26 @@ export async function fillABsoftForm(): Promise<void> {
     {
       "windowTitle": "Fields for Basic",
       "fields": [
-        // {
-        //   "type": "TextBox",
-        //   "ordinal": 0,
-        //   "value": "Luka"
-        // },
+        {
+          "type": "TextBox",
+          "ordinal": 1,
+          "value": "Luka"
+        },
         {
           "type": "ComboBox",
           "ordinal": 0,
-          "value": "Calibri",
+          "value": "Cambria",
           "mode": "keyboard"
+        },
+        {
+          "type": "Checkbox",
+          "name": "Collapse by default",
+          "value": "true"
+        },
+        {
+          "type": "Checkbox",
+          "name": "Use HTML editor by default",
+          "value": "true"
         }
         // {
         //   "type": "TextBox",

@@ -1,0 +1,22 @@
+[
+  {
+    "title": "Proba",
+    "name": "Klinika",
+    "type": "Combo",
+    "ordinal": "2",
+    "itemOrdinal": "1",
+    "delayAfter": "299",
+    "mode": "keyboard",
+    "id": 1774038070241
+  },
+  {
+    "title": "Proba3",
+    "name": "yxcv",
+    "type": "sdf",
+    "ordinal": "32",
+    "itemOrdinal": "232",
+    "delayAfter": "32",
+    "mode": "sadf",
+    "id": 1774038096906
+  }
+]

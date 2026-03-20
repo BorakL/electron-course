@@ -90,3 +90,15 @@ export type Settings = {
     MERGER: string[];
   };
 }
+
+
+export type Field = {
+  id: string;
+  title: string;
+  type?: string;
+  name?: string;
+  ordinal?: number;
+  itemOrdinal?: number;
+  delayAfter?: number;
+  mode?: string;
+};

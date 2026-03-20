@@ -17,6 +17,9 @@ import VanRfzo from './pages/VanRfzo';
 import SpecOtpremnice from './pages/SpecOtpremnice';
 import SettingsPage from './pages/settingsPage';
 import AutomationForm from './pages/AutomationForm';
+import FieldList from './pages/FieldList';
+import FieldDetails from './pages/FieldDetails';
+import AddField from './pages/AddField';
 // import { useAppDispatch, useAppSelector } from './redux/hooks';
 
 function App() {
@@ -39,6 +42,9 @@ function App() {
             <Route path="/specOtpremnice" element={<SpecOtpremnice/>}/>
             <Route path="/settings" element={<SettingsPage/>}/>
             <Route path="/fillForm" element={<AutomationForm/>}/>
+            <Route path="/fields" element={<FieldList/>}/>
+            <Route path="/fields/:id" element={<FieldDetails/>}/>
+            <Route path="/addField" element={<AddField/>}/>
             <Route path="*" element={<Navigate to="/download" />} />
           </Route> 
         </Routes>

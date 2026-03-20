@@ -38,6 +38,7 @@ const Layout = () => {
                 { to: '/filteri', label: 'Filteri za otpremnice' },
                 { to: '/vanRfzo', label: 'Van Rfzo' },
                 { to: '/specOtpremnice', label: 'Proizvodi'},
+                { to: '/fields', label: 'Polja forme'},
                 { to: '/settings', label: 'Podeševanja' }
               ].map((item) => (
                 <li className="nav-item" key={item.to}>
