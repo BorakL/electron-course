@@ -1,5 +1,5 @@
 import path from 'path';
-import { DostavnaTura } from "../types/types.js";
+import { DostavnaTura, DostavnaTuraObject, Vozilo } from "../types/types.js";
 import { dialog } from "electron";
 import ExcelJS from 'exceljs'
 
@@ -99,7 +99,7 @@ export function dodajNovuTuru(): number {
   const id = getNextId(data.ture);
   const novaTura: DostavnaTura = {
     id,
-    klinike: [],
+    klinike: []
   };
   data.ture.push(novaTura);
   writeJsonFile(FILE_NAME, data);
@@ -114,6 +114,7 @@ export function obrisiTuru(id: number): void {
 
   // Dodaj sve njene klinike u neraspoređene
   data.nerasporedjeneKlinike.push(...tura.klinike);
+
   data.ture = data.ture.filter(t => t.id !== id);
   writeJsonFile(FILE_NAME, data);
 }
@@ -196,6 +197,91 @@ export async function ocistiNevazecuKlinikuIzTura(clinickId:number): Promise<voi
 
   writeJsonFile(FILE_NAME, data);
 }
+
+export async function dodajVozilo(vozilo: Vozilo): Promise<void> {
+  try{
+    const data: Vozilo[] = readJsonFile("vozila.json");
+    if (!data.some((v:Vozilo) => v.tablice===vozilo.tablice)) {
+      data.push(vozilo)
+      writeJsonFile("vozila.json", data);
+    }
+  }catch(error){
+    console.log("Greška pri dodavanju vozila u vozila.json",error)
+  }
+}
+
+export async function obrisiVozilo(vozilo: Vozilo): Promise<void> {
+  try{
+    const data: Vozilo[] = readJsonFile("vozila.json");
+    if (data.some((v:Vozilo) => v.tablice===vozilo.tablice)){
+      data.filter((v: Vozilo) => v.tablice!==vozilo.tablice)
+      writeJsonFile("vozila.json", data)
+    }
+  }catch(error){
+    console.log("Greška pri brisanju vozila iz vozila.json", error)
+  }
+}
+
+
+export async function zameniVoziloSaProverom(
+  trenutnaTuraId: number, 
+  novoVozilo: Vozilo
+): Promise<{ uspesno: boolean; poruka: string }> {
+  try {
+    // const dostavneTure = readJsonFile<DostavnaTura[]>('dostavneTure.json');
+
+    const dostavneTure: DostavnaTuraObject = await readJsonFile("dostavneTure.json")
+    const ture: DostavnaTura[] = dostavneTure?.ture;
+    
+    // Provera 2: Da li trenutna tura postoji
+    const trenutnaTura = ture.find(tura => tura.id === trenutnaTuraId);
+    
+    // Provera 3: Da li trenutna tura već ima to vozilo
+    if (trenutnaTura && trenutnaTura?.vozilo?.tablice === novoVozilo.tablice) {
+      return {
+        uspesno: false,
+        poruka: `Tura ${trenutnaTuraId} već ima vozilo sa tablicama "${novoVozilo.tablice}".`
+      };
+    }
+    
+    // Pronađi turu koja ima izabrano vozilo
+    const turaSaIzabranimVozilom = dostavneTure.ture.find(
+      tura => tura.id !== trenutnaTuraId && 
+              tura?.vozilo?.tablice === novoVozilo.tablice
+    );
+    
+    if (turaSaIzabranimVozilom && turaSaIzabranimVozilom.vozilo && trenutnaTura && trenutnaTura.vozilo) {
+      // Izvrši zamenu
+      const staroVoziloTrenutneTure = trenutnaTura.vozilo;
+      const staroVoziloDrugeTure = turaSaIzabranimVozilom.vozilo;
+      
+      trenutnaTura.vozilo = { ...staroVoziloDrugeTure };
+      turaSaIzabranimVozilom.vozilo = { ...staroVoziloTrenutneTure };
+      
+      writeJsonFile('dostavneTure.json', dostavneTure);
+      
+      return {
+        uspesno: true,
+        poruka: `Uspešno zamenjena vozila između tura ${trenutnaTuraId} i ${turaSaIzabranimVozilom.id}.`
+      };
+    } else {
+      // Samo dodeli vozilo (prebaci ga sa neke ture? ili je slobodno?)
+      // Ovo zavisi od tvoje logike - da li vozilo mora biti na nekoj turi?
+      return {
+        uspesno: false,
+        poruka: `Vozilo "${novoVozilo.tablice}" nije dodeljeno nijednoj turi. ` +
+                `Možete ga direktno dodeliti turi ${trenutnaTuraId}.`
+      };
+    }
+    
+  } catch (error) {
+    return {
+      uspesno: false,
+      poruka: `Greška: ${error instanceof Error ? error.message : 'Nepoznata greška'}`
+    };
+  }
+}
+
 
 export async function selectFolder(): Promise<null | string> {
   try{

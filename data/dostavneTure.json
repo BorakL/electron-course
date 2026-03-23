@@ -4,20 +4,47 @@
       "id": 1,
       "klinike": [
         1761158260580
-      ]
+      ],
+      "broj": "1",
+      "vozilo": {
+        "registracija":"BG234",
+        "model":"asdf"
+      },
+      "vozači": {
+        "1": "Pera Peric",
+        "2": "Marko Maric"
+      }
     },
     {
       "id": 2,
       "klinike": [
         1761158260581
-      ]
+      ],
+      "broj": "2",
+      "vozilo": {
+        "registracija":"BG234",
+        "model":"asdf"
+      },
+      "vozači": {
+        "1": "Pera Peric",
+        "2": "Marko Maric"
+      }
     },
     {
       "id": 3,
       "klinike": [
         1761158260586,
         1761582452797
-      ]
+      ],
+      "broj": "3",
+      "vozilo": {
+        "registracija":"BG234",
+        "model":"asdf"
+      },
+      "vozači": {
+        "1": "Pera Peric",
+        "2": "Marko Maric"
+      }
     },
     {
       "id": 4,
@@ -25,20 +52,47 @@
         1761158260593,
         1761158260592,
         1761158260591
-      ]
+      ],
+      "broj": "4",
+      "vozilo": {
+        "registracija":"BG234",
+        "model":"asdf"
+      },
+      "vozači": {
+        "1": "Pera Peric",
+        "2": "Marko Maric"
+      }
     },
     {
       "id": 5,
       "klinike": [
         1761158260582
-      ]
+      ],
+      "broj": "5",
+      "vozilo": {
+        "registracija":"BG234",
+        "model":"asdf"
+      },
+      "vozači": {
+        "1": "Pera Peric",
+        "2": "Marko Maric"
+      }
     },
     {
       "id": 6,
       "klinike": [
         1761158260595,
         1761158260594
-      ]
+      ],
+      "broj": "6",
+      "vozilo": {
+        "registracija":"BG234",
+        "model":"asdf"
+      },
+      "vozači": {
+        "1": "Pera Peric",
+        "2": "Marko Maric"
+      }
     },
     {
       "id": 7,
@@ -47,7 +101,16 @@
         1761158260585,
         1761158260584,
         1761158260598
-      ]
+      ],
+      "broj": "7",
+      "vozilo": {
+        "registracija":"BG234",
+        "model":"asdf"
+      },
+      "vozači": {
+        "1": "Pera Peric",
+        "2": "Marko Maric"
+      }
     },
     {
       "id": 8,
@@ -57,7 +120,16 @@
         1761158260603,
         1761158260604,
         1761158260601
-      ]
+      ],
+      "broj": "8",
+      "vozilo": {
+        "registracija":"BG234",
+        "model":"asdf"
+      },
+      "vozači": {
+        "1": "Pera Peric",
+        "2": "Marko Maric"
+      }
     },
     {
       "id": 9,
@@ -66,7 +138,16 @@
         1761158260588,
         1761158260589,
         1761158260590
-      ]
+      ],
+      "broj": "9",
+      "vozilo": {
+        "registracija":"BG234",
+        "model":"asdf"
+      },
+      "vozači": {
+        "1": "Pera Peric",
+        "2": "Marko Maric"
+      }
     },
     {
       "id": 10,
@@ -74,14 +155,32 @@
         1761158260596,
         1761158260599,
         1761158260597
-      ]
+      ],
+      "broj": "10",
+      "vozilo": {
+        "registracija":"BG234",
+        "model":"asdf"
+      },
+      "vozači": {
+        "1": "Pera Peric",
+        "2": "Marko Maric"
+      }
     },
     {
       "id": 11,
       "klinike": [
         1761158260605,
         1761468279711
-      ]
+      ],
+      "broj": "11",
+      "vozilo": {
+        "registracija":"BG234",
+        "model":"asdf"
+      },
+      "vozači": {
+        "1": "Pera Peric",
+        "2": "Marko Maric"
+      }
     },
     {
       "id": 12,
@@ -90,7 +189,16 @@
         1761158260607,
         1761158260608,
         1761158260609
-      ]
+      ],
+      "broj": "12",
+      "vozilo": {
+        "registracija":"BG234",
+        "model":"asdf"
+      },
+      "vozači": {
+        "1": "Pera Peric",
+        "2": "Marko Maric"
+      }
     },
     {
       "id": 13,
@@ -99,7 +207,16 @@
         1761158260611,
         1761158260612,
         1761158260613
-      ]
+      ],
+      "broj": "13",
+      "vozilo": {
+        "registracija":"BG234",
+        "model":"asdf"
+      },
+      "vozači": {
+        "1": "Pera Peric",
+        "2": "Marko Maric"
+      }
     },
     {
       "id": 14,
@@ -109,7 +226,16 @@
         1761582827893,
         1761582869205,
         1761583388757
-      ]
+      ],
+      "broj": "14",
+      "vozilo": {
+        "registracija":"BG234",
+        "model":"asdf"
+      },
+      "vozači": {
+        "1": "Pera Peric",
+        "2": "Marko Maric"
+      }
     }
   ],
   "nerasporedjeneKlinike": []
