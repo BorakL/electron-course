@@ -6,35 +6,44 @@ import { useNavigate } from "react-router";
 
 const AddField = () => {
   const { register, handleSubmit } = useForm<Field>();
-  const [allFields, setAllFields] = useState<Field[]>([]);
+  const [allFields, setAllFields] = useState<Record<string, Field>>({});
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchFields = async () => {
       try {
-        const data: Field[] = await window.electronApp.readJsonFile("fields.json");
-        setAllFields(data);
+        const data = await window.electronApp.readJsonFile("fields.json");
+        setAllFields(data || {});
       } catch (err) {
-        console.error("Greška pri učitavanju klinika:", err);
+        console.error("Greška pri učitavanju:", err);
       }
     };
     fetchFields();
   }, []);
 
 
-  const onSubmit = async(data: Field) => {
-    const updated = [
-      ...allFields,
-      {...data, id: Date.now()}
-    ]
-    try{
-      console.log("updated",updated)
-      await window.electronApp.writeJsonFile("fields.json", updated)
+  const onSubmit = async (data: Field) => {
+    try {
+      if(allFields[data.title]){
+        console.log("Polje sa ovim title već postoji");
+        return;
+      }
+      const updated = {
+        ...allFields,
+        [data.title]: {
+          ...data
+        }
+      };
+
+      console.log("updated", updated);
+
+      await window.electronApp.writeJsonFile("fields.json", updated);
       navigate("/fields");
-    }catch(err){
-      console.error("Greška pri čuvanju novog polja", err)
+
+    } catch (err) {
+      console.error("Greška pri čuvanju", err);
     }
-  }
+  };
 
 
   return (

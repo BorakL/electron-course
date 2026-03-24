@@ -127,6 +127,10 @@ export interface DostavnaTuraObject {
   nerasporedjeneKlinike: number[]
 }
 
+export interface KlinikaSaLinijom extends Klinika{
+  linija: DostavnaTura
+}
+
 export type CounterMap = Record<string, number>;
 
 export interface GetClinicsWithMealsParams {
@@ -152,4 +156,20 @@ export type ABsoftFormData = {
   value: string,
   ordinal?: number,
   delayAfter?: number
+}
+
+export type Field = {
+  title: string;
+  type?: string;
+  name?: string;
+  value?: string;
+  ordinal?: number;
+  itemOrdinal?: number;
+  delayAfter?: number;
+  mode?: string;
+};
+
+export interface FillFormRequest {
+    WindowTitle: string;
+    Fields: Record<string, Field>;
 }

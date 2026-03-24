@@ -3,7 +3,7 @@ import axios from 'axios';
 import https from 'https';
 import path from 'path';
 import os from 'os';
-import { CreateFullFolderParams, DostavnaTura, DostavnaTuraObject, DownloadFileParams, Klinika } from './types/types.js';
+import { CreateFullFolderParams, DostavnaTura, DostavnaTuraObject, DownloadFileParams, Field, Klinika } from './types/types.js';
 import { promises as fsp } from 'fs';
 import { readJsonFile } from './fsHelpers/jsonUtils.js';
 import { DietFilter } from './xlsx/processDietFiles.js';
@@ -525,54 +525,9 @@ export function parseDateAndMeal(input: string): ParsedDateMeal | null {
 
 
 
-export async function fillABsoftForm(): Promise<void> {
+export async function fillABsoftForm(windowTitle:string, fields: Field[]): Promise<void> {
   try{
-    const {data} = await axios.post("http://127.0.0.1:5064/fillForm", 
-    {
-      "windowTitle": "Fields for Basic",
-      "fields": [
-        {
-          "type": "TextBox",
-          "ordinal": 1,
-          "value": "Luka"
-        },
-        {
-          "type": "ComboBox",
-          "ordinal": 0,
-          "value": "Cambria",
-          "mode": "keyboard"
-        },
-        {
-          "type": "Checkbox",
-          "name": "Collapse by default",
-          "value": "true"
-        },
-        {
-          "type": "Checkbox",
-          "name": "Use HTML editor by default",
-          "value": "true"
-        }
-        // {
-        //   "type": "TextBox",
-        //   "ordinal": 1,
-        //   "value": "33"
-        // },
-        // {
-        //   "type": "ComboBox",
-        //   "name": "CountryComboBox",
-        //   "value": "Canada"
-        // },
-        // {
-        //   "type": "RadioButton",
-        //   "name": "MaleRadio"
-        // },
-        // {
-        //   "type": "Checkbox",
-        //   "name": "SubscribeCheckBox",
-        //   "value": "true"
-        // }
-      ]
-    },
+    const {data} = await axios.post("http://127.0.0.1:5064/fillForm", {WindowTitle: windowTitle, Fields: fields},
     {
       headers:{ 'Content-Type': 'application/json' }
     })

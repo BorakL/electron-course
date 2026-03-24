@@ -91,7 +91,7 @@ app.on("ready", () => {
     ipcMain.handle('getClinicsWithOrderedProducts', async (event, filePaths) => {
         return getClinicsWithOrderedProducts(filePaths);
     });
-    ipcMain.handle('fillABsoftForm', async () => {
-        return fillABsoftForm();
+    ipcMain.handle('fillABsoftForm', async (event, windowTitle, fields) => {
+        return fillABsoftForm(windowTitle, fields);
     });
 });

@@ -24,14 +24,18 @@ const FieldList = ()=>{
       <h2 className="mb-4">Fields</h2>
 
       <ul className="list-group mb-4">
-        {fields.map((field) => (
-          <li key={field.id} className="list-group-item mb-2">
-            <Link to={`/fields/${field.id}`} className="text-decoration-none">
+        {Object.entries(fields).map(([key, field]) => (
+          <li key={key} className="list-group-item mb-2">
+            <Link to={`/fields/${key}`} className="text-decoration-none">
               {field.title.toUpperCase()}
             </Link>
           </li>
         ))}
       </ul>
+
+      {/* Object.entries(allFields).map(([key, field]) => (
+        <div key={key}>{field.title}</div>
+      )); */}
 
       <Link to="/addField" className="btn btn-primary">
         Dodaj novo polje

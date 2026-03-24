@@ -6,7 +6,7 @@ import { getPreloadPath } from './pathResolver.js';
 import dotenv from 'dotenv';  
 import { appendJsonItem, deleteJsonItemById, dodajKlinikuUNerasporedjene, dodajKlinikuUTuru, dodajNovuTuru, getFilePath, mergeExcels, obrisiTuru, ocistiNevazecuKlinikuIzTura, readJsonFile, selectFile, selectFiles, selectFolder, ukloniKlinikuIzNerasporedjenih, ukloniKlinikuIzTure, updateJsonItemById, writeJsonFile } from './fsHelpers/jsonUtils.js';
 import processDietFiles, { DietFilter, TableParams } from './xlsx/processDietFiles.js';
-import { DostavnaTura, Klinika, Logs } from './types/types.js';
+import { DostavnaTura, Field, Klinika, Logs } from './types/types.js';
 
 
 // Definiši __dirname za ES module 
@@ -96,7 +96,7 @@ app.on("ready", ()=>{
     ipcMain.handle('getClinicsWithOrderedProducts', async(event, filePaths:string[]) => {
         return getClinicsWithOrderedProducts(filePaths)
     })
-    ipcMain.handle('fillABsoftForm', async() => {
-        return fillABsoftForm()
+    ipcMain.handle('fillABsoftForm', async(event, windowTitle:string, fields: Field[]) => {
+        return fillABsoftForm(windowTitle, fields)
     })
 })

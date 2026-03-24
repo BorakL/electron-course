@@ -18,6 +18,10 @@ export interface KlinikaItem {
   name: string
 }
 
+export interface KlinikaSaLinijom extends Klinika {
+  linija: DostavnaTura
+}
+
 export type DownloadFileParams = {
     fileUrl: string,
     filePath: string,
@@ -31,6 +35,18 @@ export type DownloadFileParams = {
 export interface DostavnaTura {
   id: number;
   klinike: number[]; // sadrži ID-eve klinika
+  vozilo?: Vozilo,
+  vozac?: Vozac
+}
+
+export interface Vozilo {
+  tablice: string,
+  model: string
+}
+
+export interface Vozac {
+  ime: string,
+  prezime: string
 }
 
 export type DownloadShippingDocsParams = {
@@ -91,14 +107,18 @@ export type Settings = {
   };
 }
 
-
 export type Field = {
-  id: string;
   title: string;
   type?: string;
   name?: string;
+  value?: string;
   ordinal?: number;
   itemOrdinal?: number;
   delayAfter?: number;
   mode?: string;
 };
+
+export interface FillFormRequest {
+    WindowTitle: string;
+    Fields: Record<string, Field>;
+}

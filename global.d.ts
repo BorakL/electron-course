@@ -1,3 +1,4 @@
+import { Field } from "react-hook-form";
 import { DostavnaTura, GetClinicsWithOrderedProducts, Klinika } from "./src/ui/types";
 
 export {};
@@ -49,7 +50,7 @@ declare global {
             mergeExcels(folderPath:string, outputPath:string): Promise<void>
             getClinicsWithSpecMeals(filePath: string, dietFilters:DietFilter[]): Promise<string[]>;
             getClinicsWithOrderedProducts(filePaths: string[]): Promise<GetClinicsWithOrderedProducts>;
-            fillABsoftForm():Promise<void>
+            fillABsoftForm(windowTitle:string, fields:Field[]):Promise<void>
           }
     }
 }

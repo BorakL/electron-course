@@ -404,53 +404,9 @@ export function parseDateAndMeal(input) {
         meal: meal
     };
 }
-export async function fillABsoftForm() {
+export async function fillABsoftForm(windowTitle, fields) {
     try {
-        const { data } = await axios.post("http://127.0.0.1:5064/fillForm", {
-            "windowTitle": "Fields for Basic",
-            "fields": [
-                {
-                    "type": "TextBox",
-                    "ordinal": 1,
-                    "value": "Luka"
-                },
-                {
-                    "type": "ComboBox",
-                    "ordinal": 0,
-                    "value": "Cambria",
-                    "mode": "keyboard"
-                },
-                {
-                    "type": "Checkbox",
-                    "name": "Collapse by default",
-                    "value": "true"
-                },
-                {
-                    "type": "Checkbox",
-                    "name": "Use HTML editor by default",
-                    "value": "true"
-                }
-                // {
-                //   "type": "TextBox",
-                //   "ordinal": 1,
-                //   "value": "33"
-                // },
-                // {
-                //   "type": "ComboBox",
-                //   "name": "CountryComboBox",
-                //   "value": "Canada"
-                // },
-                // {
-                //   "type": "RadioButton",
-                //   "name": "MaleRadio"
-                // },
-                // {
-                //   "type": "Checkbox",
-                //   "name": "SubscribeCheckBox",
-                //   "value": "true"
-                // }
-            ]
-        }, {
+        const { data } = await axios.post("http://127.0.0.1:5064/fillForm", { WindowTitle: windowTitle, Fields: fields }, {
             headers: { 'Content-Type': 'application/json' }
         });
         console.log("data", data);

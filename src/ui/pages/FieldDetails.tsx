@@ -17,33 +17,42 @@ const FieldDetails = () => {
 
     const fetchField = async (id: string | undefined) => {
         try {
-            const data: Field[] = await window.electronApp.readJsonFile("fields.json");
-            const selected = data.find(f => Number(f.id) === Number(id));
+            const data: Record<string, Field> = await window.electronApp.readJsonFile("fields.json");
+
+            if (!id) return;
+
+            const selected = data[id];
+
             setField(selected || null);
-            
+
             if (selected) {
-                reset(selected); // popunjavamo formu default vrednostima
+                reset(selected);
             }
+
         } catch (error) {
             console.log("Greška pri učitavanju fajla", error);
         }
     };
 
 
-    const handleDelete = async (message:string, field:Field, fieldId:number) => {
+    const handleDelete = async (message: string) => {
       confirm({
-        message: message,
-        onConfirm: async()=>{
-          if (!field) return;
+        message,
+        onConfirm: async () => {
           try {
-              await window.electronApp.deleteJsonItemById("fields.json", Number(fieldId), "id");
-              navigate("/fields");
+            const data: Record<string, Field> = await window.electronApp.readJsonFile("fields.json");
+
+            delete data[id!];
+
+            await window.electronApp.writeJsonFile("fields.json", data);
+
+            navigate("/fields");
+
           } catch (error) {
-              console.error("Greška pri brisanju klinike:", error);
+            console.error("Greška pri brisanju:", error);
           }
         }
-      })
-
+      });
     };
 
 
@@ -51,26 +60,26 @@ const FieldDetails = () => {
         fetchField(id);
     }, []);
 
-const onSubmit = async (formData: Field) => {
-  try {
-    const data: Field[] = await window.electronApp.readJsonFile("fields.json");
+    const onSubmit = async (formData: Field) => {
+      try {
+        const data: Record<string, Field> = await window.electronApp.readJsonFile("fields.json");
 
-    const finalData: Field = {
-      ...formData
+        const updatedData = {
+          ...data,
+          [id!]: {
+            ...formData
+          }
+        };
+
+        await window.electronApp.writeJsonFile("fields.json", updatedData);
+
+        setField(formData);
+        setIsEditing(false);
+
+      } catch (error) {
+        console.log("Greška pri snimanju fajla", error);
+      }
     };
-
-    const updatedData = data.map(f =>
-      Number(f.id) === Number(id) ? finalData : f
-    );
-
-    await window.electronApp.writeJsonFile("fields.json", updatedData);
-
-    setField(finalData);
-    setIsEditing(false);
-  } catch (error) {
-    console.log("Greška pri snimanju fajla", error);
-  }
-};
 
 
     if (!field) return <div>Učitavanje...</div>;
@@ -206,7 +215,7 @@ const onSubmit = async (formData: Field) => {
             >
                 Izmeni
             </button>
-            <button className="btn btn-danger" onClick={()=>handleDelete("Da li ste sigurni da želite da obrišete ovu kliniku?",field,Number(field.id))}>
+            <button className="btn btn-danger" onClick={()=>handleDelete(`Da li ste sigurni da želite da obrišete ovu kliniku?, ${field.title}`) }>
                 Obriši
             </button>
             </div>
