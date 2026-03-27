@@ -144,5 +144,5 @@ electron.contextBridge.exposeInMainWorld("electronApp", {
         filePaths: string[]
     ): Promise<Record<RouteKey,string[]>> => ipcRenderer.invoke('getClinicsWithOrderedProducts', filePaths),
 
-    fillABsoftForm: (windowTitle:string, fields:Field[]): Promise<void> => ipcRenderer.invoke('fillABsoftForm', windowTitle, fields)
+    fillABsoftForm: (windowTitle:string, fields:Record<string, Field>): Promise<void> => ipcRenderer.invoke('fillABsoftForm', windowTitle, fields)
 })

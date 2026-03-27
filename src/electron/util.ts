@@ -525,7 +525,7 @@ export function parseDateAndMeal(input: string): ParsedDateMeal | null {
 
 
 
-export async function fillABsoftForm(windowTitle:string, fields: Field[]): Promise<void> {
+export async function fillABsoftForm(windowTitle:string, fields: Record<string, Field>): Promise<void> {
   try{
     const {data} = await axios.post("http://127.0.0.1:5064/fillForm", {WindowTitle: windowTitle, Fields: fields},
     {

@@ -96,7 +96,7 @@ app.on("ready", ()=>{
     ipcMain.handle('getClinicsWithOrderedProducts', async(event, filePaths:string[]) => {
         return getClinicsWithOrderedProducts(filePaths)
     })
-    ipcMain.handle('fillABsoftForm', async(event, windowTitle:string, fields: Field[]) => {
+    ipcMain.handle('fillABsoftForm', async(event, windowTitle:string, fields: Record<string, Field>) => {
         return fillABsoftForm(windowTitle, fields)
     })
 })

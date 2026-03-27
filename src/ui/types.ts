@@ -122,3 +122,7 @@ export interface FillFormRequest {
     WindowTitle: string;
     Fields: Record<string, Field>;
 }
+
+export interface WindowInfo {
+  title: string;
+}
