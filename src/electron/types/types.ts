@@ -36,7 +36,7 @@ export interface DostavnaTura {
   id: number;
   klinike: number[]; // sadrži ID-eve klinika
   vozilo?: Vozilo,
-  vozac?: Vozac
+  vozaci?: Vozaci
 }
 
 export interface Vozilo {
@@ -47,6 +47,16 @@ export interface Vozilo {
 export interface Vozac {
   ime: string,
   prezime: string
+}
+
+export interface Transport {
+  vozila: Vozilo[],
+  vozaci: Vozac[]
+}
+
+export interface Vozaci {
+  1: Vozac,
+  2: Vozac
 }
 
 export type Logs = {

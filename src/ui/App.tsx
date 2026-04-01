@@ -20,6 +20,7 @@ import AutomationForm from './pages/AutomationForm';
 import FieldList from './pages/FieldList';
 import FieldDetails from './pages/FieldDetails';
 import AddField from './pages/AddField';
+import Transport from './pages/Transport';
 // import { useAppDispatch, useAppSelector } from './redux/hooks';
 
 function App() {
@@ -45,6 +46,7 @@ function App() {
             <Route path="/fields" element={<FieldList/>}/>
             <Route path="/fields/:id" element={<FieldDetails/>}/>
             <Route path="/addField" element={<AddField/>}/>
+            <Route path="/transport" element={<Transport/>}/>
             <Route path="*" element={<Navigate to="/download" />} />
           </Route> 
         </Routes>

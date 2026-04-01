@@ -4,7 +4,6 @@
     "name": "asdf",
     "type": "Dropdown",
     "ordinal": 3,
-    "itemOrdinal": 3,
     "delayAfter": 6,
     "mode": ""
   },
@@ -13,7 +12,6 @@
     "name": "asdfxc",
     "type": "Dropdown",
     "ordinal": 2,
-    "itemOrdinal": 2,
     "delayAfter": 5,
     "mode": ""
   }

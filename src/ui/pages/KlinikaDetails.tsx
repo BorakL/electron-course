@@ -151,6 +151,19 @@ const onSubmit = async (formData: Klinika) => {
             </div>
           </div>
 
+          <div className="row mb-3">
+            <div className="col-sm-8">
+              <input 
+                type="number" 
+                className={`form-control ${errors.itemOrdinal ? 'is-invalid' : ''}`}
+                {...register('itemOrdinal')}
+              />
+              {errors.itemOrdinal && (
+              <div className="invalid-feedback">{errors.itemOrdinal.message}</div>
+              )}
+            </div>
+          </div>
+
           <UserIds clinics={clinics} setClinics={setClinics} isEditing={true}/>
 
           <button type="submit" className="btn btn-success me-2">

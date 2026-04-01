@@ -7,12 +7,14 @@ const AutomationForm = () => {
         type FormValues = {
         category: 1 | 2 | 3;
         date: string;
+        shift: number;
     };
     
     const form = useForm<FormValues>({
         defaultValues: {
             category: 1,
-            date: ""
+            date: "",
+            shift: 1
         },
     });
 
@@ -20,8 +22,9 @@ const AutomationForm = () => {
     const [dostavneTure, setDostavneTure] = useState<DostavnaTura[]>([]);
     const [fields, setFields] = useState<Record<string,Field>>({});
     const [windowInfo, setwindowInfo] = useState<WindowInfo>();
-    const [klinikeSaLinijama, setKlinikeSaLinijama] = useState<(KlinikaSaLinijom | Klinika)[]>([]);
+    const [klinikeSaLinijama, setKlinikeSaLinijama] = useState<(KlinikaSaLinijom)[]>([]);
     const [loading, setLoading] = useState(true); // Dodaj loading state
+    const [clickedClinics, setClickedClinics] = useState<number[]>([]);
     const { register, formState, watch, setValue } = form;
     const { errors } = formState;
     const watchDate = watch("date");
@@ -62,7 +65,7 @@ const AutomationForm = () => {
                 // Učitaj polja
                 const fieldsData = await window.electronApp.readJsonFile("fields.json")
                 setFields(fieldsData)
-                console.log("fields", fields)
+                console.log("fields", fieldsData)
 
                 const windowInfoData = await window.electronApp.readJsonFile("window.json")
                 setwindowInfo(windowInfoData)
@@ -109,25 +112,26 @@ const AutomationForm = () => {
         console.log("Obrada podataka - klinike:", klinike.length, "ture:", dostavneTure.length);
         
         try {
-            const data: (KlinikaSaLinijom | Klinika)[] = klinike.map((klinika: Klinika) => {
+            const data: KlinikaSaLinijom[] = klinike.map((klinika: Klinika) => {
                 const linija = pronadjiTuruZaKliniku(klinika.id, dostavneTure);
-                if (linija) {
-                    return { ...klinika, linija };
-                } else {
-                    return klinika;
-                }
+                return { ...klinika, linija }; // linija može biti DostavnaTura | undefined
             });
             
-            // Sortiranje
+            // Sortiranje - klinike sa linijom idu prve, sortirane po linija.id
             const sortirano = data.sort((a, b) => {
-                const aHasLinija = 'linija' in a;
-                const bHasLinija = 'linija' in b;
+                // Proveri da li postoje linije
+                const aHasLinija = a.linija !== undefined;
+                const bHasLinija = b.linija !== undefined;
                 
+                // Ako obe nemaju liniju, ostaju na istom mestu
                 if (!aHasLinija && !bHasLinija) return 0;
+                // Ako samo a nema liniju, a ide posle b
                 if (!aHasLinija) return 1;
+                // Ako samo b nema liniju, b ide posle a
                 if (!bHasLinija) return -1;
                 
-                return (a as KlinikaSaLinijom).linija.id - (b as KlinikaSaLinijom).linija.id;
+                // Obe imaju liniju, sortiraj po id-u
+                return a.linija!.id - b.linija!.id;
             });
             
             console.log("Sortirano uspešno:", sortirano);
@@ -139,17 +143,52 @@ const AutomationForm = () => {
         
     }, [klinike, dostavneTure, windowInfo, loading]);
 
-    const sendData = async (data: Klinika) => {
+    const sendData = async (data: KlinikaSaLinijom) => {
         try {
             //Konzologuj datum i kategorije
             //Napravi nova polja (date, category) za to i Probaj da šalješ kao fields.date.value, fields.category.value
+            const date = form.getValues("date")
+            const category = form.getValues("category")
+            const shift = form.getValues("shift")
+            setClickedClinics(prev => [...prev,data.id])
+            
+            
             fields.proba.value = data.naziv
+            fields.date.value = date;
+            fields.category.value = category.toString();
+            
+            if (shift === 1) {
+                const vozac = data.linija?.vozaci?.["1"];
+                if (fields.driver) {
+                    fields.driver.value = vozac !== undefined ? `${vozac.ime} ${vozac.prezime}` : "";
+                }
+            } else {
+                const vozac = data.linija?.vozaci?.["2"];
+                if (fields.driver) {
+                    fields.driver.value = vozac !== undefined ? `${vozac.ime} ${vozac.prezime}` : "";
+                }
+            }
+            fields.vehicle.value = data.linija?.vozilo?.tablice
+            
             await window.electronApp.fillABsoftForm(windowInfo?.title || "", fields);
+            
+            console.log("xxxxxxxxxxxxxxxxxxxxx");
+            console.log("smenaaaaaaaaaaaaaa", shift)
+            console.log("dateeeeeeeeeeeeeee", date)
+            console.log("categoryyyyyyyyyyyyyyyy", category)
+            console.log("fields", fields)
+
 
         } catch (error) {
             console.log("error", error);
         }
     };
+
+    const getEvenOddTura = (id:number, dostavneTure:DostavnaTura[]) => {
+        const tura = pronadjiTuruZaKliniku(id,dostavneTure);
+        if(tura) 
+            return Number(tura.id) % 2
+     }
 
 
     
@@ -160,30 +199,30 @@ const AutomationForm = () => {
 
     return(
     <>
-    <h1>AutomationForm</h1>
+    <h1>Autofill</h1>
     
     {/* Opciono: prikaz podataka za debugging */}
-    <div className="mb-3">
+    <div className="m-3">
         <select
-        id="category"
-        className={`form-select ${errors.category ? 'is-invalid' : ''}`}
-        {...register('category', {
-            required: 'Izaberi obrok',
-            valueAsNumber: true,
-            validate: (value) =>
-            [1, 2, 3].includes(value) || 'Izaberi validan obrok',
-        })}
+            id="category"
+            className={`form-select ${errors.category ? 'is-invalid' : ''}`}
+            {...register('category', {
+                required: 'Izaberi obrok',
+                valueAsNumber: true,
+                validate: (value) =>
+                [1, 2, 3].includes(value) || 'Izaberi validan obrok',
+            })}
         >
-        <option value="">-- Izaberi obrok --</option>
-        <option value={1}>Doručak</option>
-        <option value={2}>Ručak</option>
-        <option value={3}>Večera</option>
+            <option value="">-- Izaberi obrok --</option>
+            <option value={1}>Doručak</option>
+            <option value={2}>Ručak</option>
+            <option value={3}>Večera</option>
         </select>
         {errors.category && (<div className="invalid-feedback">{errors.category.message}</div>)}
     </div>
     <div>
         {/* Datum */}
-        <div className="mb-3">
+        <div className="mb-2">
         <input
             type="date"
             id="date"
@@ -194,12 +233,34 @@ const AutomationForm = () => {
         )}
         </div>
     </div>
+    <div className="mb-2">
+        <select 
+            id="shift"
+            className={`form-select ${errors.shift ? 'is-invalid' : ''}`}
+            {...register('shift', {
+                required: 'Izaberi smenu', 
+                valueAsNumber: true,
+                validate: (value) => [1,2].includes(value) || 'Izaberi validnu smenu'
+            })}
+        >
+            <option value="">-- Izaberi smenu --</option>
+            <option value={1}>1</option>
+            <option value={2}>2</option>
+        </select>
+    </div>
 
-      <ul className="list-group mb-4">
+      <ul className="list-group mt-4">
         {klinikeSaLinijama.map((klinika) => (
-          <li key={klinika.id} className="list-group-item mb-2" onClick={()=>sendData(klinika)}>
-              {klinika.naziv.toUpperCase()}
-          </li>
+            <li key={klinika.id} 
+                className={`
+                    ${getEvenOddTura(klinika.id, dostavneTure) ? "darker-background" : "lighter-background" } 
+                    ${!clickedClinics.includes(klinika.id) ? "" : "lighter-color"}
+                    lista-klinika list-group-item mb-2
+                    `} 
+                onClick={()=>sendData(klinika)}
+            >
+                {klinika.naziv.toUpperCase()}
+            </li>
         ))}
       </ul>
     </>

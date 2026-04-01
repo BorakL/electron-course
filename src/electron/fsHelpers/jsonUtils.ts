@@ -1,5 +1,5 @@
 import path from 'path';
-import { DostavnaTura, DostavnaTuraObject, Vozilo } from "../types/types.js";
+import { DostavnaTura, DostavnaTuraObject, Transport, Vozilo } from "../types/types.js";
 import { dialog } from "electron";
 import ExcelJS from 'exceljs'
 
@@ -200,25 +200,25 @@ export async function ocistiNevazecuKlinikuIzTura(clinickId:number): Promise<voi
 
 export async function dodajVozilo(vozilo: Vozilo): Promise<void> {
   try{
-    const data: Vozilo[] = readJsonFile("vozila.json");
-    if (!data.some((v:Vozilo) => v.tablice===vozilo.tablice)) {
-      data.push(vozilo)
-      writeJsonFile("vozila.json", data);
+    const data: Transport = readJsonFile("transport.json");
+    if (!data?.vozila.some((v:Vozilo) => v.tablice===vozilo.tablice)) {
+      data.vozila.push(vozilo)
+      writeJsonFile("transport.json", data);
     }
   }catch(error){
-    console.log("Greška pri dodavanju vozila u vozila.json",error)
+    console.log("Greška pri dodavanju vozila u transport.json",error)
   }
 }
 
 export async function obrisiVozilo(vozilo: Vozilo): Promise<void> {
   try{
-    const data: Vozilo[] = readJsonFile("vozila.json");
-    if (data.some((v:Vozilo) => v.tablice===vozilo.tablice)){
-      data.filter((v: Vozilo) => v.tablice!==vozilo.tablice)
-      writeJsonFile("vozila.json", data)
+    const data: Transport = readJsonFile("transport.json");
+    if (data?.vozila.some((v:Vozilo) => v.tablice===vozilo.tablice)){
+      data.vozila.filter((v: Vozilo) => v.tablice!==vozilo.tablice)
+      writeJsonFile("transport.json", data)
     }
   }catch(error){
-    console.log("Greška pri brisanju vozila iz vozila.json", error)
+    console.log("Greška pri brisanju vozila iz transport.json", error)
   }
 }
 

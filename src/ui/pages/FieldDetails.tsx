@@ -154,18 +154,6 @@ const FieldDetails = () => {
           </div>
         </div>
 
-        {/* ItemOrdinal */}
-        <div className="row mb-2 align-items-center">
-          <label className="col-sm-2 col-form-label">ItemOrdinal</label>
-          <div className="col-sm-10">
-            <input
-              type="number"
-              className="form-control"
-              {...register("itemOrdinal")}
-            />
-          </div>
-        </div>
-
         {/* DelayAfter */}
         <div className="row mb-2 align-items-center">
           <label className="col-sm-2 col-form-label">DelayAfter</label>

@@ -159,6 +159,20 @@ const errorMessages = Object.keys(errorObject)
           </div>
         </div>
 
+        {/* ItemOrdinal */}
+        <div className="row mb-3">
+          <div className="col-sm-8">
+            <input 
+              type="number" 
+              className={`form-control ${errors.itemOrdinal ? 'is-invalid' : ''}`}
+              {...register('itemOrdinal')}
+            />
+            {errors.itemOrdinal && (
+            <div className="invalid-feedback">{errors.itemOrdinal.message}</div>
+            )}
+          </div>
+        </div>
+
         {/* CLINIC OBJECTS */}
         <h5>UserIds</h5>
         {UserIds({clinics,setClinics})}

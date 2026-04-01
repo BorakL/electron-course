@@ -1,0 +1,24 @@
+{
+  "vozaci": [
+    {
+      "id": "234",
+      "ime": "Pera",
+      "prezime": "Peric"
+    },
+    {
+      "id": "234s",
+      "ime": "Jova",
+      "prezime": "Jovic"
+    }
+  ],
+  "vozila": [
+    {
+      "model": "ffg",
+      "tablice": "dfg33"
+    },
+    {
+      "model": "vvv",
+      "tablice": "ert2345"
+    }
+  ]
+}

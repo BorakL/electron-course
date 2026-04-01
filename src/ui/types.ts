@@ -2,6 +2,7 @@ export type Klinika = {
     id:number,
     naziv:string,  
     bolnica: string,
+    itemOrdinal: number,
     firm: number,
     klinika: Record<number,string>
 }
@@ -18,9 +19,9 @@ export interface KlinikaItem {
   name: string
 }
 
-export interface KlinikaSaLinijom extends Klinika {
-  linija: DostavnaTura
-}
+export type KlinikaSaLinijom = Klinika & {
+    linija: DostavnaTura | null;
+};
 
 export type DownloadFileParams = {
     fileUrl: string,
@@ -36,7 +37,7 @@ export interface DostavnaTura {
   id: number;
   klinike: number[]; // sadrži ID-eve klinika
   vozilo?: Vozilo,
-  vozac?: Vozac
+  vozaci?: Vozaci
 }
 
 export interface Vozilo {
@@ -45,8 +46,14 @@ export interface Vozilo {
 }
 
 export interface Vozac {
+  id:string,
   ime: string,
   prezime: string
+}
+
+export interface Vozaci {
+  1: Vozac,
+  2: Vozac
 }
 
 export type DownloadShippingDocsParams = {
