@@ -131,8 +131,8 @@ const Transport = () => {
                 <div className="card">
                     <div className="card-body">
                         <form onSubmit={voziloForm.handleSubmit(addVozilo)}>
-                            <div className="row">
-                                <div className="">
+                            <div className="row g-2 align-items-center">
+                                <div className="col">
                                     <input 
                                         type="text"
                                         className={`form-control ${voziloForm.formState.errors.tablice ? 'is-invalid' : ''}`} 
@@ -151,7 +151,7 @@ const Transport = () => {
                                         </div>
                                     )}
                                 </div>
-                                <div className="">
+                                <div className="col-auto">
                                     <button type="submit" className="btn btn-primary">
                                         <i className="bi bi-plus-circle"></i> Dodaj vozilo
                                     </button>
