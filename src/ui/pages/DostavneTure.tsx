@@ -3,32 +3,39 @@ import { useConfirm } from "../context/confirmContext";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { IoIosLogOut } from "react-icons/io";
 import { FaTruck } from "react-icons/fa";
-import { Klinika } from "../types";
+import { DostavnaTura, Klinika, Transport, Vozac } from "../types";
 
 type TureData = {
-  ture: {
-    id: number;
-    klinike: number[];
-  }[];
+  ture: DostavnaTura[],
   nerasporedjeneKlinike: number[];
 };
 
 export default function ListaDostavnihTura() {
   const [tureData, setTureData] = useState<TureData | null>(null);
   const [klinike, setKlinike] = useState<Klinika[]>([]);
+  const [transport, setTransport] = useState<Transport>();
   const [loading, setLoading] = useState(true);
   const {confirm} = useConfirm();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [tureJson, klinikeJson] = await Promise.all([
+        const [tureJson, klinikeJson, transportJson] = await Promise.all([
           window.electronApp.readJsonFile("dostavneTure.json") as Promise<TureData>,
           window.electronApp.readJsonFile("klinike.json") as Promise<Klinika[]>,
+          window.electronApp.readJsonFile("transport.json") as Promise<Transport>
         ]);
+
+        const sortedTransport = {
+          ...transportJson,
+          vozaci: [...transportJson.vozaci].sort((a: Vozac, b: Vozac) => 
+            a.prezime.localeCompare(b.prezime)
+          )
+        };
 
         setTureData(tureJson);
         setKlinike(klinikeJson);
+        setTransport(sortedTransport);
       } catch (error) {
         console.error("Greška pri učitavanju podataka:", error);
       } finally {
@@ -127,20 +134,69 @@ const removeTuraHandler = async (message:string, id:number) =>
     }  
   })
 
-const addTuraHandler = async () => {
-  try{
-    const id = await window.electronApp.dodajNovuTuru();
-    setTureData(prev => {
-      if(prev===null) return null;
-      return { ture: [...prev.ture,{id,klinike:[]}], nerasporedjeneKlinike: prev.nerasporedjeneKlinike }
-    })
-  }catch(error){
-    console.log("Greška pri dodavanju ture: ", error)
+  const addTuraHandler = async () => {
+    try{
+      const id = await window.electronApp.dodajNovuTuru();
+      setTureData(prev => {
+        if(prev===null) return null;
+        return { ture: [...prev.ture,{id,klinike:[]}], nerasporedjeneKlinike: prev.nerasporedjeneKlinike }
+      })
+    }catch(error){
+      console.log("Greška pri dodavanju ture: ", error)
+    }
   }
-}
+
+  const changeDostavnaTuraVozilo = async (turaId:number, newVozilo:string) => {
+    try{
+      await window.electronApp.zameniVoziloSaProverom(turaId, newVozilo);
+      setTureData(prev => {
+        if (!prev) return prev;
+        
+        const updatedTure = prev.ture.map(tura => {
+          if (tura.id === turaId) {
+            return {
+              ...tura,
+              vozilo: newVozilo
+            };
+          }
+          return tura;
+        });
+        
+        return {
+          ...prev,
+          ture: updatedTure
+        };
+      });
+    } catch(error){
+      console.log("Greška prilikom promene vozila: ", error)
+    }
+  }
+
+  const changeDostavnaTuraVozac = async (turaId: number, vozacId:string, shift:1|2) => {
+    try{
+      const modifiedTure: DostavnaTura[] | undefined  = tureData?.ture.map((tura:DostavnaTura) => {
+        if(tura.id===turaId && tura.vozaci?.[shift]?.id !== vozacId ){
+          const vozac = transport?.vozaci.find(v => v.id===vozacId)
+          if(vozac){
+            return {...tura, vozaci: {...tura.vozaci, [shift]: vozac}}
+          }
+        }
+        return tura;
+      });
+      if(modifiedTure){
+        setTureData(prev => {
+          if (!prev) return prev;
+          return {...prev, ture:modifiedTure}
+        })
+      }
+      await window.electronApp.writeJsonFile("dostavneTure.json", {...tureData, ture:modifiedTure})
+    }catch(error){
+      console.log("Problem prilikom promene vozača: ", error)
+    }
+  }
 
 
-  if (loading || !tureData) return <p>Učitavanje...</p>;
+  if (loading || !tureData) return <p>Učitavanje...</p>
 
   return (
     <div className="container py-4">
@@ -199,9 +255,53 @@ const addTuraHandler = async () => {
                   ))}
                 </select>
               </div>
+              <div className="card-body">
+                <div className="mb-2">
+                  <div><b>{tura.vozilo}</b></div>
+                  <div><b>{tura.vozaci?.["1"]?.ime} {tura.vozaci?.["1"]?.prezime}</b></div>
+                  <div><b>{tura.vozaci?.["2"]?.ime} {tura.vozaci?.["2"]?.prezime}</b></div>
+                </div>
+                <div className="mb-2">
+                  <select className="form-select" onChange={(e)=>changeDostavnaTuraVozac(tura.id,e.target.value,1)}>
+                    <option>Vozač 1</option>
+                    {transport?.vozaci.map(vozac => <option 
+                                                      key={vozac.id} 
+                                                      value={vozac.id}
+                                                    >
+                                                      {vozac.prezime} {vozac.ime}
+                                                    </option>
+                                          )}
+                  </select>
+                </div>
+                <div className="mb-2">
+                  <select className="form-select" onChange={(e)=>changeDostavnaTuraVozac(tura.id,e.target.value,2)}>
+                    <option>Vozač 2</option>
+                    {transport?.vozaci.map(vozac => <option 
+                                                      key={vozac.id} 
+                                                      value={vozac.id}
+                                                    >
+                                                      {vozac.prezime} {vozac.ime}
+                                                    </option>
+                                          )}
+                  </select>
+                </div>
+                <div className="mb-2">
+                  <select className="form-select" onChange={(e)=>changeDostavnaTuraVozilo(tura.id,e.target.value)}>
+                    <option>Vozilo</option>
+                    {transport?.vozila.map(vozilo => <option 
+                                                        key={vozilo} 
+                                                        value={vozilo}
+                                                      >
+                                                        {vozilo}
+                                                      </option>
+                    )}
+                  </select> 
+                </div>
+              </div>
             </div>
           </div>
         ))}
+      
       </div>
 
       <div className="mt-5">

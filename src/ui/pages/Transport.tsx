@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-import { DostavnaTura, Vozac, Vozilo } from "../types";
+import { DostavnaTura, DostavnaTuraObject, Vozac } from "../types";
 import { useForm } from "react-hook-form";
 
 const Transport = () => {
-    const[vozila, setVozila] = useState<Vozilo[]>([])
+    const[vozila, setVozila] = useState<string[]>([])
     const[vozaci, setVozaci] = useState<Vozac[]>([]);
     const voziloForm = useForm<{
-        model: string;
         tablice: string
     }>();
     const vozacForm = useForm<{
@@ -29,13 +28,9 @@ const Transport = () => {
         fetchTransport();
     },[])
 
-    const addVozilo = async (data: {model:string, tablice:string}) => {
+    const addVozilo = async (data: {tablice:string}) => {
         try{
-            const novoVozilo: Vozilo = {
-                model: data.model,
-                tablice: data.tablice
-            };
-            const updatedVozila = [...vozila, novoVozilo];
+            const updatedVozila = [...vozila, data.tablice];
             setVozila(updatedVozila);
             await window.electronApp.writeJsonFile("transport.json", {
                 vozaci: vozaci,
@@ -68,16 +63,19 @@ const Transport = () => {
 
     const removeVozilo = async(tablice:string) => {
         try{
-            const updatedVozila = vozila.filter(v => v.tablice!==tablice);
+            const updatedVozila = vozila.filter(v => v!==tablice);
             setVozila(updatedVozila);
             await window.electronApp.writeJsonFile("transport.json", {
                 vozaci: vozaci,
                 vozila: updatedVozila
             })
-            const dostavneTure: DostavnaTura[] = await window.electronApp.readJsonFile("dostavneTure.json");
-            if(dostavneTure && dostavneTure.length>0){
-                const novaDostavnaTura = dostavneTure.filter(dt => dt?.vozilo?.tablice !== tablice );
-                await window.electronApp.writeJsonFile("dostavneTure.json", novaDostavnaTura)
+            const dostavneTure: DostavnaTuraObject = await window.electronApp.readJsonFile("dostavneTure.json");
+            const ture: DostavnaTura[] = dostavneTure?.ture;            
+            if(ture.some(t => t.vozilo===tablice)){
+                const updatedTure = ture.map((t) => {
+                    return t.vozilo===tablice ? {...t, vozilo:""} : t
+                })
+                await window.electronApp.writeJsonFile('dostavneTure.json', {...dostavneTure, ture: updatedTure});
             }
         }catch(error){
             console.log("Greška prilikom brisanja vozila: ", error)
@@ -96,22 +94,11 @@ const Transport = () => {
                 vozila: vozila
             });
             
-            // 3. Obriši sve ture koje imaju ovog vozača (bilo kao prvi ili drugi vozač)
-            const dostavneTure: DostavnaTura[] = await window.electronApp.readJsonFile("dostavneTure.json");
-            
-            if (dostavneTure && dostavneTure.length > 0) {
-                const novaDostavnaTura = dostavneTure.filter(tura => {
-                    // Proveri da li tura ima ovog vozača
-                    const imaVozaca = 
-                        tura.vozaci?.["1"]?.id === id || 
-                        tura.vozaci?.["2"]?.id === id;
-                    
-                    // Zadrži ture KOJE NEMAJU ovog vozača
-                    return !imaVozaca;
-                });
-                
-                await window.electronApp.writeJsonFile("dostavneTure.json", novaDostavnaTura);
-            }
+            // 3. Obriši vozača u dostavnim turama
+            // const dostavneTure = await window.electronApp.readJsonFile("dostavneTure.json");
+            // if(dostavneTure.ture && dostavneTure.ture.length>0 && dostavneTure.ture.some(t => t.vozac.id===id)){
+
+            // }
             
             console.log("Vozač uspešno obrisan");
             
@@ -126,17 +113,15 @@ const Transport = () => {
             <div className="mb-5">
                 <h2>Vozila</h2>
                 <ul className="list-group mb-3">
-                    {vozila.map((vozilo: Vozilo) => 
+                    {vozila.map((vozilo) => 
                         <li 
                             className="list-group-item d-flex justify-content-between align-items-center" 
-                            key={vozilo.tablice}
+                            key={vozilo}
                         >
-                            <div className="me-3">
-                                {vozilo.model} - <strong>{vozilo.tablice}</strong>
-                            </div>
+                            <div className="me-3">{vozilo}</div>
                             <button 
                                 className="btn btn-sm btn-outline-danger"
-                                onClick={() => removeVozilo(vozilo.tablice)}
+                                onClick={() => removeVozilo(vozilo)}
                             >
                                 <i className="bi bi-trash"></i> Obriši
                             </button>
@@ -146,28 +131,15 @@ const Transport = () => {
                 <div className="card">
                     <div className="card-body">
                         <form onSubmit={voziloForm.handleSubmit(addVozilo)}>
-                            <div className="row g-3">
-                                <div className="col-md-6">
-                                    <input
-                                        type="text" 
-                                        className={`form-control ${voziloForm.formState.errors.model ? 'is-invalid' : ''}`}
-                                        {...voziloForm.register('model')} 
-                                        placeholder="Model"
-                                    />
-                                    {voziloForm.formState.errors.model && (
-                                        <div className="invalid-feedback">
-                                            {voziloForm.formState.errors.model.message}
-                                        </div>
-                                    )}
-                                </div>
-                                <div className="col-md-6">
+                            <div className="row">
+                                <div className="">
                                     <input 
                                         type="text"
                                         className={`form-control ${voziloForm.formState.errors.tablice ? 'is-invalid' : ''}`} 
                                         {...voziloForm.register('tablice', {
                                             required:'Obavezno polje!', 
                                             validate: (value) => {
-                                                const postoji = vozila.some(vozilo => vozilo.tablice === value);
+                                                const postoji = vozila.some(vozilo => vozilo === value);
                                                 return !postoji || 'Vozilo sa ovom registracijom već postoji u bazi podataka!'
                                             }
                                         })} 
@@ -179,7 +151,7 @@ const Transport = () => {
                                         </div>
                                     )}
                                 </div>
-                                <div className="col-12">
+                                <div className="">
                                     <button type="submit" className="btn btn-primary">
                                         <i className="bi bi-plus-circle"></i> Dodaj vozilo
                                     </button>

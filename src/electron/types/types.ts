@@ -35,13 +35,8 @@ export type CreateFullFolderParams = {
 export interface DostavnaTura {
   id: number;
   klinike: number[]; // sadrži ID-eve klinika
-  vozilo?: Vozilo,
+  vozilo?: string,
   vozaci?: Vozaci
-}
-
-export interface Vozilo {
-  tablice: string,
-  model: string
 }
 
 export interface Vozac {
@@ -50,7 +45,7 @@ export interface Vozac {
 }
 
 export interface Transport {
-  vozila: Vozilo[],
+  vozila:  string[],
   vozaci: Vozac[]
 }
 

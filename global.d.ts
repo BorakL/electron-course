@@ -34,6 +34,7 @@ declare global {
             deleteJsonItemById: (fileName:string, id:number, idKey:string) => Promise<void>;
             dodajKlinikuUNerasporedjene: (klinikaId: number) => Promise<void>;
             ukloniKlinikuIzNerasporedjenih: (klinikaId: number) => Promise<void>;
+            zameniVoziloSaProverom: (turaId:number, novoVozilo:string) => Promise<void>;
             dodajKlinikuUTuru: (turaId: number, klinikaId: number) => Promise<void>;
             ukloniKlinikuIzTure: (turaId: number, klinikaId: number) => Promise<void>;
             obrisiTuru: (turaId: number) => Promise<void>;

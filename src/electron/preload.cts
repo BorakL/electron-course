@@ -77,10 +77,11 @@ electron.contextBridge.exposeInMainWorld("electronApp", {
     ): Promise<void> =>
         ipcRenderer.invoke('dodajKlinikuUNerasporedjene', klinikaId),
 
-    ukloniKlinikuIzNerasporedjenih: (
-        klinikaId: number
+    zameniVoziloSaProverom: (
+        turaId:number, 
+        novoVozilo:string
     ): Promise<void> =>
-        ipcRenderer.invoke('ukloniKlinikuIzNerasporedjenih', klinikaId),
+        ipcRenderer.invoke('zameniVoziloSaProverom', turaId, novoVozilo),
 
     dodajKlinikuUTuru: (
         turaId: number, 

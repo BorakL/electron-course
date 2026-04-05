@@ -4,7 +4,7 @@ import { createFullFolder, getClinicsWithSpecMeals, getClinicsWithOrderedProduct
 // import { pollResources } from './resourceManager.js';
 import { getPreloadPath } from './pathResolver.js';
 import dotenv from 'dotenv';
-import { appendJsonItem, deleteJsonItemById, dodajKlinikuUNerasporedjene, dodajKlinikuUTuru, dodajNovuTuru, getFilePath, mergeExcels, obrisiTuru, ocistiNevazecuKlinikuIzTura, readJsonFile, selectFile, selectFiles, selectFolder, ukloniKlinikuIzNerasporedjenih, ukloniKlinikuIzTure, updateJsonItemById, writeJsonFile } from './fsHelpers/jsonUtils.js';
+import { appendJsonItem, deleteJsonItemById, dodajKlinikuUNerasporedjene, dodajKlinikuUTuru, dodajNovuTuru, getFilePath, mergeExcels, obrisiTuru, ocistiNevazecuKlinikuIzTura, readJsonFile, selectFile, selectFiles, selectFolder, ukloniKlinikuIzNerasporedjenih, ukloniKlinikuIzTure, updateJsonItemById, writeJsonFile, zameniVoziloSaProverom } from './fsHelpers/jsonUtils.js';
 import processDietFiles from './xlsx/processDietFiles.js';
 // Definiši __dirname za ES module 
 dotenv.config({ path: path.join(process.cwd(), '.env.electron') });
@@ -63,6 +63,9 @@ app.on("ready", () => {
     });
     ipcMain.handle('ocistiNevazecuKlinikuIzTura', (event, clinickId) => {
         return ocistiNevazecuKlinikuIzTura(clinickId);
+    });
+    ipcMain.handle('zameniVoziloSaProverom', (event, turaId, novoVozilo) => {
+        return zameniVoziloSaProverom(turaId, novoVozilo);
     });
     ipcMain.handle('processDietFiles', (event, dietFilters, tableParams, folderPath) => {
         return processDietFiles(dietFilters, tableParams, folderPath);

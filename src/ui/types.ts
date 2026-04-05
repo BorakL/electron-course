@@ -36,13 +36,13 @@ export type DownloadFileParams = {
 export interface DostavnaTura {
   id: number;
   klinike: number[]; // sadrži ID-eve klinika
-  vozilo?: Vozilo,
+  vozilo?: string,
   vozaci?: Vozaci
 }
 
-export interface Vozilo {
-  tablice: string,
-  model: string
+export interface DostavnaTuraObject {
+  ture: DostavnaTura[],
+  nerasporedjeneKlinike: number[]
 }
 
 export interface Vozac {
@@ -52,8 +52,13 @@ export interface Vozac {
 }
 
 export interface Vozaci {
-  1: Vozac,
-  2: Vozac
+  1?: Vozac,
+  2?: Vozac
+}
+
+export interface Transport {
+  vozila: string[],
+  vozaci: Vozac[]
 }
 
 export type DownloadShippingDocsParams = {

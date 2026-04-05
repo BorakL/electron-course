@@ -6,13 +6,18 @@
         1761158260580
       ],
       "broj": "1",
-      "vozilo": {
-        "registracija": "BG234",
-        "model": "asdf"
-      },
-      "vozači": {
-        "1": "Pera Peric",
-        "2": "Marko Maric"
+      "vozilo": "bg2342342423",
+      "vozaci": {
+        "1": {
+          "id": "234",
+          "ime": "Pera",
+          "prezime": "Peric"
+        },
+        "2": {
+          "id": "234",
+          "ime": "Pera",
+          "prezime": "Peric"
+        }
       }
     },
     {
@@ -21,13 +26,18 @@
         1761158260581
       ],
       "broj": "2",
-      "vozilo": {
-        "registracija": "BG234",
-        "model": "asdf"
-      },
-      "vozači": {
-        "1": "Pera Peric",
-        "2": "Marko Maric"
+      "vozilo": "bg 5555555",
+      "vozaci": {
+        "1": {
+          "id": "234s",
+          "ime": "Jova",
+          "prezime": "Jovic"
+        },
+        "2": {
+          "id": "234",
+          "ime": "Pera",
+          "prezime": "Peric"
+        }
       }
     },
     {
@@ -37,14 +47,7 @@
         1761582452797
       ],
       "broj": "3",
-      "vozilo": {
-        "registracija": "BG234",
-        "model": "asdf"
-      },
-      "vozači": {
-        "1": "Pera Peric",
-        "2": "Marko Maric"
-      }
+      "vozilo": "BG234"
     },
     {
       "id": 4,
@@ -54,13 +57,18 @@
         1761158260591
       ],
       "broj": "4",
-      "vozilo": {
-        "registracija": "BG234",
-        "model": "asdf"
-      },
-      "vozači": {
-        "1": "Pera Peric",
-        "2": "Marko Maric"
+      "vozilo": "BG234",
+      "vozaci": {
+        "1": {
+          "id": "234",
+          "ime": "Pera",
+          "prezime": "Peric"
+        },
+        "2": {
+          "id": "234s",
+          "ime": "Jova",
+          "prezime": "Jovic"
+        }
       }
     },
     {
@@ -69,14 +77,7 @@
         1761158260582
       ],
       "broj": "5",
-      "vozilo": {
-        "registracija": "BG234",
-        "model": "asdf"
-      },
-      "vozači": {
-        "1": "Pera Peric",
-        "2": "Marko Maric"
-      }
+      "vozilo": "BG234"
     },
     {
       "id": 6,
@@ -85,14 +86,7 @@
         1761158260594
       ],
       "broj": "6",
-      "vozilo": {
-        "registracija": "BG234",
-        "model": "asdf"
-      },
-      "vozači": {
-        "1": "Pera Peric",
-        "2": "Marko Maric"
-      }
+      "vozilo": "BG234"
     },
     {
       "id": 7,
@@ -103,14 +97,7 @@
         1761158260598
       ],
       "broj": "7",
-      "vozilo": {
-        "registracija": "BG234",
-        "model": "asdf"
-      },
-      "vozači": {
-        "1": "Pera Peric",
-        "2": "Marko Maric"
-      }
+      "vozilo": "BG234"
     },
     {
       "id": 8,
@@ -122,14 +109,7 @@
         1761158260601
       ],
       "broj": "8",
-      "vozilo": {
-        "registracija": "BG234",
-        "model": "asdf"
-      },
-      "vozači": {
-        "1": "Pera Peric",
-        "2": "Marko Maric"
-      }
+      "vozilo": "BG234"
     },
     {
       "id": 9,
@@ -140,14 +120,7 @@
         1761158260590
       ],
       "broj": "9",
-      "vozilo": {
-        "registracija": "BG234",
-        "model": "asdf"
-      },
-      "vozači": {
-        "1": "Pera Peric",
-        "2": "Marko Maric"
-      }
+      "vozilo": "BG234"
     },
     {
       "id": 10,
@@ -157,14 +130,7 @@
         1761158260597
       ],
       "broj": "10",
-      "vozilo": {
-        "registracija": "BG234",
-        "model": "asdf"
-      },
-      "vozači": {
-        "1": "Pera Peric",
-        "2": "Marko Maric"
-      }
+      "vozilo": "BG234"
     },
     {
       "id": 11,
@@ -173,14 +139,7 @@
         1761468279711
       ],
       "broj": "11",
-      "vozilo": {
-        "registracija": "BG234",
-        "model": "asdf"
-      },
-      "vozači": {
-        "1": "Pera Peric",
-        "2": "Marko Maric"
-      }
+      "vozilo": "BG234"
     },
     {
       "id": 12,
@@ -191,14 +150,7 @@
         1761158260609
       ],
       "broj": "12",
-      "vozilo": {
-        "registracija": "BG234",
-        "model": "asdf"
-      },
-      "vozači": {
-        "1": "Pera Peric",
-        "2": "Marko Maric"
-      }
+      "vozilo": "BG234"
     },
     {
       "id": 13,
@@ -209,14 +161,7 @@
         1761158260613
       ],
       "broj": "13",
-      "vozilo": {
-        "registracija": "BG234",
-        "model": "asdf"
-      },
-      "vozači": {
-        "1": "Pera Peric",
-        "2": "Marko Maric"
-      }
+      "vozilo": "BG234"
     },
     {
       "id": 14,
@@ -228,14 +173,7 @@
         1761583388757
       ],
       "broj": "14",
-      "vozilo": {
-        "registracija": "BG234",
-        "model": "asdf"
-      },
-      "vozači": {
-        "1": "Pera Peric",
-        "2": "Marko Maric"
-      }
+      "vozilo": "BG234"
     }
   ],
   "nerasporedjeneKlinike": []

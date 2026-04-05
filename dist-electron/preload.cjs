@@ -18,7 +18,7 @@ electron_2.default.contextBridge.exposeInMainWorld("electronApp", {
     addKlinikaToTura: (fileName, turaId, klinikaId) => electron_1.ipcRenderer.invoke("addKlinikaToTura", fileName, turaId, klinikaId),
     removeKlinikaFromTura: (fileName, turaId, klinikaId) => electron_1.ipcRenderer.invoke("removeKlinikaFromTura", fileName, turaId, klinikaId),
     dodajKlinikuUNerasporedjene: (klinikaId) => electron_1.ipcRenderer.invoke('dodajKlinikuUNerasporedjene', klinikaId),
-    ukloniKlinikuIzNerasporedjenih: (klinikaId) => electron_1.ipcRenderer.invoke('ukloniKlinikuIzNerasporedjenih', klinikaId),
+    zameniVoziloSaProverom: (turaId, novoVozilo) => electron_1.ipcRenderer.invoke('zameniVoziloSaProverom', turaId, novoVozilo),
     dodajKlinikuUTuru: (turaId, klinikaId) => electron_1.ipcRenderer.invoke('dodajKlinikuUTuru', turaId, klinikaId),
     ukloniKlinikuIzTure: (turaId, klinikaId) => electron_1.ipcRenderer.invoke('ukloniKlinikuIzTure', turaId, klinikaId),
     obrisiTuru: (turaId) => electron_1.ipcRenderer.invoke('obrisiTuru', turaId),
