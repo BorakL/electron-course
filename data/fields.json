@@ -1,18 +1,50 @@
 {
-  "proba": {
-    "title": "proba",
-    "name": "asdf",
-    "type": "Dropdown",
-    "ordinal": 3,
-    "delayAfter": 6,
+  "bolnica": {
+    "title": "bolnica",
+    "name": "bolnica",
+    "type": "ComboBox",
+    "ordinal": "",
+    "delayAfter": "",
     "mode": ""
   },
-  "proba2": {
-    "title": "proba2",
-    "name": "asdfxc",
-    "type": "Dropdown",
-    "ordinal": 2,
-    "delayAfter": 5,
+  "klinike": {
+    "title": "klinike",
+    "name": "klinike",
+    "type": "Checkbox",
+    "ordinal": "",
+    "delayAfter": "",
+    "mode": ""
+  },
+  "date": {
+    "title": "date",
+    "name": "date",
+    "type": "Date",
+    "ordinal": "",
+    "delayAfter": "",
+    "mode": ""
+  },
+  "category": {
+    "title": "category",
+    "name": "category",
+    "type": "Number",
+    "ordinal": "",
+    "delayAfter": "",
+    "mode": ""
+  },
+  "vozac": {
+    "title": "vozac",
+    "name": "vozac",
+    "type": "TextBox",
+    "ordinal": "",
+    "delayAfter": "",
+    "mode": ""
+  },
+  "vozilo": {
+    "title": "vozilo",
+    "name": "vozilo",
+    "type": "TextBox",
+    "ordinal": "",
+    "delayAfter": "",
     "mode": ""
   }
 }

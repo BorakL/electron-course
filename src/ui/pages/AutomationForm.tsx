@@ -56,20 +56,20 @@ const AutomationForm = () => {
             try {
                 // Učitaj klinike
                 const klinikeData = await window.electronApp.readJsonFile("klinike.json");
-                console.log("klinike", klinikeData);
+                // console.log("klinike", klinikeData);
                 
                 // Učitaj dostavne ture
                 const tureData = await window.electronApp.readJsonFile("dostavneTure.json");
-                console.log("dostavneTure", tureData);
+                // console.log("dostavneTure", tureData);
 
                 // Učitaj polja
                 const fieldsData = await window.electronApp.readJsonFile("fields.json")
                 setFields(fieldsData)
-                console.log("fields", fieldsData)
+                // console.log("fields", fieldsData)
 
                 const windowInfoData = await window.electronApp.readJsonFile("window.json")
                 setwindowInfo(windowInfoData)
-                console.log("windowInfoData", windowInfoData)
+                // console.log("windowInfoData", windowInfoData)
                 
                 // Proveri i setuj klinike
                 if (Array.isArray(klinikeData)) {
@@ -109,7 +109,7 @@ const AutomationForm = () => {
         if (!klinike.length && !dostavneTure.length && !fields.length) return;
         if (!Array.isArray(klinike) || !Array.isArray(dostavneTure)) return;
         
-        console.log("Obrada podataka - klinike:", klinike.length, "ture:", dostavneTure.length);
+        // console.log("Obrada podataka - klinike:", klinike.length, "ture:", dostavneTure.length);
         
         try {
             const data: KlinikaSaLinijom[] = klinike.map((klinika: Klinika) => {
@@ -134,7 +134,7 @@ const AutomationForm = () => {
                 return a.linija!.id - b.linija!.id;
             });
             
-            console.log("Sortirano uspešno:", sortirano);
+            // console.log("Sortirano uspešno:", sortirano);
             setKlinikeSaLinijama(sortirano);
             
         } catch (error) {
@@ -146,37 +146,48 @@ const AutomationForm = () => {
     const sendData = async (data: KlinikaSaLinijom) => {
         try {
             //Konzologuj datum i kategorije
-            //Napravi nova polja (date, category) za to i Probaj da šalješ kao fields.date.value, fields.category.value
+            //Napravi nova polja (date, category) za to i Probaj da šalješ kao fields.date.value, fields.category.value...
             const date = form.getValues("date")
             const category = form.getValues("category")
             const shift = form.getValues("shift")
             setClickedClinics(prev => [...prev,data.id])
             
             
-            fields.proba.value = data.naziv
-            fields.date.value = date;
-            fields.category.value = category.toString();
-            
-            if (shift === 1) {
-                const vozac = data.linija?.vozaci?.["1"];
-                if (fields.driver) {
-                    fields.driver.value = vozac !== undefined ? `${vozac.ime} ${vozac.prezime}` : "";
-                }
-            } else {
-                const vozac = data.linija?.vozaci?.["2"];
-                if (fields.driver) {
-                    fields.driver.value = vozac !== undefined ? `${vozac.ime} ${vozac.prezime}` : "";
+            if(fields.bolnica){
+                fields.bolnica.value = data.bolnica;
+                if(fields.itemOrdinal){
+                    fields.itemOrdinal.value = data.itemOrdinal?.toString();
                 }
             }
-            fields.vehicle.value = data.linija?.vozilo?.tablice
+            if(fields.klinike){
+                fields.klinike.value = JSON.stringify(data.klinika)
+            }
+            if(fields.date){
+                fields.date.value = date;
+            }
+            if(fields.category){
+                fields.category.value = category.toString();
+            }
+            if(fields.vozac){
+                if (shift === 1) {
+                    const vozac = data.linija?.vozaci?.["1"];
+                    if (fields.vozac) {
+                        fields.vozac.value = vozac !== undefined ? `${vozac.ime} ${vozac.prezime}` : "";
+                    }
+                } else {
+                    const vozac = data.linija?.vozaci?.["2"];
+                    if (fields.vozac) {
+                        fields.vozac.value = vozac !== undefined ? `${vozac.ime} ${vozac.prezime}` : "";
+                    }
+                }
+            }
+            if(fields.vozilo){
+                fields.vozilo.value = data.linija?.vozilo
+            }
+            
+            console.log("fields", fields)
             
             await window.electronApp.fillABsoftForm(windowInfo?.title || "", fields);
-            
-            console.log("xxxxxxxxxxxxxxxxxxxxx");
-            console.log("smenaaaaaaaaaaaaaa", shift)
-            console.log("dateeeeeeeeeeeeeee", date)
-            console.log("categoryyyyyyyyyyyyyyyy", category)
-            console.log("fields", fields)
 
 
         } catch (error) {
