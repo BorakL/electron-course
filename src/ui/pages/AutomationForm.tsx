@@ -160,7 +160,7 @@ const AutomationForm = () => {
                 }
             }
             if(fields.klinike){
-                fields.klinike.value = JSON.stringify(data.klinika)
+                fields.klinike.value = JSON.stringify(Object.values(data.klinika))
             }
             if(fields.date){
                 fields.date.value = date;

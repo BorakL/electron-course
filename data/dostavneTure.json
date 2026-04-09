@@ -47,7 +47,14 @@
         1761582452797
       ],
       "broj": "3",
-      "vozilo": ""
+      "vozilo": "bg2342342423",
+      "vozaci": {
+        "1": {
+          "id": "234s",
+          "ime": "Jova",
+          "prezime": "Jovic"
+        }
+      }
     },
     {
       "id": 4,

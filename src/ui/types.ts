@@ -124,9 +124,9 @@ export type Field = {
   type?: string;
   name?: string;
   value?: string;
-  ordinal?: number;
-  itemOrdinal?: number;
-  delayAfter?: number;
+  ordinal?: number | null;
+  itemOrdinal?: number | null;
+  delayAfter?: number | null;
   mode?: string;
 };
 

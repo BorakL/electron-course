@@ -111,7 +111,12 @@ const AddField = () => {
             <input
               type="number"
               className="form-control"
-              {...register("ordinal")}
+              {...register("ordinal", {
+                setValueAs: (value) => {
+                  if (!value || value === "") return null;
+                  return Number(value);
+                }
+              })}
             />
           </div>
         </div>
@@ -123,7 +128,12 @@ const AddField = () => {
             <input
               type="number"
               className="form-control"
-              {...register("delayAfter")}
+              {...register("delayAfter", {
+                setValueAs: (value) => {
+                  if (!value || value === "") return null;
+                  return Number(value);
+                }
+              })}
             />
           </div>
         </div>
