@@ -33,5 +33,6 @@ electron_2.default.contextBridge.exposeInMainWorld("electronApp", {
     mergeExcels: (folderPath, outputPath) => electron_1.ipcRenderer.invoke('mergeExcels', folderPath, outputPath),
     getClinicsWithSpecMeals: (filePath, dietFilters) => electron_1.ipcRenderer.invoke('getClinicsWithSpecMeals', filePath, dietFilters),
     getClinicsWithOrderedProducts: (filePaths) => electron_1.ipcRenderer.invoke('getClinicsWithOrderedProducts', filePaths),
-    fillABsoftForm: (windowTitle, fields) => electron_1.ipcRenderer.invoke('fillABsoftForm', windowTitle, fields)
+    fillABsoftForm: (windowTitle, fields) => electron_1.ipcRenderer.invoke('fillABsoftForm', windowTitle, fields),
+    inspectForm: (windowTitle) => electron_1.ipcRenderer.invoke('inspectForm', windowTitle)
 });

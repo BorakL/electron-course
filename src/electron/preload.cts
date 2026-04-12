@@ -1,6 +1,6 @@
 import { ipcRenderer } from "electron"; 
 // @ts-ignore
-import  { DostavnaTura, Field, GetClinicsWithMealsParams, Klinika, RouteKey } from "./types/types.js";   
+import  { DostavnaTura, Field, GetClinicsWithMealsParams, InspectResult, Klinika, RouteKey } from "./types/types.js";   
 // import { dowloadMoreFiles } from "./util";
 import electron from 'electron';
 // import { DietFilter, TableParams } from "./xlsx/processDietFiles.js";
@@ -145,5 +145,8 @@ electron.contextBridge.exposeInMainWorld("electronApp", {
         filePaths: string[]
     ): Promise<Record<RouteKey,string[]>> => ipcRenderer.invoke('getClinicsWithOrderedProducts', filePaths),
 
-    fillABsoftForm: (windowTitle:string, fields:Record<string, Field>): Promise<void> => ipcRenderer.invoke('fillABsoftForm', windowTitle, fields)
+    fillABsoftForm: (windowTitle:string, fields:Record<string, Field>): Promise<void> => ipcRenderer.invoke('fillABsoftForm', windowTitle, fields),
+
+    inspectForm: (windowTitle:string): Promise<InspectResult> => ipcRenderer.invoke('inspectForm', windowTitle)
+
 })

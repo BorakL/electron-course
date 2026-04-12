@@ -3,7 +3,7 @@ import axios from 'axios';
 import https from 'https';
 import path from 'path';
 import os from 'os';
-import { CreateFullFolderParams, DostavnaTura, DostavnaTuraObject, DownloadFileParams, Field, Klinika } from './types/types.js';
+import { CreateFullFolderParams, DostavnaTura, DostavnaTuraObject, DownloadFileParams, Field, InspectResult, Klinika } from './types/types.js';
 import { promises as fsp } from 'fs';
 import { readJsonFile } from './fsHelpers/jsonUtils.js';
 import { DietFilter } from './xlsx/processDietFiles.js';
@@ -524,7 +524,6 @@ export function parseDateAndMeal(input: string): ParsedDateMeal | null {
 
 
 
-
 export async function fillABsoftForm(windowTitle:string, fields: Record<string, Field>): Promise<void> {
   try{
     const {data} = await axios.post("http://127.0.0.1:5064/fillForm", {WindowTitle: windowTitle, Fields: fields},
@@ -534,5 +533,24 @@ export async function fillABsoftForm(windowTitle:string, fields: Record<string, 
     console.log("data",data)
   }catch(error){
     console.log("error",error)
+  }
+}
+
+
+
+export async function inspectForm(windowTitle:string): Promise<InspectResult> {
+  try{
+    const response = await axios.post(
+      "http://127.0.0.1:5064/inspectForm", 
+      { WindowTitle: windowTitle },
+      { 
+        headers:{ 'Content-Type': 'application/json' }
+      }
+    );
+    console.log("data",response.data)
+    return response.data; 
+  } catch(error){
+    console.log("error",error)
+    throw error;
   }
 }

@@ -15,12 +15,13 @@ import LoginPage from './pages/LoginPage';
 import { useSession } from './context/sessionContext';
 import VanRfzo from './pages/VanRfzo';
 import SpecOtpremnice from './pages/SpecOtpremnice';
-import SettingsPage from './pages/settingsPage';
+import SettingsPage from './pages/SettingsPage';
 import AutomationForm from './pages/AutomationForm';
 import FieldList from './pages/FieldList';
 import FieldDetails from './pages/FieldDetails';
 import AddField from './pages/AddField';
 import Transport from './pages/Transport';
+import InspectForm from './pages/InspectForm';
 // import { useAppDispatch, useAppSelector } from './redux/hooks';
 
 function App() {
@@ -47,6 +48,7 @@ function App() {
             <Route path="/fields/:id" element={<FieldDetails/>}/>
             <Route path="/addField" element={<AddField/>}/>
             <Route path="/transport" element={<Transport/>}/>
+            <Route path="/inspectForm" element={<InspectForm/>}/>
             <Route path="*" element={<Navigate to="/download" />} />
           </Route> 
         </Routes>

@@ -138,3 +138,14 @@ export interface FillFormRequest {
 export interface WindowInfo {
   title: string;
 }
+
+export type InspectResult = {
+  [key: string]: {
+    count: number;
+    items: {
+      Name: string;
+      AutomationId: string;
+      Ordinal: number;
+    }[];
+  };
+};

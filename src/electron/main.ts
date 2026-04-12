@@ -1,12 +1,12 @@
 import {app, BrowserWindow, ipcMain} from 'electron';
 import path from 'path';
-import {createFullFolder, getClinicsWithSpecMeals, getClinicsWithOrderedProducts, isDev, loginAndGetSession, printDostavnaTura, fillABsoftForm} from './util.js' 
+import {createFullFolder, getClinicsWithSpecMeals, getClinicsWithOrderedProducts, isDev, loginAndGetSession, printDostavnaTura, fillABsoftForm, inspectForm} from './util.js' 
 // import { pollResources } from './resourceManager.js';
 import { getPreloadPath } from './pathResolver.js'; 
 import dotenv from 'dotenv';  
 import { appendJsonItem, deleteJsonItemById, dodajKlinikuUNerasporedjene, dodajKlinikuUTuru, dodajNovuTuru, getFilePath, mergeExcels, obrisiTuru, ocistiNevazecuKlinikuIzTura, readJsonFile, selectFile, selectFiles, selectFolder, ukloniKlinikuIzNerasporedjenih, ukloniKlinikuIzTure, updateJsonItemById, writeJsonFile, zameniVoziloSaProverom } from './fsHelpers/jsonUtils.js';
 import processDietFiles, { DietFilter, TableParams } from './xlsx/processDietFiles.js';
-import { DostavnaTura, Field, Klinika, Logs } from './types/types.js';
+import { DostavnaTura, Field, InspectResult, Klinika, Logs } from './types/types.js';
 
 
 // Definiši __dirname za ES module 
@@ -101,5 +101,8 @@ app.on("ready", ()=>{
     })
     ipcMain.handle('fillABsoftForm', async(event, windowTitle:string, fields: Record<string, Field>) => {
         return fillABsoftForm(windowTitle, fields)
+    })
+    ipcMain.handle('inspectForm', async(event, windowTitle:string): Promise<InspectResult> => {
+        return await inspectForm(windowTitle)
     })
 })

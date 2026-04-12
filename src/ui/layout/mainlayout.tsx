@@ -40,7 +40,8 @@ const Layout = () => {
                 { to: '/specOtpremnice', label: 'Proizvodi'},
                 { to: '/fields', label: 'Polja forme'},
                 { to: '/transport', label: 'Transport'},
-                { to: '/settings', label: 'Podeševanja' }
+                { to: '/settings', label: 'Podeševanja' },
+                { to: '/inspectForm', label: 'Inspect form' },
               ].map((item) => (
                 <li className="nav-item" key={item.to}>
                   <NavLink

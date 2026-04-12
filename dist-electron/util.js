@@ -415,3 +415,16 @@ export async function fillABsoftForm(windowTitle, fields) {
         console.log("error", error);
     }
 }
+export async function inspectForm(windowTitle) {
+    try {
+        const response = await axios.post("http://127.0.0.1:5064/inspectForm", { WindowTitle: windowTitle }, {
+            headers: { 'Content-Type': 'application/json' }
+        });
+        console.log("data", response.data);
+        return response.data;
+    }
+    catch (error) {
+        console.log("error", error);
+        throw error;
+    }
+}

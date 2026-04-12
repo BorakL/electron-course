@@ -178,3 +178,14 @@ export interface FillFormRequest {
     WindowTitle: string;
     Fields: Record<string, Field>;
 }
+
+export type InspectResult = {
+  [key: string]: {
+    count: number;
+    items: {
+      Name: string;
+      AutomationId: string;
+      Ordinal: number;
+    }[];
+  };
+};
