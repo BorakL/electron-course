@@ -160,8 +160,9 @@ const errorMessages = Object.keys(errorObject)
         </div>
 
         {/* ItemOrdinal */}
-        <div className="row mb-3">
-          <div className="col-sm-8">
+        <div className="row mb-2 align-items-center">
+          <label className="col-sm-2 col-form-label">Item Ordinal:</label>
+          <div className="col-sm-10">
             <input 
               type="number" 
               className={`form-control ${errors.itemOrdinal ? 'is-invalid' : ''}`}

@@ -152,6 +152,7 @@ const onSubmit = async (formData: Klinika) => {
           </div>
 
           <div className="row mb-3">
+            <label className="col-sm-4 col-form-label">Item Ordinal:</label>
             <div className="col-sm-8">
               <input 
                 type="number" 

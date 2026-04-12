@@ -155,8 +155,8 @@ const AutomationForm = () => {
             
             if(fields.bolnica){
                 fields.bolnica.value = data.bolnica;
-                if(fields.itemOrdinal){
-                    fields.itemOrdinal.value = data.itemOrdinal?.toString();
+                if(data.itemOrdinal){
+                    fields.bolnica.itemOrdinal = data.itemOrdinal;
                 }
             }
             if(fields.klinike){

@@ -6,7 +6,8 @@
     "klinika": {
       "694": "OPŠTA"
     },
-    "firm": 60
+    "firm": 60,
+    "itemOrdinal": "1"
   },
   {
     "id": 1761158260581,
@@ -15,7 +16,8 @@
     "klinika": {
       "707": "STEFAN VISOKI"
     },
-    "firm": 72
+    "firm": 72,
+    "itemOrdinal": "2"
   },
   {
     "id": 1761158260582,
