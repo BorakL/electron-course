@@ -97,11 +97,7 @@ const FieldDetails = () => {
                     <input
                     className={`form-control ${errors.title ? 'is-invalid' : ''}`}
                     {...register('title', { 
-                            required: true,
-                            pattern: {
-                            value: /^[a-zA-Z0-9čćžšđČĆŽŠĐ]+$/,
-                            message: "Dozvoljeni su samo alfanumerički karakteri bez razmaka i specijalnih znakova."
-                            }  
+                            required: true  
                         })}
                     />
                 </div>

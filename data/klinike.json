@@ -7,7 +7,7 @@
       "694": "OPŠTA"
     },
     "firm": 60,
-    "itemOrdinal": "1"
+    "itemOrdinal": "4"
   },
   {
     "id": 1761158260581,
@@ -17,7 +17,7 @@
       "707": "STEFAN VISOKI"
     },
     "firm": 72,
-    "itemOrdinal": "2"
+    "itemOrdinal": "4"
   },
   {
     "id": 1761158260582,
@@ -26,7 +26,8 @@
     "klinika": {
       "706": "ONKOLOGIJA"
     },
-    "firm": 71
+    "firm": 71,
+    "itemOrdinal": "3"
   },
   {
     "id": 1761158260583,
@@ -35,7 +36,8 @@
     "klinika": {
       "701": "UROLOGIJA UKC"
     },
-    "firm": 66
+    "firm": 66,
+    "itemOrdinal": "4"
   },
   {
     "id": 1761158260584,
@@ -44,7 +46,8 @@
     "klinika": {
       "697": "REUMATOLOGIJA"
     },
-    "firm": 63
+    "firm": 63,
+    "itemOrdinal": "5"
   },
   {
     "id": 1761158260585,
@@ -53,7 +56,8 @@
     "klinika": {
       "695": "NEONATOLOGIJA"
     },
-    "firm": 61
+    "firm": 61,
+    "itemOrdinal": "6"
   },
   {
     "id": 1761158260586,

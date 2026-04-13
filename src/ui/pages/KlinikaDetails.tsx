@@ -113,11 +113,7 @@ const onSubmit = async (formData: Klinika) => {
                 <input
                 className={`form-control ${errors.naziv ? 'is-invalid' : ''}`}
                 {...register('naziv', { 
-                      required: true,
-                      pattern: {
-                        value: /^[a-zA-Z0-9čćžšđČĆŽŠĐ]+$/,
-                        message: "Dozvoljeni su samo alfanumerički karakteri bez razmaka i specijalnih znakova."
-                      }  
+                      required: true
                  })}
                 />
                 {errors.naziv && <div className="text-danger">{errors.naziv.message || "Ovo polje je obavezno."}</div>}

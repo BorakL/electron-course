@@ -5,7 +5,7 @@
     "type": "ComboBox",
     "ordinal": "0",
     "delayAfter": null,
-    "mode": null
+    "mode": "keyboard"
   },
   "klinike": {
     "title": "klinike",
