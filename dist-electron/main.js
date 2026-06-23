@@ -1,21 +1,50 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import path from 'path';
-import { createFullFolder, getClinicsWithSpecMeals, getClinicsWithOrderedProducts, isDev, loginAndGetSession, printDostavnaTura, fillABsoftForm, inspectForm } from './util.js';
-// import { pollResources } from './resourceManager.js';
+import { createFullFolder, getClinicsWithSpecMeals, getClinicsWithOrderedProducts, isDev, loginAndGetSession, printDostavnaTura, fillABsoftForm, inspectForm, waitForServer } from './util.js';
 import { getPreloadPath } from './pathResolver.js';
 import dotenv from 'dotenv';
 import { appendJsonItem, deleteJsonItemById, dodajKlinikuUNerasporedjene, dodajKlinikuUTuru, dodajNovuTuru, getFilePath, mergeExcels, obrisiTuru, ocistiNevazecuKlinikuIzTura, readJsonFile, selectFile, selectFiles, selectFolder, ukloniKlinikuIzNerasporedjenih, ukloniKlinikuIzTure, updateJsonItemById, writeJsonFile, zameniVoziloSaProverom } from './fsHelpers/jsonUtils.js';
 import processDietFiles from './xlsx/processDietFiles.js';
-// Definiši __dirname za ES module 
+import { spawn } from "child_process";
+import { exec } from "child_process";
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.join(process.cwd(), '.env.electron') });
-app.on("ready", () => {
+let backendProcess = null;
+const preloadPath = app.isPackaged
+    ? path.join(__dirname, "preload.cjs")
+    : getPreloadPath();
+app.on("ready", async () => {
+    const exePath = app.isPackaged
+        ? path.join(process.resourcesPath, "UiHelper", "UiHelper.exe")
+        : path.join(process.cwd(), "resources", "UiHelper", "UiHelper.exe");
+    backendProcess = spawn(exePath, [], {
+        cwd: path.dirname(exePath)
+    });
+    backendProcess.stdout.on("data", (data) => {
+        console.log("C#:", data.toString());
+    });
+    backendProcess.stderr.on("data", (data) => {
+        console.error("C# ERROR:", data.toString());
+    });
+    backendProcess.on("error", (err) => {
+        console.error("Failed to start C#:", err);
+    });
+    backendProcess.on("close", (code) => {
+        console.log("C# exited with code:", code);
+    });
+    backendProcess.on("exit", (code) => {
+        console.log("C# exit:", code);
+    });
+    await waitForServer();
     const mainWindow = new BrowserWindow({
         icon: path.join(path.join(app.getAppPath() + '/src/electron'), 'assets', 'icon.ico'),
         webPreferences: {
-            preload: getPreloadPath()
+            preload: preloadPath
         }
     });
-    if (isDev()) {
+    if (!isDev()) {
         mainWindow.loadURL('http://localhost:5123');
     }
     else {
@@ -100,4 +129,10 @@ app.on("ready", () => {
     ipcMain.handle('inspectForm', async (event, windowTitle) => {
         return await inspectForm(windowTitle);
     });
+});
+app.on("before-quit", () => {
+    if (backendProcess?.pid) {
+        console.log("🛑 Force kill backend...");
+        exec(`taskkill /PID ${backendProcess.pid} /T /F`);
+    }
 });

@@ -149,3 +149,64 @@ export type InspectResult = {
     }[];
   };
 };
+
+
+export interface VozacFromDb {
+  id:string,
+  ime: string,
+  prezime: string,
+  nadimak?: string
+}
+
+export interface VoziloFromDb {
+  id: string,
+  naziv: string
+}
+
+export interface Smene {
+  1?: string,
+  2?: string
+}
+
+export interface DostavnaLinijaSaIzmenama {
+  id: string;
+  broj: string;
+  klinike: string;
+  vozilo: string,
+  smene: {
+    1: string;
+    2: string
+  },
+  izmene: Izmena[]
+}
+
+export interface Izmena {
+  id:string,
+  tip: "stalno"|"danas"|"period",
+  vrednostId: string,
+  target: "vozac"|"vozilo",
+  smena?: 1|2,
+  od: string,
+  do: string,
+}
+
+export interface getTransportData {
+    linijeSaIzmenama:DostavnaLinijaSaIzmenama[],
+    vozaciFromDb:VozacFromDb[],
+    vozilaFromDb:VoziloFromDb[],
+    smena:1|2
+}
+
+export interface AktivnaVrednost {
+  aktivnaVrednost: string | undefined;
+  defaultVrednost: string | undefined;
+  izvor: "danas" | string | "default";
+}
+
+export interface getAktivnaVrednostProperty {
+  linija: DostavnaLinijaSaIzmenama,
+  target: "vozac" | "vozilo",
+  vozilaMap?: Record<string, VoziloFromDb>,
+  vozaciMap?: Record<string, VozacFromDb>,
+  smena?: 1|2
+}

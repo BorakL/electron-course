@@ -1,26 +1,68 @@
 import path from 'path';
 import { dialog } from "electron";
 import ExcelJS from 'exceljs';
-const appFolder = process.cwd(); // ili path.dirname(process.execPath)
-//Development
-// const dataFolder = path.join(appFolder, "src/electron","data");
-//Production
-const dataFolder = path.join(appFolder, 'data');
-const FILE_NAME = 'dostavneTure.json';
-if (!fs.existsSync(dataFolder)) {
-    fs.mkdirSync(dataFolder);
+import { app } from 'electron';
+const isDev = !app.isPackaged;
+// 📁 USER data (gde se zapravo radi read/write)
+function getUserDataFolder() {
+    return isDev
+        ? path.join(process.cwd(), "data")
+        : path.join(app.getPath("userData"), "data");
 }
+// 📦 DEFAULT data (iz build-a ili projekta)
+function getDefaultDataFolder() {
+    return isDev
+        ? path.join(process.cwd(), "resources", "data")
+        : path.join(process.resourcesPath, "data");
+}
+const dataFolder = getUserDataFolder();
+const defaultDataFolder = getDefaultDataFolder();
+function initializeDataFolder() {
+    console.log("Ovde je userData: ", path.join(app.getPath("userData"), "data"));
+    console.log("Ovde je resourcesPath: ", path.join(process.resourcesPath, "data"));
+    if (!fs.existsSync(dataFolder)) {
+        fs.mkdirSync(dataFolder, { recursive: true });
+        console.log("📁 Created data folder:", dataFolder);
+    }
+    // 🔥 PROVERA DA LI IMA FAJLOVA
+    const files = fs.readdirSync(dataFolder);
+    console.log("Data folder", dataFolder);
+    console.log("default Data Folder", defaultDataFolder);
+    if (files.length === 0) {
+        console.log("📦 Data folder empty → copying default files...");
+        console.log("FROM:", defaultDataFolder);
+        console.log("TO:", dataFolder);
+        if (fs.existsSync(defaultDataFolder)) {
+            fs.cpSync(defaultDataFolder, dataFolder, { recursive: true });
+            console.log("✅ Default data copied");
+        }
+        else {
+            console.error("❌ Default data folder NOT FOUND:", defaultDataFolder);
+        }
+    }
+    else {
+        console.log("📁 Data folder already has files → skip copy");
+    }
+}
+// pozovi odmah
+initializeDataFolder();
+// helper
 export const getFilePath = (fileName) => {
     return path.join(dataFolder, fileName);
 };
+const FILE_NAME = 'dostavneTure.json';
 export function readJsonFile(fileName) {
     try {
         const filePath = getFilePath(fileName);
+        console.error(`Staza fajlea: ${filePath}`);
+        console.log("data folder: ", dataFolder);
         const content = fs.readFileSync(filePath, "utf-8");
         return JSON.parse(content);
     }
     catch (error) {
+        const filePath = getFilePath(fileName); //Samo da vidimo stazu fajla
         console.error(`Greška pri čitanju fajla ${fileName}:`, error);
+        console.error(`Staza fajle: ${filePath}`);
         throw error;
     }
 }

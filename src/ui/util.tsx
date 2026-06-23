@@ -1,26 +1,5 @@
 import { GetClinicsWithOrderedProducts, Klinika } from "./types";
 
-// export const turnUsersToClinics = (clinicsWithProducts:GetClinicsWithOrderedProducts, allClinics:Klinika[]) => {
-//     const result = {...clinicsWithProducts}
-//     for(const meal in clinicsWithProducts){
-//         const filteredClinics:Klinika[] = [];
-//         const key = meal as keyof typeof clinicsWithProducts;
-//         if(clinicsWithProducts[key]?.clinics && clinicsWithProducts[key].clinics.length>0 ){
-//             const clinicsNames:string[] = clinicsWithProducts[key].clinics;
-//             clinicsNames.forEach(clinicName => {
-//                 const filteredClinicsWithUser = allClinics.filter(klinikaObj => {
-//                     const usersTitles = Object.values(klinikaObj.klinika);
-//                     return usersTitles.includes(clinicName)
-//                 })
-//                 if(filteredClinicsWithUser && filteredClinicsWithUser[0] && !filteredClinics.some(fc => fc.id===filteredClinicsWithUser[0].id)){
-//                     filteredClinics.push(filteredClinicsWithUser[0])
-//                 }
-//             })
-//         }
-//         result[key].clinicsObj = filteredClinics
-//     }
-// }
-
 
 export const turnUsersToClinics = (
   clinicsWithProducts: GetClinicsWithOrderedProducts,

@@ -1,8 +1,18 @@
 {
-    "appId": "com.n-borakl.electron-course",
-    "files": ["dist-electron", "dist-react"],
-    "extraResources": ["dist-electron/preload.cjs"],
-    "win": {
-        "target": ["portable","msi"]
+  "appId": "com.n-borakl.electron-course",
+  "files": ["dist-electron", "dist-react"],
+  "extraResources": [
+    {
+      "from": "resources/UiHelper",
+      "to": "UiHelper"
+    },
+    {
+      "from": "resources/data",
+      "to": "data"
     }
+  ],
+  "win": {
+    "target": ["portable", "nsis"]
+  },
+  "buildDependenciesFromSource": true
 }

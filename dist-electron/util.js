@@ -406,7 +406,7 @@ export function parseDateAndMeal(input) {
 }
 export async function fillABsoftForm(windowTitle, fields) {
     try {
-        const { data } = await axios.post("http://127.0.0.1:5064/fillForm", { WindowTitle: windowTitle, Fields: fields }, {
+        const { data } = await axios.post("http://127.0.0.1:5070/fillForm", { WindowTitle: windowTitle, Fields: fields }, {
             headers: { 'Content-Type': 'application/json' }
         });
         console.log("data", data);
@@ -415,9 +415,21 @@ export async function fillABsoftForm(windowTitle, fields) {
         console.log("error", error);
     }
 }
+export async function waitForServer() {
+    for (let i = 0; i < 10; i++) {
+        try {
+            await axios.get("http://127.0.0.1:5070/health");
+            return;
+        }
+        catch {
+            await new Promise(r => setTimeout(r, 500));
+        }
+    }
+    throw new Error("Server nije startovao");
+}
 export async function inspectForm(windowTitle) {
     try {
-        const response = await axios.post("http://127.0.0.1:5064/inspectForm", { WindowTitle: windowTitle }, {
+        const response = await axios.post("http://127.0.0.1:5070/inspectForm", { WindowTitle: windowTitle }, {
             headers: { 'Content-Type': 'application/json' }
         });
         console.log("data", response.data);

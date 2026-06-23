@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { DostavnaTura, Field, Klinika, KlinikaSaLinijom, WindowInfo } from "../types";
 import { useForm } from 'react-hook-form';
+import { useTransportData } from "../context/transportContext";
 
 
 const AutomationForm = () => {
@@ -142,6 +143,18 @@ const AutomationForm = () => {
         }
         
     }, [klinike, dostavneTure, windowInfo, loading]);
+
+
+    const {vozaciFromDb, vozilaFromDb, linijeSaIzmenama,getTransportData} = useTransportData()
+
+  useEffect(()=>{
+    window.console.log("welcome from app")
+    console.log("vozaeeeeeeeeeeeee", vozaciFromDb)
+    console.log("vozilaaaaaaaaaaaaaaaaa", vozilaFromDb)
+    console.log("linijeSaIzmenama", linijeSaIzmenama)
+    getTransportData({linijeSaIzmenama, vozaciFromDb, vozilaFromDb, smena:1})
+  },[])
+
 
     const sendData = async (data: KlinikaSaLinijom) => {
         try {

@@ -22,9 +22,9 @@ import FieldDetails from './pages/FieldDetails';
 import AddField from './pages/AddField';
 import Transport from './pages/Transport';
 import InspectForm from './pages/InspectForm';
-// import { useAppDispatch, useAppSelector } from './redux/hooks';
 
 function App() {
+
   return (
     <div className="App">
         <Routes>
@@ -60,6 +60,7 @@ function ProtectedRoute({ children }: { children: JSX.Element }) {
   const { session } = useSession();
   if (!session) return <Navigate to="/login" />;
   return children;
-} 
+}
+
 
 export default App;
