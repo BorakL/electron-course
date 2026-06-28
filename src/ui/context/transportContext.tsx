@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../../firebase";
-import { AktivnaVrednost, DostavnaLinijaSaIzmenama, getAktivnaVrednostProperty, getTransportData, Izmena, VozacFromDb, VoziloFromDb } from "../types";
+import { AktivnaVrednost, AktivnaVrednostVozac, AktivnaVrednostVozilo, DostavnaLinijaSaIzmenama, getAktivnaVrednostProperty, getTransportData, Izmena, VozacFromDb, VoziloFromDb } from "../types";
 
 interface TransportContextType {
     vozaciFromDb: VozacFromDb[],
@@ -45,7 +45,7 @@ export const TransportProvider = ({ children }: { children: React.ReactNode }) =
                     const data = doc.data()
                     return {
                         id: doc.id,
-                        naziv: data.naziv
+                        tablice: data.tablice
                     }
                 })
                 setVozilaFromDb(vozilaData);
@@ -152,40 +152,39 @@ export const TransportProvider = ({ children }: { children: React.ReactNode }) =
             );
         }
 
+        const getValue = (id: string) => {
+            if (target === "vozilo" && vozilaMap) { 
+                return {tablice: vozilaMap[id]?.tablice || ""}
+            }else if(vozaciMap){
+                const vozac = vozaciMap[id];
+                return {ime: vozac.ime || "", prezime: vozac.prezime || ""}
+            }
+        };
 
-
-    const getNaziv = (id: string) => {
-        if (target === "vozilo" && vozilaMap) {
-            return vozilaMap[id]?.naziv || "";
-        }else if(vozaciMap){
-            const vozac = vozaciMap[id];
-            return vozac
-            ? `${vozac.prezime} ${vozac.ime}`
-            : "";
+        if (danasIzmena) {
+            return {
+                aktivnaVrednost: getValue(danasIzmena.vrednostId),
+                defaultVrednost: getValue(defaultId),
+                izvor: "danas"
+            };
         }
-    };
 
-    if (danasIzmena) {
+        if (periodIzmena) {
+            return {
+                aktivnaVrednost: getValue(periodIzmena.vrednostId),
+                defaultVrednost: getValue(defaultId),
+                izvor: periodIzmena.do
+            };
+        }
+
+        console.log("danasIzmena", danasIzmena);
+        console.log("periodIzmena", periodIzmena);
+
         return {
-        aktivnaVrednost: getNaziv(danasIzmena.vrednostId),
-        defaultVrednost: getNaziv(defaultId),
-        izvor: "danas"
+            aktivnaVrednost: undefined,
+            defaultVrednost: getValue(defaultId),
+            izvor: "default"
         };
-    }
-
-    if (periodIzmena) {
-        return {
-        aktivnaVrednost: getNaziv(periodIzmena.vrednostId),
-        defaultVrednost: getNaziv(defaultId),
-        izvor: periodIzmena.do
-        };
-    }
-
-    return {
-        aktivnaVrednost: undefined,
-        defaultVrednost: getNaziv(defaultId),
-        izvor: "default"
-    };
     };
 
 
@@ -208,19 +207,19 @@ export const TransportProvider = ({ children }: { children: React.ReactNode }) =
             vozilaFromDb.map((v:VoziloFromDb) => [v.id, v])
         )
 
-        const transportData: Record<number, {vozilo:string|undefined, vozac:string|undefined} > = {};
+        const transportData: Record<number, {
+            vozilo: AktivnaVrednostVozilo | AktivnaVrednostVozac | undefined, 
+            vozac: AktivnaVrednostVozilo | AktivnaVrednostVozac  | undefined} > = {};
 
         linijeSaIzmenama.forEach(linija => {
             const vozacVrednost = getAktivnaVrednost({linija, target:"vozac", vozaciMap, smena});
             const voziloVrednost = getAktivnaVrednost({linija, target:"vozilo", vozilaMap, smena});
             transportData[Number(linija.broj)] = {
-            vozac: vozacVrednost.aktivnaVrednost || vozacVrednost.defaultVrednost,
-            vozilo: voziloVrednost.aktivnaVrednost || voziloVrednost.defaultVrednost
+                vozac: vozacVrednost.aktivnaVrednost || vozacVrednost.defaultVrednost,
+                vozilo: voziloVrednost.aktivnaVrednost || voziloVrednost.defaultVrednost
             }
         })
-
-        console.log("transportData", transportData)
-
+        return transportData;
     }
 
 

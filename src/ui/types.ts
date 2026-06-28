@@ -21,6 +21,7 @@ export interface KlinikaItem {
 
 export type KlinikaSaLinijom = Klinika & {
     linija: DostavnaTura | null;
+    transportData?: {tablice?:string, ime?:string, prezime?:string}
 };
 
 export type DownloadFileParams = {
@@ -160,7 +161,7 @@ export interface VozacFromDb {
 
 export interface VoziloFromDb {
   id: string,
-  naziv: string
+  tablice: string
 }
 
 export interface Smene {
@@ -197,10 +198,19 @@ export interface getTransportData {
     smena:1|2
 }
 
-export interface AktivnaVrednost {
-  aktivnaVrednost: string | undefined;
-  defaultVrednost: string | undefined;
-  izvor: "danas" | string | "default";
+export type AktivnaVrednostVozac = {
+  ime?: string,
+  prezime?: string
+}
+
+export type AktivnaVrednostVozilo = {
+  tablice?: string
+}
+
+export type AktivnaVrednost = {
+    aktivnaVrednost?: AktivnaVrednostVozac | AktivnaVrednostVozilo;
+    defaultVrednost?: AktivnaVrednostVozac | AktivnaVrednostVozilo;
+    izvor: string;
 }
 
 export interface getAktivnaVrednostProperty {

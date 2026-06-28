@@ -113,8 +113,13 @@ const AutomationForm = () => {
         // console.log("Obrada podataka - klinike:", klinike.length, "ture:", dostavneTure.length);
         
         try {
+            const smena = form.getValues("shift") === 1 ? 1 : 2;
+            const transportData = getTransportData({linijeSaIzmenama, vozaciFromDb, vozilaFromDb, smena})
             const data: KlinikaSaLinijom[] = klinike.map((klinika: Klinika) => {
                 const linija = pronadjiTuruZaKliniku(klinika.id, dostavneTure);
+                if(linija && linija.id && transportData && transportData[linija.id]  ){
+                    return { ...klinika, linija, transportData:transportData[linija.id] }
+                }
                 return { ...klinika, linija }; // linija može biti DostavnaTura | undefined
             });
             
@@ -147,14 +152,6 @@ const AutomationForm = () => {
 
     const {vozaciFromDb, vozilaFromDb, linijeSaIzmenama,getTransportData} = useTransportData()
 
-  useEffect(()=>{
-    window.console.log("welcome from app")
-    console.log("vozaeeeeeeeeeeeee", vozaciFromDb)
-    console.log("vozilaaaaaaaaaaaaaaaaa", vozilaFromDb)
-    console.log("linijeSaIzmenama", linijeSaIzmenama)
-    getTransportData({linijeSaIzmenama, vozaciFromDb, vozilaFromDb, smena:1})
-  },[])
-
 
     const sendData = async (data: KlinikaSaLinijom) => {
         try {
@@ -182,23 +179,31 @@ const AutomationForm = () => {
                 fields.category.value = category.toString();
             }
             if(fields.vozac){
-                if (shift === 1) {
-                    const vozac = data.linija?.vozaci?.["1"];
-                    if (fields.vozac) {
-                        fields.vozac.value = vozac !== undefined ? `${vozac.ime} ${vozac.prezime}` : "";
-                    }
-                } else {
-                    const vozac = data.linija?.vozaci?.["2"];
-                    if (fields.vozac) {
-                        fields.vozac.value = vozac !== undefined ? `${vozac.ime} ${vozac.prezime}` : "";
+                if(data && data.transportData){
+                    const vozac = `${data.transportData?.ime || ""} ${data.transportData?.prezime}`
+                    fields.vozac.value = vozac;
+                }else{
+                    if (shift === 1) {
+                        const vozac = data.linija?.vozaci?.["1"];
+                        if (fields.vozac) {
+                            fields.vozac.value = vozac !== undefined ? `${vozac.ime} ${vozac.prezime}` : "";
+                        }
+                    } else {
+                        const vozac = data.linija?.vozaci?.["2"];
+                        if (fields.vozac) {
+                            fields.vozac.value = vozac !== undefined ? `${vozac.ime} ${vozac.prezime}` : "";
+                        }
                     }
                 }
+
             }
             if(fields.vozilo){
+                if(data && data.transportData){
+                    const vozilo = `${data.transportData?.tablice || ""}`
+                    fields.vozilo.value = vozilo
+                }
                 fields.vozilo.value = data.linija?.vozilo
             }
-            
-            console.log("fields", fields)
             
             await window.electronApp.fillABsoftForm(windowInfo?.title || "", fields);
 
